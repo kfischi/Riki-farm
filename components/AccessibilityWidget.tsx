@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Accessibility, X, Plus, Contrast, Underline, Type, Pause, RotateCcw } from "lucide-react";
+import { X, Plus, Contrast, Underline, Type, Pause, RotateCcw } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 type Prefs = {
@@ -146,7 +147,13 @@ export function AccessibilityWidget() {
         className="w-14 h-14 rounded-full bg-white border-2 shadow-green-md flex items-center justify-center transition-all"
         style={{ borderColor: "rgba(27,67,50,0.2)", color: "#1B4332" }}
       >
-        <Accessibility className="w-6 h-6" />
+        <Image
+          src="/accessibility-icon.svg"
+          alt="סמל נגישות"
+          width={32}
+          height={32}
+          aria-hidden="true"
+        />
       </button>
     </div>
   );

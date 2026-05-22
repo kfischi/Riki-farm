@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="סמל נגישות">
+  <!-- Outer filled circle -->
+  <circle cx="50" cy="50" r="50" fill="#1e3a6e"/>
+  <!-- White ring -->
+  <circle cx="50" cy="50" r="44" fill="none" stroke="white" stroke-width="6"/>
+  <!-- Person: head -->
+  <circle cx="50" cy="22" r="7" fill="white"/>
+  <!-- Person: body -->
+  <rect x="47" y="30" width="6" height="18" rx="3" fill="white"/>
+  <!-- Person: arms -->
+  <rect x="22" y="36" width="56" height="6" rx="3" fill="white"/>
+  <!-- Person: left leg -->
+  <rect x="44" y="46" width="6" height="20" rx="3" fill="white" transform="rotate(-12 47 46)"/>
+  <!-- Person: right leg -->
+  <rect x="50" y="46" width="6" height="20" rx="3" fill="white" transform="rotate(12 53 46)"/>
+</svg>
