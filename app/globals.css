@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
+@theme {
+  --color-forest: #1B4332;
+  --color-forest-mid: #2D6A4F;
+  --color-forest-light: #40916C;
+  --color-clay: #BC6C25;
+  --color-clay-light: #D4956A;
+  --color-wheat: #E9C46A;
+  --color-wheat-light: #F4DFA0;
+  --color-offwhite: #FAF9F6;
+
+  --font-heebo: "Heebo", "Assistant", sans-serif;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+@keyframes bounce-dot {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --forest: #1B4332;
+  --forest-mid: #2D6A4F;
+  --clay: #BC6C25;
+  --wheat: #E9C46A;
+  --offwhite: #FAF9F6;
+  --shadow-green: rgba(27, 67, 50, 0.15);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--offwhite);
+  color: var(--forest);
+  font-family: var(--font-heebo), "Heebo", "Assistant", "Rubik", system-ui, sans-serif;
+}
+
+/* ===== ACCESSIBILITY MODES ===== */
+html.high-contrast {
+  filter: contrast(1.5);
+}
+
+html.high-contrast body {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+html.larger-font body {
+  font-size: 1.2rem;
+}
+
+html.readable-font body {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+html.no-motion *,
+html.no-motion *::before,
+html.no-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+.chat-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(45, 106, 79, 0.3);
+  border-radius: 99px;
+}
+
+/* ===== LINK HIGHLIGHTS (accessibility mode) ===== */
+html.highlight-links a {
+  outline: 2px solid var(--wheat) !important;
+  background: rgba(233, 196, 106, 0.15);
+}
+
+/* ===== RTL CAROUSEL ===== */
+.catalog-carousel {
+  direction: rtl;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.catalog-carousel::-webkit-scrollbar {
+  height: 4px;
+}
+.catalog-carousel::-webkit-scrollbar-thumb {
+  background: rgba(45, 106, 79, 0.3);
+  border-radius: 99px;
+}
+
+/* ===== TEXTURE OVERLAY ===== */
+.grain-overlay {
+  position: relative;
+}
+.grain-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ===== FOCUS RING ===== */
+:focus-visible {
+  outline: 2.5px solid var(--wheat);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  .no-print { display: none !important; }
+}
+
+/* ===== CUSTOM SHADOWS ===== */
+.shadow-green-sm { box-shadow: 0 2px 8px rgba(27,67,50,0.12); }
+.shadow-green-md { box-shadow: 0 4px 20px rgba(27,67,50,0.15); }
+.shadow-green-lg { box-shadow: 0 8px 40px rgba(27,67,50,0.18); }
+.shadow-green-xl { box-shadow: 0 16px 60px rgba(27,67,50,0.22); }
+
+/* ===== BACKGROUND GRADIENTS ===== */
+.bg-hero-gradient {
+  background: radial-gradient(ellipse at 70% 30%, #2D6A4F 0%, #1B4332 45%, #0d2b1f 100%);
+}
+.bg-mesh-gradient {
+  background-image: radial-gradient(at 20% 80%, rgba(45,106,79,0.13) 0%, transparent 50%),
+    radial-gradient(at 80% 20%, rgba(233,196,106,0.13) 0%, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(188,108,37,0.07) 0%, transparent 70%);
+}
+
+/* ===== ANIMATE ===== */
+.animate-pulse-dot {
+  animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.animate-bounce-dot {
+  animation: bounce-dot 1.2s ease-in-out infinite;
 }
