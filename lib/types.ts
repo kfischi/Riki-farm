@@ -49,6 +49,7 @@ export type Step =
   | "order_package"
   | "order_quantity"
   | "order_phone"
+  | "order_email"
   | "order_confirm";
 
 export interface Order {
@@ -57,6 +58,20 @@ export interface Order {
   pkg?: string;
   quantity?: number;
   phone?: string;
+  email?: string;
+}
+
+export interface LeadPayload {
+  name: string;
+  company: string;
+  pkg: string;
+  quantity: string;
+  phone: string;
+  email: string;
+  status: string;
+  createdAt: string;
+  region: string;
+  address: string;
 }
 
 export interface BotState {

@@ -24,8 +24,16 @@ function mainMenuMessage(): MessageType {
 }
 
 function buildWhatsappUrl(order: Order): string {
-  const text = `שלום ריקי! 👋 אשמח להזמין:\nשם: ${order.name}\nחברה: ${order.company}\nמארז: ${order.pkg}\nכמות: ${order.quantity}\nטלפון: ${order.phone}`;
-  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
+  const lines = [
+    `שלום ריקי! 👋 אשמח להזמין:`,
+    `שם: ${order.name}`,
+    `חברה: ${order.company}`,
+    `מארז: ${order.pkg}`,
+    `כמות: ${order.quantity}`,
+    `טלפון: ${order.phone}`,
+    order.email ? `אימייל: ${order.email}` : null,
+  ].filter(Boolean).join("\n");
+  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(lines)}`;
 }
 
 function isValidIsraeliPhone(phone: string): boolean {
@@ -305,9 +313,47 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
       } else {
         const cleanPhone = trimmed.replace(/[\s\-]/g, "");
         orderPatch = { phone: cleanPhone };
-        const newOrder = { ...state.order, ...orderPatch };
-        const href = buildWhatsappUrl(newOrder);
-        const summaryText = `📋 סיכום ההזמנה:\n\n👤 שם: ${newOrder.name}\n🏢 חברה: ${newOrder.company}\n📦 מארז: ${newOrder.pkg}\n🔢 כמות: ${newOrder.quantity}\n📱 טלפון: ${cleanPhone}`;
+        messages = [
+          {
+            id: newId(),
+            sender: "bot",
+            type: "text",
+            text: "מצוין! 📱\nמה כתובת האימייל שלך? (לשליחת אישור הזמנה)\nאפשר גם להקליד «דלג» אם אין.",
+          },
+        ];
+        nextStep = "order_email";
+      }
+      break;
+    }
+
+    case "order_email": {
+      const isSkip = trimmed === "דלג" || trimmed === "skip" || trimmed === "—";
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+
+      if (!isSkip && !isValidEmail) {
+        messages = [
+          {
+            id: newId(),
+            sender: "bot",
+            type: "text",
+            text: "כתובת האימייל לא נראית תקינה (לדוגמה: name@company.co.il).\nאפשר גם להקליד «דלג» להמשיך ללא אימייל.",
+          },
+        ];
+      } else {
+        const emailValue = isSkip ? "" : trimmed.toLowerCase();
+        orderPatch = { email: emailValue };
+        const newOrder = { ...state.order, phone: state.order.phone, email: emailValue };
+        const href = buildWhatsappUrl({ ...state.order, email: emailValue });
+        const summaryText = [
+          "📋 סיכום ההזמנה:",
+          "",
+          `👤 שם: ${newOrder.name}`,
+          `🏢 חברה: ${newOrder.company}`,
+          `📦 מארז: ${newOrder.pkg}`,
+          `🔢 כמות: ${newOrder.quantity}`,
+          `📱 טלפון: ${newOrder.phone}`,
+          emailValue ? `📧 אימייל: ${emailValue}` : null,
+        ].filter(Boolean).join("\n");
         messages = [
           {
             id: newId(),

@@ -4,8 +4,32 @@ import { useReducer, useEffect, useRef, useCallback, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { ChatPanel } from "./chat/ChatPanel";
 import { ChatLauncher } from "./chat/ChatLauncher";
-import type { BotAction, BotState, MessageType, Step, Order } from "@/lib/types";
+import type { BotAction, BotState, LeadPayload, MessageType, Order, Step } from "@/lib/types";
 import { getBotResponse, getWelcomeMessages } from "@/lib/botEngine";
+
+async function sendLead(order: Order): Promise<void> {
+  const payload: LeadPayload = {
+    name:      order.name      ?? "—",
+    company:   order.company   ?? "—",
+    pkg:       order.pkg       ?? "—",
+    quantity:  String(order.quantity ?? "—"),
+    phone:     order.phone     ?? "—",
+    email:     order.email     ?? "—",
+    status:    "חדש",
+    createdAt: new Date().toISOString(),
+    region:    "—",
+    address:   "—",
+  };
+  try {
+    await fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    // Silent — WhatsApp CTA serves as fallback
+  }
+}
 
 const initialState: BotState = {
   step: "idle",
@@ -110,8 +134,15 @@ export function RickyBot() {
       // Get bot response
       const result = getBotResponse(state, input);
       dispatch({ type: "SET_STEP", payload: result.nextStep as Step });
-      if (Object.keys(result.orderPatch).length > 0) {
-        dispatch({ type: "PATCH_ORDER", payload: result.orderPatch as Partial<Order> });
+      const newOrderPatch = result.orderPatch as Partial<Order>;
+      if (Object.keys(newOrderPatch).length > 0) {
+        dispatch({ type: "PATCH_ORDER", payload: newOrderPatch });
+      }
+
+      // Fire N8N webhook when order is confirmed
+      if (result.nextStep === "order_confirm") {
+        const finalOrder = { ...state.order, ...newOrderPatch };
+        sendLead(finalOrder);
       }
 
       // Queue bot messages for typing simulation
