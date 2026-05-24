@@ -4,38 +4,16 @@ import { useReducer, useEffect, useRef, useCallback, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { ChatPanel } from "./chat/ChatPanel";
 import { ChatLauncher } from "./chat/ChatLauncher";
-import type { BotAction, BotState, LeadPayload, MessageType, Order, Step } from "@/lib/types";
+import type { BotAction, BotState, MessageType, Step } from "@/lib/types";
 import { getBotResponse, getWelcomeMessages } from "@/lib/botEngine";
-
-async function sendLead(order: Order): Promise<void> {
-  const payload: LeadPayload = {
-    name:      order.name      ?? "—",
-    company:   order.company   ?? "—",
-    pkg:       order.pkg       ?? "—",
-    quantity:  String(order.quantity ?? "—"),
-    phone:     order.phone     ?? "—",
-    email:     order.email     ?? "—",
-    status:    "חדש",
-    createdAt: new Date().toISOString(),
-    region:    "—",
-    address:   "—",
-  };
-  try {
-    await fetch("/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-  } catch {
-    // Silent — WhatsApp CTA serves as fallback
-  }
-}
+import { saveLead } from "@/lib/saveLead";
 
 const initialState: BotState = {
   step: "idle",
   messages: [],
   isTyping: false,
   order: {},
+  savedPartial: false,
 };
 
 function botReducer(state: BotState, action: BotAction): BotState {
@@ -48,6 +26,8 @@ function botReducer(state: BotState, action: BotAction): BotState {
       return { ...state, step: action.payload };
     case "PATCH_ORDER":
       return { ...state, order: { ...state.order, ...action.payload } };
+    case "SET_SAVED_PARTIAL":
+      return { ...state, savedPartial: action.payload };
     case "RESET":
       return { ...initialState };
     default:
@@ -63,14 +43,14 @@ export function RickyBot() {
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingMessages = useRef<MessageType[]>([]);
   const isProcessing = useRef(false);
+  // Track latest state for use in callbacks without stale closure
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
-  // Initialize welcome messages
   useEffect(() => {
-    const welcome = getWelcomeMessages();
-    dispatch({ type: "ADD_MESSAGES", payload: welcome });
+    dispatch({ type: "ADD_MESSAGES", payload: getWelcomeMessages() });
   }, []);
 
-  // Auto-open once after 2500ms
   useEffect(() => {
     const alreadyOpened = sessionStorage.getItem("rickybot_opened");
     if (alreadyOpened) return;
@@ -94,7 +74,6 @@ export function RickyBot() {
 
   const close = useCallback(() => setIsOpen(false), []);
 
-  // Listen for open events from hero/catalog sections
   useEffect(() => {
     const handler = () => open();
     window.addEventListener("rickybot:open", handler);
@@ -104,7 +83,6 @@ export function RickyBot() {
   const processNextMessage = useCallback(async () => {
     if (isProcessing.current || pendingMessages.current.length === 0) return;
     isProcessing.current = true;
-
     while (pendingMessages.current.length > 0) {
       const msg = pendingMessages.current.shift()!;
       const delay = 600 + Math.random() * 500;
@@ -114,15 +92,14 @@ export function RickyBot() {
       dispatch({ type: "ADD_MESSAGES", payload: [msg] });
       await new Promise((r) => setTimeout(r, 80));
     }
-
     isProcessing.current = false;
   }, []);
 
   const handleUserInput = useCallback(
     (input: string) => {
       if (!input.trim()) return;
+      const currentState = stateRef.current;
 
-      // Echo user message
       const userMsg: MessageType = {
         id: `user-${Date.now()}-${Math.random()}`,
         sender: "user",
@@ -131,31 +108,40 @@ export function RickyBot() {
       };
       dispatch({ type: "ADD_MESSAGES", payload: [userMsg] });
 
-      // Get bot response
-      const result = getBotResponse(state, input);
+      const result = getBotResponse(currentState, input);
       dispatch({ type: "SET_STEP", payload: result.nextStep as Step });
-      const newOrderPatch = result.orderPatch as Partial<Order>;
-      if (Object.keys(newOrderPatch).length > 0) {
-        dispatch({ type: "PATCH_ORDER", payload: newOrderPatch });
+      if (Object.keys(result.orderPatch).length > 0) {
+        dispatch({ type: "PATCH_ORDER", payload: result.orderPatch });
       }
 
-      // Fire N8N webhook when order is confirmed
-      if (result.nextStep === "order_confirm") {
-        const finalOrder = { ...state.order, ...newOrderPatch };
-        sendLead(finalOrder);
+      const nextOrder = { ...currentState.order, ...result.orderPatch };
+
+      // Save complete lead on consent
+      if (result.nextStep === "order_confirm" && result.orderPatch.consent === true) {
+        saveLead({
+          name: nextOrder.name ?? "—",
+          company: nextOrder.company ?? "—",
+          region: nextOrder.region ?? "—",
+          address: nextOrder.address ?? "—",
+          email: nextOrder.email ?? "—",
+          phone: nextOrder.phone ?? "—",
+          pkg: nextOrder.pkg ?? "—",
+          quantity: String(nextOrder.quantity ?? "—"),
+          consent: true,
+          source: "ricky-chatbot",
+          status: "complete",
+        });
       }
 
-      // Queue bot messages for typing simulation
       pendingMessages.current.push(...result.messages);
       processNextMessage();
     },
-    [state, processNextMessage]
+    [processNextMessage]
   );
 
   const handleReset = useCallback(() => {
     dispatch({ type: "RESET" });
-    const welcome = getWelcomeMessages();
-    dispatch({ type: "ADD_MESSAGES", payload: welcome });
+    dispatch({ type: "ADD_MESSAGES", payload: getWelcomeMessages() });
   }, []);
 
   return (

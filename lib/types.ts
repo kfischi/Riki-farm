@@ -24,20 +24,8 @@ export type MessageType =
   | { id: string; sender: "bot" | "user"; type: "text"; text: string }
   | { id: string; sender: "bot"; type: "video-link"; videos: Video[] }
   | { id: string; sender: "bot"; type: "catalog-cards"; packages: Package[] }
-  | {
-      id: string;
-      sender: "bot";
-      type: "quick-replies";
-      text?: string;
-      replies: QuickReply[];
-    }
-  | {
-      id: string;
-      sender: "bot";
-      type: "whatsapp-cta";
-      href: string;
-      summaryText: string;
-    };
+  | { id: string; sender: "bot"; type: "quick-replies"; text?: string; replies: QuickReply[] }
+  | { id: string; sender: "bot"; type: "whatsapp-cta"; href: string; summaryText: string };
 
 export type Step =
   | "idle"
@@ -46,32 +34,25 @@ export type Step =
   | "catalog"
   | "order_name"
   | "order_company"
+  | "order_region"
+  | "order_address"
+  | "order_email"
+  | "order_phone"
   | "order_package"
   | "order_quantity"
-  | "order_phone"
-  | "order_email"
+  | "order_consent"
   | "order_confirm";
 
 export interface Order {
   name?: string;
   company?: string;
+  region?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
   pkg?: string;
   quantity?: number;
-  phone?: string;
-  email?: string;
-}
-
-export interface LeadPayload {
-  name: string;
-  company: string;
-  pkg: string;
-  quantity: string;
-  phone: string;
-  email: string;
-  status: string;
-  createdAt: string;
-  region: string;
-  address: string;
+  consent?: boolean;
 }
 
 export interface BotState {
@@ -79,12 +60,36 @@ export interface BotState {
   messages: MessageType[];
   isTyping: boolean;
   order: Order;
+  savedPartial: boolean;
 }
 
 export type BotAction =
-  | { type: "USER_INPUT"; payload: string }
   | { type: "ADD_MESSAGES"; payload: MessageType[] }
   | { type: "SET_TYPING"; payload: boolean }
   | { type: "SET_STEP"; payload: Step }
   | { type: "PATCH_ORDER"; payload: Partial<Order> }
+  | { type: "SET_SAVED_PARTIAL"; payload: boolean }
   | { type: "RESET" };
+
+export interface Lead {
+  name: string;
+  company: string;
+  region: string;
+  address: string;
+  email: string;
+  phone: string;
+  pkg: string;
+  quantity: string;
+  consent: boolean;
+  source: "ricky-chatbot";
+  status: "partial" | "complete";
+  createdAt: string; // ISO, server-generated
+  // Box builder fields (optional)
+  boxType?: string;
+  boxItems?: string;
+  unitPrice?: string;
+  orderQty?: string;
+  totalPrice?: string;
+}
+
+export interface LeadPayload extends Omit<Lead, "createdAt"> {}
