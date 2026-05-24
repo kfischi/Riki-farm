@@ -151,3 +151,13 @@ html.highlight-links a {
 .animate-bounce-dot {
   animation: bounce-dot 1.2s ease-in-out infinite;
 }
+
+/* Border utilities */
+.border-r-3 {
+  border-right-width: 3px;
+}
+
+/* Tabular numbers for prices */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

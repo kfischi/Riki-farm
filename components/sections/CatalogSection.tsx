@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
@@ -10,48 +10,81 @@ import type { Package } from "@/lib/types";
 interface Props {
   packages?: Package[];
 }
+
 export function CatalogSection({ packages: packagesProp }: Props) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const prefersReduced = useReducedMotion();
   const pkgs = packagesProp ?? CONFIG.packages;
 
-  const openChatWithPkg = (_pkgId: string) => {
-    window.dispatchEvent(new CustomEvent("rickybot:open"));
+  const openChatWithPkg = (pkgId: string) => {
+    window.dispatchEvent(new CustomEvent("rickybot:open", { detail: { pkgId } }));
   };
+
+  const anim = (delay = 0) =>
+    prefersReduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          animate: inView ? { opacity: 1, y: 0 } : {},
+          transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+        };
 
   return (
     <section
       ref={ref}
       id="catalog"
       aria-labelledby="catalog-heading"
-      className="py-28 relative overflow-hidden bg-white"
+      className="relative py-28 bg-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-mesh-gradient pointer-events-none" aria-hidden="true" />
 
-      <div className="relative max-w-7xl mx-auto px-6" style={{ paddingLeft: "4rem", paddingRight: "4rem" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="text-center mb-16"
-        >
-          <span className="font-semibold text-sm uppercase tracking-widest mb-3 block" style={{ color: "#BC6C25" }}>
-            מארזים נבחרים
-          </span>
-          <h2
-            id="catalog-heading"
-            className="font-black leading-tight"
-            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#1B4332" }}
-          >
-            הקטלוג שלנו
-          </h2>
-          <p className="mt-4 text-lg max-w-md mx-auto" style={{ color: "rgba(27,67,50,0.6)" }}>
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-16">
+        {/* ===== Section header ===== */}
+        <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end mb-16">
+          <div>
+            <motion.div {...anim(0)} className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-clay" aria-hidden="true" />
+              <span className="text-clay text-sm font-semibold uppercase tracking-[0.2em]">
+                מארזים נבחרים
+              </span>
+            </motion.div>
+            <motion.h2
+              {...anim(0.1)}
+              id="catalog-heading"
+              className="text-4xl lg:text-5xl font-black text-forest leading-tight"
+            >
+              הקטלוג שלנו
+            </motion.h2>
+          </div>
+          <motion.p {...anim(0.15)} className="text-forest/55 text-base max-w-xs leading-relaxed lg:text-right">
             כל מארז נוצר בקפידה — טעם, נראות, ואריזה ברמה אחרת
-          </p>
+          </motion.p>
+        </div>
+
+        {/* ===== Feature image strip ===== */}
+        <motion.div {...anim(0.2)} className="relative h-52 lg:h-72 rounded-3xl overflow-hidden mb-12 shadow-[0_4px_24px_rgba(27,67,50,0.12)]">
+          <Image
+            src={CONFIG.images.catalogFeature}
+            alt="תוצרת חקלאית טרייה מהמשק — תפוזים, ירקות, ומוצרי שדה"
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 1280px) 100vw, 1280px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-l from-forest/70 via-forest/20 to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-end px-10 lg:px-16">
+            <div className="text-white text-right">
+              <p className="text-2xl lg:text-3xl font-black leading-tight mb-2">
+                ישירות מהשדה<br />לשולחן שלכם
+              </p>
+              <p className="text-white/60 text-sm">תוצרת טרייה, עונתית, ואמיתית</p>
+            </div>
+          </div>
         </motion.div>
 
+        {/* ===== Package grid ===== */}
         <div
-          className="grid gap-6"
-          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
           role="list"
           aria-label="קטלוג מארזים"
         >
@@ -59,19 +92,15 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             <motion.article
               key={pkg.id}
               role="listitem"
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.08 * i, type: "spring", stiffness: 200 }}
-              className="rounded-3xl overflow-hidden shadow-green-sm hover:shadow-green-md border group flex flex-col transition-all duration-300"
-              style={{ backgroundColor: "#FAF9F6", borderColor: "rgba(27,67,50,0.05)" }}
-              whileHover={{ y: -4 }}
+              {...anim(0.08 * i + 0.3)}
+              className="group flex flex-col bg-offwhite rounded-3xl overflow-hidden shadow-[0_2px_12px_rgba(27,67,50,0.08)] hover:shadow-[0_8px_32px_rgba(27,67,50,0.14)] hover:-translate-y-1.5 transition-all duration-300 border border-forest/4"
             >
-              <div className="relative h-48 w-full overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
                 <Image
                   src={pkg.image}
                   alt={pkg.name}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   unoptimized
                 />
@@ -80,8 +109,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                     {pkg.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-xs px-2 py-0.5 rounded-full font-bold shadow-sm"
-                        style={{ backgroundColor: "#E9C46A", color: "#1B4332" }}
+                        className="text-[10px] px-2 py-0.5 rounded-full bg-wheat/90 text-forest font-bold backdrop-blur-sm"
                       >
                         {tag}
                       </span>
@@ -90,23 +118,20 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                 )}
               </div>
               <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-lg font-bold" style={{ color: "#1B4332" }}>{pkg.name}</h3>
-                <p className="text-sm mt-2 leading-relaxed flex-1" style={{ color: "rgba(27,67,50,0.6)" }}>
+                <h3 className="text-base font-bold text-forest">{pkg.name}</h3>
+                <p className="text-sm text-forest/55 mt-2 leading-relaxed flex-1 line-clamp-3">
                   {pkg.description}
                 </p>
                 {pkg.price && (
-                  <p className="text-xl font-black mt-3" style={{ color: "#BC6C25" }}>{pkg.price}</p>
+                  <p className="text-xl font-black text-clay mt-3 tabular-nums">{pkg.price}</p>
                 )}
                 <button
                   onClick={() => openChatWithPkg(pkg.id)}
-                  className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-white font-semibold text-sm transition-all active:scale-[0.98]"
-                  style={{ backgroundColor: "#1B4332" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#2D6A4F")}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1B4332")}
+                  className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-forest text-white font-semibold text-sm hover:bg-forest-mid active:scale-[0.98] transition-all"
                   aria-label={`שאל את ריקי על ${pkg.name}`}
                 >
                   <MessageCircle className="w-4 h-4" />
-                  שאל/י את ריקי על המארז
+                  שאל/י את ריקי
                 </button>
               </div>
             </motion.article>

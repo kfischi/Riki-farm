@@ -1,81 +1,147 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { CONFIG } from "@/lib/config";
-import { Leaf, Sun, Heart } from "lucide-react";
 
 interface Props {
   about?: { headline: string; body: string };
 }
+
 export function AboutSection({ about: aboutProp }: Props) {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const prefersReduced = useReducedMotion();
+
+  const anim = (delay = 0) =>
+    prefersReduced
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          animate: inView ? { opacity: 1, y: 0 } : {},
+          transition: { duration: 0.65, delay, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+        };
 
   return (
     <section
       ref={ref}
       id="about"
       aria-labelledby="about-heading"
-      className="relative py-28 overflow-hidden"
-      style={{ backgroundColor: "#FAF9F6" }}
+      className="relative py-28 bg-offwhite overflow-hidden"
     >
-      {/* Organic background shape */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none" aria-hidden="true">
-        <div className="absolute -top-20 right-0 w-96 h-96 rounded-full blur-3xl" style={{ backgroundColor: "rgba(27,67,50,0.04)" }} />
-        <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: "rgba(233,196,106,0.2)" }} />
+      {/* Background blobs */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 left-1/3 w-96 h-96 rounded-full bg-forest/4 blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full bg-wheat/25 blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6" style={{ paddingLeft: "4rem", paddingRight: "4rem" }}>
-        <div className="grid lg:grid-cols-[auto_1fr] gap-16 lg:gap-24 items-center">
-          {/* Visual column */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.65 }}
-            className="grid grid-cols-2 gap-4 max-w-xs mx-auto lg:mx-0"
-          >
-            {[
-              { icon: Leaf, label: "חקלאות בת-קיימא", bg: "#1B4332" },
-              { icon: Sun, label: "תוצרת עונתית", bg: "#BC6C25" },
-              { icon: Heart, label: "שירות אישי", bg: "#E9C46A" },
-              { icon: Leaf, label: "ישירות מהשדה", bg: "#2D6A4F" },
-            ].map(({ icon: Icon, label, bg }, i) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.1 * i }}
-                className={`rounded-2xl p-6 flex flex-col items-center gap-3 ${i % 2 === 1 ? "mt-6" : ""}`}
-                style={{ backgroundColor: bg }}
-              >
-                <Icon className="w-7 h-7 text-white" />
-                <span className="text-xs font-semibold text-center leading-tight" style={{ color: "rgba(255,255,255,0.8)" }}>
-                  {label}
-                </span>
-              </motion.div>
-            ))}
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-16">
+        {/* Section label */}
+        <motion.div {...anim(0)} className="flex items-center gap-3 mb-16">
+          <div className="w-8 h-px bg-clay" aria-hidden="true" />
+          <span className="text-clay text-sm font-semibold uppercase tracking-[0.2em]">
+            הסיפור שמאחורי המשק
+          </span>
+        </motion.div>
+
+        {/* ===== ROW 1: Greenhouse photo + Opening story ===== */}
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-12 lg:gap-20 items-center mb-24">
+          {/* Photo */}
+          <motion.div {...anim(0.1)} className="relative">
+            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.18)]">
+              <Image
+                src={CONFIG.images.aboutPrimary}
+                alt="ריקי שוסטרמן בחממה — חקלאית מגבול הצפון"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 90vw, 35vw"
+              />
+              {/* Subtle warm tone overlay for consistency */}
+              <div className="absolute inset-0 bg-[#BC6C25]/10 mix-blend-multiply" />
+            </div>
+            {/* Floating name badge */}
+            <div className="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-[0_4px_20px_rgba(27,67,50,0.12)] px-4 py-3 border border-forest/5">
+              <p className="text-sm font-bold text-forest">{CONFIG.brand.ownerName}</p>
+              <p className="text-xs text-forest/50">{CONFIG.brand.ownerTitle}</p>
+            </div>
           </motion.div>
 
-          {/* Text column */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.65, delay: 0.15 }}
-          >
-            <span className="font-semibold text-sm uppercase tracking-widest mb-3 block" style={{ color: "#BC6C25" }}>
-              האנשים שמאחורי המארזים
-            </span>
-            <h2
+          {/* Story */}
+          <div>
+            <motion.h2
+              {...anim(0.2)}
               id="about-heading"
-              className="text-4xl font-black leading-tight mb-6"
-              style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#1B4332" }}
+              className="text-4xl lg:text-5xl font-black text-forest leading-[1.1] mb-8"
             >
               {aboutProp?.headline ?? CONFIG.about.headline}
-            </h2>
-            <p className="text-lg leading-[1.8] max-w-lg" style={{ color: "rgba(27,67,50,0.7)" }}>
-              {aboutProp?.body ?? CONFIG.about.body}
-            </p>
+            </motion.h2>
+
+            <div className="space-y-5">
+              {CONFIG.about.story.slice(0, 2).map((para, i) => {
+                // Second paragraph is the pull-quote
+                if (para.startsWith('"')) {
+                  return (
+                    <motion.blockquote
+                      key={i}
+                      {...anim(0.25 + i * 0.08)}
+                      className="relative pr-5 py-1"
+                      style={{ borderRight: "3px solid #BC6C25" }}
+                    >
+                      <p className="text-lg lg:text-xl text-forest font-semibold leading-relaxed italic">
+                        {para.replace(/^"|"$/g, "")}
+                      </p>
+                    </motion.blockquote>
+                  );
+                }
+                return (
+                  <motion.p
+                    key={i}
+                    {...anim(0.25 + i * 0.08)}
+                    className="text-base lg:text-lg text-forest/70 leading-[1.85]"
+                  >
+                    {para}
+                  </motion.p>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ===== ROW 2: Northern hills photo + Final story paragraph ===== */}
+        {/* Sensitivity: presents with dignity, no dramatization */}
+        <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
+          {/* Text side */}
+          <div>
+            <motion.p
+              {...anim(0.1)}
+              className="text-base lg:text-lg text-forest/70 leading-[1.85] mb-10"
+            >
+              {CONFIG.about.story[2]}
+            </motion.p>
+
+            {/* Pull quote — standalone */}
+            <motion.div {...anim(0.2)} className="bg-forest rounded-2xl px-8 py-7">
+              <p className="text-xl lg:text-2xl font-bold text-white leading-relaxed">
+                &ldquo;{CONFIG.about.pullQuotes[1]}&rdquo;
+              </p>
+              <p className="text-white/50 text-sm mt-4 font-medium">— {CONFIG.brand.ownerName}</p>
+            </motion.div>
+          </div>
+
+          {/* Northern hills photo */}
+          <motion.div {...anim(0.15)} className="relative">
+            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.15)]">
+              <Image
+                src={CONFIG.images.aboutNorth}
+                alt="נוף גבול הצפון — מושב לימן, שדות המשק"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 90vw, 30vw"
+              />
+              <div className="absolute inset-0 bg-[#BC6C25]/8 mix-blend-multiply" />
+            </div>
+            {/* ⚠️ Dev note: verify this photo is not AI-processed before go-live */}
           </motion.div>
         </div>
       </div>
