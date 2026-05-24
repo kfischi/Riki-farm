@@ -3,6 +3,7 @@ import { AboutSection } from "@/components/sections/AboutSection";
 import { CatalogSection } from "@/components/sections/CatalogSection";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { RickyBot } from "@/components/RickyBot";
+import { BoxBuilder } from "@/components/BoxBuilder";
 
 export default function HomePage() {
   return (
@@ -17,6 +18,7 @@ export default function HomePage() {
         <HeroSection />
         <AboutSection />
         <CatalogSection />
+        <BoxBuilder />
       </main>
       <SiteFooter />
       <RickyBot />
