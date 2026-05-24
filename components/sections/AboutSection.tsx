@@ -5,7 +5,10 @@ import { useRef } from "react";
 import { CONFIG } from "@/lib/config";
 import { Leaf, Sun, Heart } from "lucide-react";
 
-export function AboutSection() {
+interface Props {
+  about?: { headline: string; body: string };
+}
+export function AboutSection({ about: aboutProp }: Props) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -68,10 +71,10 @@ export function AboutSection() {
               className="text-4xl font-black leading-tight mb-6"
               style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#1B4332" }}
             >
-              {CONFIG.about.headline}
+              {aboutProp?.headline ?? CONFIG.about.headline}
             </h2>
             <p className="text-lg leading-[1.8] max-w-lg" style={{ color: "rgba(27,67,50,0.7)" }}>
-              {CONFIG.about.body}
+              {aboutProp?.body ?? CONFIG.about.body}
             </p>
           </motion.div>
         </div>

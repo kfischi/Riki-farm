@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@fontsource/heebo": "^5.2.8",
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",

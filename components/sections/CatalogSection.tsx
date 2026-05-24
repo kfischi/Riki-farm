@@ -5,10 +5,15 @@ import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
 import { MessageCircle } from "lucide-react";
+import type { Package } from "@/lib/types";
 
-export function CatalogSection() {
+interface Props {
+  packages?: Package[];
+}
+export function CatalogSection({ packages: packagesProp }: Props) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const pkgs = packagesProp ?? CONFIG.packages;
 
   const openChatWithPkg = (_pkgId: string) => {
     window.dispatchEvent(new CustomEvent("rickybot:open"));
@@ -50,7 +55,7 @@ export function CatalogSection() {
           role="list"
           aria-label="קטלוג מארזים"
         >
-          {CONFIG.packages.map((pkg, i) => (
+          {pkgs.map((pkg, i) => (
             <motion.article
               key={pkg.id}
               role="listitem"
