@@ -23,6 +23,12 @@
   30% { transform: translateY(-6px); }
 }
 
+@keyframes launcher-ping {
+  0%   { box-shadow: 0 0 0 0 rgba(233,196,106,0.6); }
+  70%  { box-shadow: 0 0 0 14px rgba(233,196,106,0); }
+  100% { box-shadow: 0 0 0 0 rgba(233,196,106,0); }
+}
+
 :root {
   --forest: #1B4332;
   --forest-mid: #2D6A4F;

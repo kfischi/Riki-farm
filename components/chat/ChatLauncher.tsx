@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import Image from "next/image";
+import { CONFIG } from "@/lib/config";
 
 interface Props {
   isOpen: boolean;
@@ -18,12 +19,38 @@ export function ChatLauncher({ isOpen, unread, onOpen }: Props) {
       transition={{ type: "spring", delay: 0.5 }}
       onClick={onOpen}
       aria-label="פתח/י שיחה עם ריקי"
-      className="fixed bottom-6 left-6 z-50 w-16 h-16 rounded-full bg-forest shadow-green-lg flex items-center justify-center text-white hover:bg-forest-mid transition-colors"
-      style={{ backgroundColor: "#1B4332" }}
+      className="fixed bottom-6 left-6 z-50 group"
     >
-      <MessageCircle className="w-7 h-7" />
+      {/* Outer pulse ring */}
+      <span
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{ animation: "launcher-ping 2s ease-out infinite" }}
+        aria-hidden="true"
+      />
+
+      {/* Avatar circle */}
+      <div className="relative w-16 h-16 rounded-full overflow-hidden border-[3px] border-wheat shadow-[0_4px_20px_rgba(27,67,50,0.4)] group-hover:scale-105 transition-transform duration-200" style={{ borderColor: "#E9C46A" }}>
+        <Image
+          src={CONFIG.rickyAvatar}
+          alt="ריקי מהמשק"
+          fill
+          className="object-cover"
+          sizes="64px"
+          unoptimized
+        />
+        {/* Online indicator */}
+        <span className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-white" aria-hidden="true" />
+      </div>
+
+      {/* Unread badge */}
       {unread && (
-        <span className="absolute top-1 right-1 w-3.5 h-3.5 bg-wheat rounded-full border-2 border-white animate-pulse-dot" style={{ backgroundColor: "#E9C46A" }} />
+        <span
+          className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-wheat text-forest text-[10px] font-black flex items-center justify-center border-2 border-white"
+          style={{ backgroundColor: "#E9C46A" }}
+          aria-label="הודעה חדשה"
+        >
+          1
+        </span>
       )}
     </motion.button>
   );
