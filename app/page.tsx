@@ -3,6 +3,8 @@ import { SocialProofStrip } from "@/components/sections/SocialProofStrip";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { CatalogSection } from "@/components/sections/CatalogSection";
 import { SiteFooter } from "@/components/sections/SiteFooter";
+import { SiteNav } from "@/components/SiteNav";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { RickyBot } from "@/components/RickyBot";
 import { BoxBuilder } from "@/components/BoxBuilder";
 import { fetchPackages, fetchSiteSettings } from "@/lib/sanity";
@@ -29,6 +31,7 @@ export default async function HomePage() {
       >
         דלג לתוכן הראשי
       </a>
+      <SiteNav />
       {settings.banner?.visible && settings.banner.text && (
         <div
           role="banner"
@@ -46,6 +49,7 @@ export default async function HomePage() {
       </main>
       <SiteFooter />
       <RickyBot />
+      <WhatsAppFloat />
     </>
   );
 }
