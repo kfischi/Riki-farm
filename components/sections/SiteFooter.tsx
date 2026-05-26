@@ -6,7 +6,7 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
     <footer className="py-16 px-6" style={{ backgroundColor: "#1B4332", color: "white" }}>
-      <div className="max-w-7xl mx-auto" style={{ paddingLeft: "4rem", paddingRight: "4rem" }}>
+      <div className="max-w-7xl mx-auto px-2 md:px-16">
         <div className="grid gap-12 pb-12 border-b" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", borderColor: "rgba(255,255,255,0.1)" }}>
           {/* Brand */}
           <div>

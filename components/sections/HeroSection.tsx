@@ -21,7 +21,7 @@ export function HeroSection() {
         };
 
   return (
-    <header className="bg-forest grain-overlay">
+    <header className="bg-forest grain-overlay overflow-hidden">
       {/* ===== VIDEO ===== */}
       <div className="w-full aspect-video relative overflow-hidden">
         <video

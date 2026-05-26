@@ -35,13 +35,13 @@ export function CatalogSection({ packages: packagesProp }: Props) {
       ref={ref}
       id="catalog"
       aria-labelledby="catalog-heading"
-      className="relative py-28 bg-white overflow-hidden"
+      className="relative py-16 lg:py-28 bg-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-mesh-gradient pointer-events-none" aria-hidden="true" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-16">
         {/* ===== Section header ===== */}
-        <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end mb-16">
+        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_auto] gap-4 lg:gap-8 items-start lg:items-end mb-12 lg:mb-16">
           <div>
             <motion.div {...anim(0)} className="flex items-center gap-3 mb-4">
               <div className="w-8 h-px bg-clay" aria-hidden="true" />
@@ -57,7 +57,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
               הקטלוג שלנו
             </motion.h2>
           </div>
-          <motion.p {...anim(0.15)} className="text-forest/55 text-base max-w-xs leading-relaxed lg:text-right">
+          <motion.p {...anim(0.15)} className="text-forest/55 text-sm lg:text-base max-w-xs leading-relaxed lg:text-right">
             כל מארז נוצר בקפידה — טעם, נראות, ואריזה ברמה אחרת
           </motion.p>
         </div>

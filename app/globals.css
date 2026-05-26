@@ -40,6 +40,7 @@ body {
   background-color: var(--offwhite);
   color: var(--forest);
   font-family: var(--font-heebo), "Heebo", "Assistant", "Rubik", system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 /* ===== ACCESSIBILITY MODES ===== */

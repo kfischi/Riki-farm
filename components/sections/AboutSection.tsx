@@ -28,7 +28,7 @@ export function AboutSection({ about: aboutProp }: Props) {
       ref={ref}
       id="about"
       aria-labelledby="about-heading"
-      className="relative py-28 bg-offwhite overflow-hidden"
+      className="relative py-16 lg:py-28 bg-offwhite overflow-hidden"
     >
       {/* Background blobs */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -46,7 +46,7 @@ export function AboutSection({ about: aboutProp }: Props) {
         </motion.div>
 
         {/* ===== ROW 1: Greenhouse photo + Opening story ===== */}
-        <div className="grid lg:grid-cols-[2fr_3fr] gap-12 lg:gap-20 items-center mb-24">
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-10 lg:gap-20 items-center mb-12 lg:mb-24">
           {/* Photo */}
           <motion.div {...anim(0.1)} className="relative">
             <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.18)]">
@@ -61,7 +61,7 @@ export function AboutSection({ about: aboutProp }: Props) {
               <div className="absolute inset-0 bg-[#BC6C25]/10 mix-blend-multiply" />
             </div>
             {/* Floating name badge */}
-            <div className="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-[0_4px_20px_rgba(27,67,50,0.12)] px-4 py-3 border border-forest/5">
+            <div className="absolute -bottom-4 right-2 lg:-right-4 bg-white rounded-2xl shadow-[0_4px_20px_rgba(27,67,50,0.12)] px-4 py-3 border border-forest/5">
               <p className="text-sm font-bold text-forest">{CONFIG.brand.ownerName}</p>
               <p className="text-xs text-forest/50">{CONFIG.brand.ownerTitle}</p>
             </div>
