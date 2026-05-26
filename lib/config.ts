@@ -2,7 +2,7 @@ import type { Package, Video } from "./types";
 
 export const CONFIG = {
   // 🔴 REPLACE — real WhatsApp number, international format, no + or dashes
-  whatsappNumber: "9725XXXXXXXX",
+  whatsappNumber: "972525242155",
 
   brand: {
     name: "המשק של ריקי",
