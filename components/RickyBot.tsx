@@ -59,7 +59,7 @@ export function RickyBot() {
       setHasOpened(true);
       setUnread(false);
       sessionStorage.setItem("rickybot_opened", "1");
-    }, 2500);
+    }, 15000);
     return () => clearTimeout(timer);
   }, []);
 
