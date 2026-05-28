@@ -54,11 +54,14 @@ export function CatalogSection({ packages: packagesProp }: Props) {
               id="catalog-heading"
               className="text-4xl lg:text-5xl font-black text-forest leading-tight"
             >
-              הקטלוג שלנו
+              מארזים בהתאמה אישית
             </motion.h2>
+            <motion.p {...anim(0.13)} className="text-clay font-semibold text-sm mt-2">
+              התכולה משתנה לפי גידולי העונה
+            </motion.p>
           </div>
           <motion.p {...anim(0.15)} className="text-forest/55 text-sm lg:text-base max-w-xs leading-relaxed lg:text-right">
-            כל מארז נוצר בקפידה — טעם, נראות, ואריזה ברמה אחרת
+            אלו דוגמאות — כל מארז נבנה מחדש לפי מה שהשדה נותן
           </motion.p>
         </div>
 

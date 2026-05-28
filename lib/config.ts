@@ -45,35 +45,35 @@ export const CONFIG = {
 
   packages: [
     {
-      id: "galil-gift",
-      name: "מארז גלילי יוקרתי",
-      description: "לחם מחמצת ביתי עם 4 ממרחים גלילים — פסטו, ריבה, חרדל וגבינת שמנת. אריזת מתנה מושלמת לחגים ואירועים עסקיים.",
-      price: "₪290",
-      image: "https://placehold.co/400x300/E9C46A/1B4332?text=מארז+גלילי", // 🔴 REPLACE with Cloudinary URL
-      tags: ["פופולרי", "מתנה"],
+      id: "custom-box-1",
+      name: "מארז תוצרת גלילית",
+      description: "מארז בהתאמה אישית — התכולה משתנה לפי גידולי העונה הטרייה. דוגמה: לחם מחמצת עם ממרחים גלילים עשויים בעבודת יד.",
+      price: "₪120",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg",
+      tags: ["מותאם אישית", "מתנה"],
     },
     {
-      id: "veggie-bag",
-      name: "שקית ירקות גלילית",
-      description: "ירקות טריים מהשדה: חסה, אבוקדו, מלפפונים ובננות — קטיף טרי השבוע, ישירות מהמשק לחברה שלכם.",
-      price: "₪130",
-      image: "https://placehold.co/400x300/2D6A4F/E9C46A?text=שקית+ירקות", // 🔴 REPLACE with Cloudinary URL
-      tags: ["טרי", "שבועי"],
+      id: "custom-bag-small",
+      name: "סל קטן מהמשק",
+      description: "סל ירקות ופירות טריים בהתאמה אישית — מה שגדל השבוע, מגיע אליכם. מושלם לעובד אחד או כמתנה קטנה.",
+      price: "₪50",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/2_gq21ly.jpg",
+      tags: ["קטן", "טרי"],
     },
     {
-      id: "sealaria",
-      name: "מארז טיפוח ים",
-      description: "מוצרי טיפוח SEALARIA מאצות ים: ג'ל, קרם לחות, תחליב יום ומיסט ריפוי. מארז יוקרה לעובדים ולקוחות VIP.",
-      price: "₪380",
-      image: "https://placehold.co/400x300/BC6C25/ffffff?text=מארז+טיפוח", // 🔴 REPLACE with Cloudinary URL
-      tags: ["יוקרה", "VIP"],
+      id: "custom-care",
+      name: "מארז טיפוח גלילי",
+      description: "מארז טיפוח בהתאמה אישית — שילוב תוצרת המשק עם מוצרי טיפוח גלילים. מותאם לפי בקשה ולפי העונה.",
+      price: "₪120",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/3_hh1piz.jpg",
+      tags: ["יוקרה", "טיפוח"],
     },
     {
-      id: "veggie-box",
+      id: "custom-box-2",
       name: "ארגז תוצרת גלילית",
-      description: "ארגז ירקות ופירות עשיר: עגבניות, חסה, פטריות, מלפפונים, אבוקדו, בננות ותפוחים. מושלם לאירועי צוות ומשרדים.",
-      price: "₪195",
-      image: "https://placehold.co/400x300/1B4332/FAF9F6?text=ארגז+תוצרת", // 🔴 REPLACE with Cloudinary URL
+      description: "ארגז ירקות ופירות בהתאמה אישית — מה שהשדה נותן הפעם. מושלם למשרדים, לאירועי צוות ולמתנות bulk.",
+      price: "₪120",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/1_suo2t3.jpg",
       tags: ["עונתי", "bulk"],
     },
   ] as Package[],
