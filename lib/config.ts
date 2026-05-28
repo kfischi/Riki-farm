@@ -45,36 +45,36 @@ export const CONFIG = {
 
   packages: [
     {
-      id: "holiday",
-      name: "מארז החג",
-      description: "מבחר עשיר של תוצרת טרייה ומובחרת לכבוד החג — ישירות מהשדה לחברה שלכם",
-      price: "₪XXX",
-      image: "https://placehold.co/400x300/E9C46A/1B4332?text=מארז+החג",
-      tags: ["פופולרי", "עונתי"],
+      id: "galil-gift",
+      name: "מארז גלילי יוקרתי",
+      description: "לחם מחמצת ביתי עם 4 ממרחים גלילים — פסטו, ריבה, חרדל וגבינת שמנת. אריזת מתנה מושלמת לחגים ואירועים עסקיים.",
+      price: "₪290",
+      image: "https://placehold.co/400x300/E9C46A/1B4332?text=מארז+גלילי", // 🔴 REPLACE with Cloudinary URL
+      tags: ["פופולרי", "מתנה"],
     },
     {
-      id: "executive",
-      name: "מארז המנהלים",
-      description: "מארז יוקרה פרימיום למתנות עסקיות וללקוחות VIP — אריזה מרשימה ומוצרים נבחרים",
-      price: "₪XXX",
-      image: "https://placehold.co/400x300/BC6C25/ffffff?text=מארז+המנהלים",
+      id: "veggie-bag",
+      name: "שקית ירקות גלילית",
+      description: "ירקות טריים מהשדה: חסה, אבוקדו, מלפפונים ובננות — קטיף טרי השבוע, ישירות מהמשק לחברה שלכם.",
+      price: "₪130",
+      image: "https://placehold.co/400x300/2D6A4F/E9C46A?text=שקית+ירקות", // 🔴 REPLACE with Cloudinary URL
+      tags: ["טרי", "שבועי"],
+    },
+    {
+      id: "sealaria",
+      name: "מארז טיפוח ים",
+      description: "מוצרי טיפוח SEALARIA מאצות ים: ג'ל, קרם לחות, תחליב יום ומיסט ריפוי. מארז יוקרה לעובדים ולקוחות VIP.",
+      price: "₪380",
+      image: "https://placehold.co/400x300/BC6C25/ffffff?text=מארז+טיפוח", // 🔴 REPLACE with Cloudinary URL
       tags: ["יוקרה", "VIP"],
     },
     {
-      id: "seasonal",
-      name: "מארז העונה",
-      description: "תוצרת עונתית נבחרת בשיאה — תפריט שמשתנה עם הטבע ומפתיע בכל פעם",
-      price: "₪XXX",
-      image: "https://placehold.co/400x300/2D6A4F/E9C46A?text=מארז+העונה",
-      tags: ["עונתי", "טרי"],
-    },
-    {
-      id: "team",
-      name: "מארז הצוות",
-      description: "פתרון מושלם לאירועי חברה ומפגשי צוות — מארזים ב-bulk במחיר אטרקטיבי",
-      price: "₪XXX",
-      image: "https://placehold.co/400x300/1B4332/FAF9F6?text=מארז+הצוות",
-      tags: ["bulk", "חסכוני"],
+      id: "veggie-box",
+      name: "ארגז תוצרת גלילית",
+      description: "ארגז ירקות ופירות עשיר: עגבניות, חסה, פטריות, מלפפונים, אבוקדו, בננות ותפוחים. מושלם לאירועי צוות ומשרדים.",
+      price: "₪195",
+      image: "https://placehold.co/400x300/1B4332/FAF9F6?text=ארגז+תוצרת", // 🔴 REPLACE with Cloudinary URL
+      tags: ["עונתי", "bulk"],
     },
   ] as Package[],
 
