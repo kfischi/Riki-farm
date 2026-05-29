@@ -75,13 +75,13 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             className="object-cover"
             sizes="(max-width: 1280px) 100vw, 1280px"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-forest/70 via-forest/20 to-transparent" />
-          <div className="absolute inset-0 flex items-center justify-end px-10 lg:px-16">
+          <div className="absolute inset-0 bg-gradient-to-r from-forest/75 via-forest/25 to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-start px-10 lg:px-16">
             <div className="text-white text-right">
-              <p className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-3">
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight mb-3">
                 ישירות מהשדה<br />לשולחן שלכם
               </p>
-              <p className="text-white/70 text-base sm:text-lg">תוצרת טרייה, עונתית, ואמיתית</p>
+              <p className="text-white font-semibold text-base sm:text-lg tracking-wide">תוצרת טרייה, עונתית, ואמיתית</p>
             </div>
           </div>
         </motion.div>
