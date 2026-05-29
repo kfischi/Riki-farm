@@ -67,21 +67,32 @@ export function CatalogSection({ packages: packagesProp }: Props) {
         </div>
 
         {/* ===== Feature image strip ===== */}
-        <motion.div {...anim(0.2)} className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden mb-12 shadow-[0_4px_24px_rgba(27,67,50,0.12)]">
-          <Image
-            src={withFaceCrop(CONFIG.images.catalogFeature, "16:9")}
-            alt="ריקי בפרדס, מציגה תפוזים שזה עתה נקטפו"
-            fill
-            className="object-cover"
-            sizes="(max-width: 1280px) 100vw, 1280px"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-forest/75 via-forest/25 to-transparent" />
-          <div className="absolute inset-0 flex items-center justify-start px-10 lg:px-16">
-            <div className="text-white text-right">
-              <p className="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight mb-3">
+        <motion.div {...anim(0.2)} className="relative w-full overflow-hidden rounded-3xl mb-12 shadow-[0_4px_24px_rgba(27,67,50,0.12)]">
+          <div className="absolute inset-0">
+            <Image
+              src={withFaceCrop(CONFIG.images.catalogFeature, "16:9")}
+              alt="ישירות מהשדה — תוצרת טרייה מהמשק של ריקי"
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent md:bg-gradient-to-l md:from-transparent md:via-transparent md:to-black/55" />
+          </div>
+          <div className="relative grid grid-cols-12 min-h-[60vh] md:min-h-[70vh] items-center px-6 sm:px-10 md:px-16 py-12">
+            <div className="col-span-12 md:col-span-5 text-white text-right">
+              <h2
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
+              >
                 ישירות מהשדה<br />לשולחן שלכם
+              </h2>
+              <p
+                className="text-lg sm:text-xl md:text-2xl font-medium mt-4 sm:mt-6 tracking-wide"
+                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}
+              >
+                תוצרת טרייה, עונתית, ואמיתית
               </p>
-              <p className="text-white font-semibold text-base sm:text-lg tracking-wide">תוצרת טרייה, עונתית, ואמיתית</p>
             </div>
           </div>
         </motion.div>
