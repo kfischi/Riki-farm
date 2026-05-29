@@ -4,8 +4,8 @@ import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "תקנון ותנאי שימוש — המשק של ריקי",
-  description: "תנאי השימוש של אתר המשק של ריקי",
+  title: "תקנון ותנאי שימוש — משק שוסטרמן",
+  description: "תנאי השימוש של אתר משק שוסטרמן",
 };
 
 export default function TermsPage() {

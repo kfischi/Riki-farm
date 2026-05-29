@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { X, Plus, Contrast, Underline, Type, Pause, RotateCcw } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 type Prefs = {
@@ -147,13 +146,14 @@ export function AccessibilityWidget() {
         className="w-14 h-14 rounded-full bg-white border-2 shadow-green-md flex items-center justify-center transition-all"
         style={{ borderColor: "rgba(27,67,50,0.2)", color: "#1B4332" }}
       >
-        <Image
-          src="/accessibility-icon.svg"
-          alt="סמל נגישות"
-          width={32}
-          height={32}
-          aria-hidden="true"
-        />
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+          {/* Head */}
+          <circle cx="12" cy="4" r="2" />
+          {/* Wheelchair person — body, arm, wheel */}
+          <path d="M12 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM9.5 8.5C8.7 8.5 8 9.2 8 10v4.5c0 .5.2.9.5 1.2L11 18.2V21h2v-3.4l-2.5-2.4V13h3v3.5l2.5 1.5.9-1.6-2.4-1.4V11H13V9.5C13 8.7 12.3 8 11.5 8h-2zM15 14.2l1.2 2.8H20v2h-4.5l-1.7-4H15z" />
+          {/* Wheel */}
+          <circle cx="9" cy="18.5" r="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
       </button>
     </div>
   );

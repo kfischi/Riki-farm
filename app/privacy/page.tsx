@@ -4,8 +4,8 @@ import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "מדיניות פרטיות — המשק של ריקי",
-  description: "מדיניות הפרטיות של המשק של ריקי — כיצד אנו אוספים, משתמשים ומגנים על המידע שלך",
+  title: "מדיניות פרטיות — משק שוסטרמן",
+  description: "מדיניות הפרטיות של משק שוסטרמן — כיצד אנו אוספים, משתמשים ומגנים על המידע שלך",
 };
 
 export default function PrivacyPage() {

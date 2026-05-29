@@ -4,8 +4,8 @@ import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "הצהרת נגישות — המשק של ריקי",
-  description: "הצהרת הנגישות של המשק של ריקי בהתאם לתקן ישראלי ת\"י 5568 ו-WCAG 2.0 AA",
+  title: "הצהרת נגישות — משק שוסטרמן",
+  description: "הצהרת הנגישות של משק שוסטרמן בהתאם לתקן ישראלי ת\"י 5568 ו-WCAG 2.0 AA",
 };
 
 export default function AccessibilityPage() {

@@ -4,8 +4,8 @@ import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "מדיניות עוגיות — המשק של ריקי",
-  description: "מדיניות השימוש בעוגיות ואחסון מקומי באתר המשק של ריקי",
+  title: "מדיניות עוגיות — משק שוסטרמן",
+  description: "מדיניות השימוש בעוגיות ואחסון מקומי באתר משק שוסטרמן",
 };
 
 export default function CookiesPage() {

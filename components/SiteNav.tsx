@@ -64,12 +64,12 @@ export function SiteNav() {
 
         {/* Hamburger — mobile */}
         <button
-          className="md:hidden p-2 rounded-xl text-white hover:bg-white/10 transition-colors"
+          className="md:hidden p-2.5 rounded-xl text-white hover:bg-white/10 transition-colors"
           aria-label={open ? "סגור תפריט" : "פתח תפריט"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
       </div>
 

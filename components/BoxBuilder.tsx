@@ -20,19 +20,38 @@ import { saveLead } from "@/lib/saveLead";
 
 // ===== Static placeholder data — replaced by Sanity in Phase C =====
 const BOX_TYPES: BoxType[] = [
-  { id: "eco",     name: "קופסת אקולוגית",  basePrice: 35,  image: "https://placehold.co/200x140/2D6A4F/E9C46A?text=אקולוגית" },
-  { id: "wood",    name: "קופסת עץ טבעי",   basePrice: 65,  image: "https://placehold.co/200x140/BC6C25/FAF9F6?text=עץ+טבעי" },
-  { id: "premium", name: "קופסת עץ יוקרה",  basePrice: 120, image: "https://placehold.co/200x140/1B4332/E9C46A?text=עץ+יוקרה" },
+  { id: "eco",     name: "קופסת אקולוגית",  basePrice: 35,  image: "" },
+  { id: "wood",    name: "קופסת עץ טבעי",   basePrice: 65,  image: "" },
+  { id: "premium", name: "קופסת עץ יוקרה",  basePrice: 120, image: "" },
 ];
 
+const BOX_TYPE_PLACEHOLDERS: Record<string, { gradient: string; icon: string }> = {
+  eco:     { gradient: "from-stone-100 via-amber-50 to-stone-200",   icon: "🌾" },
+  wood:    { gradient: "from-amber-100 via-orange-100 to-amber-200", icon: "🪵" },
+  premium: { gradient: "from-stone-700 via-stone-800 to-stone-900",  icon: "✦" },
+};
+
 const BOX_PRODUCTS: BoxProduct[] = [
-  { id: "olive_oil",  name: "שמן זית כתית מעולה",    unitPrice: 45, image: "https://placehold.co/80x80/E9C46A/1B4332?text=שמן" },
-  { id: "honey",      name: "דבש פרחי שדה",            unitPrice: 38, image: "https://placehold.co/80x80/BC6C25/FAF9F6?text=דבש" },
-  { id: "halva",      name: "חלבה ממרח",               unitPrice: 22, image: "https://placehold.co/80x80/FAF9F6/1B4332?text=חלבה" },
-  { id: "date_syrup", name: "סילאן תמרים",             unitPrice: 28, image: "https://placehold.co/80x80/2D6A4F/FAF9F6?text=סילאן" },
-  { id: "herbs",      name: "עשבי תיבול מיובשים",      unitPrice: 18, image: "https://placehold.co/80x80/1B4332/E9C46A?text=עשבים" },
-  { id: "jam",        name: "ריבה תוצרת בית",          unitPrice: 25, image: "https://placehold.co/80x80/BC6C25/FAF9F6?text=ריבה" },
+  { id: "olive_oil",  name: "שמן זית כתית מעולה",    unitPrice: 45, image: "" },
+  { id: "honey",      name: "דבש פרחי שדה",            unitPrice: 38, image: "" },
+  { id: "halva",      name: "חלבה ממרח",               unitPrice: 22, image: "" },
+  { id: "date_syrup", name: "סילאן תמרים",             unitPrice: 28, image: "" },
+  { id: "herbs",      name: "עשבי תיבול מיובשים",      unitPrice: 18, image: "" },
+  { id: "jam",        name: "ריבה תוצרת בית",          unitPrice: 25, image: "" },
 ];
+
+const BOX_PRODUCT_ICONS: Record<string, string> = {
+  olive_oil:  "🫒",
+  honey:      "🍯",
+  halva:      "🌰",
+  date_syrup: "🌴",
+  herbs:      "🌿",
+  jam:        "🫙",
+};
+
+function isValidSrc(src: string): boolean {
+  return !!src && !src.includes("placehold.co");
+}
 
 // ===== State =====
 interface BuilderState {
@@ -191,8 +210,14 @@ export function BoxBuilder() {
                       className={`rounded-2xl overflow-hidden border-2 text-right transition-all hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-wheat ${state.selectedBox?.id === bt.id ? "border-forest shadow-green-md" : "border-transparent shadow-green-sm"}`}
                       aria-pressed={state.selectedBox?.id === bt.id}
                     >
-                      <div className="relative h-32 w-full">
-                        <Image src={bt.image} alt={bt.name} fill className="object-cover" sizes="220px" />
+                      <div className="relative h-32 w-full overflow-hidden">
+                        {isValidSrc(bt.image) ? (
+                          <Image src={bt.image} alt={bt.name} fill className="object-cover" sizes="220px" />
+                        ) : (
+                          <div className={`w-full h-full bg-gradient-to-br ${BOX_TYPE_PLACEHOLDERS[bt.id]?.gradient ?? "from-forest/10 to-wheat/20"} flex items-center justify-center`}>
+                            <span className="text-4xl" aria-hidden="true">{BOX_TYPE_PLACEHOLDERS[bt.id]?.icon ?? "📦"}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="p-4 bg-white">
                         <p className="font-bold text-forest">{bt.name}</p>
@@ -217,7 +242,13 @@ export function BoxBuilder() {
                   {state.items.map(({ product, qty }) => (
                     <div key={product.id} className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-green-sm">
                       <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
-                        <Image src={product.image} alt={product.name} fill className="object-cover" sizes="48px" />
+                        {isValidSrc(product.image) ? (
+                          <Image src={product.image} alt={product.name} fill className="object-cover" sizes="48px" />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-forest/10 to-wheat/20 flex items-center justify-center">
+                            <span className="text-xl" aria-hidden="true">{BOX_PRODUCT_ICONS[product.id] ?? "🌿"}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-forest leading-tight">{product.name}</p>

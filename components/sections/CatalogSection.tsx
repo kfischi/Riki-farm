@@ -99,14 +99,20 @@ export function CatalogSection({ packages: packagesProp }: Props) {
               className="group flex flex-col bg-offwhite rounded-3xl overflow-hidden shadow-[0_2px_12px_rgba(27,67,50,0.08)] hover:shadow-[0_8px_32px_rgba(27,67,50,0.14)] hover:-translate-y-1.5 transition-all duration-300 border border-forest/4"
             >
               <div className="relative h-48 overflow-hidden">
-                <Image
-                  src={pkg.image}
-                  alt={pkg.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  unoptimized
-                />
+                {pkg.image && !pkg.image.includes("placehold.co") ? (
+                  <Image
+                    src={pkg.image}
+                    alt={pkg.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-forest/10 via-wheat/10 to-stone-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                    <span className="text-5xl" aria-hidden="true">🌾</span>
+                  </div>
+                )}
                 {pkg.tags && pkg.tags.length > 0 && (
                   <div className="absolute top-3 right-3 flex gap-1.5">
                     {pkg.tags.map((tag) => (
