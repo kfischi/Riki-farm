@@ -4,6 +4,7 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
+import { withFaceCrop } from "@/lib/cloudinary";
 import { MessageCircle } from "lucide-react";
 import type { Package } from "@/lib/types";
 
@@ -66,12 +67,12 @@ export function CatalogSection({ packages: packagesProp }: Props) {
         </div>
 
         {/* ===== Feature image strip ===== */}
-        <motion.div {...anim(0.2)} className="relative h-52 lg:h-72 rounded-3xl overflow-hidden mb-12 shadow-[0_4px_24px_rgba(27,67,50,0.12)]">
+        <motion.div {...anim(0.2)} className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden mb-12 shadow-[0_4px_24px_rgba(27,67,50,0.12)]">
           <Image
-            src={CONFIG.images.catalogFeature}
-            alt="תוצרת חקלאית טרייה מהמשק — תפוזים, ירקות, ומוצרי שדה"
+            src={withFaceCrop(CONFIG.images.catalogFeature, "16:9")}
+            alt="ריקי בפרדס, מציגה תפוזים שזה עתה נקטפו"
             fill
-            className="object-cover object-center"
+            className="object-cover"
             sizes="(max-width: 1280px) 100vw, 1280px"
           />
           <div className="absolute inset-0 bg-gradient-to-l from-forest/70 via-forest/20 to-transparent" />

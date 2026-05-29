@@ -4,6 +4,7 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
+import { withFaceCrop } from "@/lib/cloudinary";
 
 interface Props {
   about?: { headline: string; body: string };
@@ -51,7 +52,7 @@ export function AboutSection({ about: aboutProp }: Props) {
           <motion.div {...anim(0.1)} className="relative">
             <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.18)]">
               <Image
-                src={CONFIG.images.aboutPrimary}
+                src={withFaceCrop(CONFIG.images.aboutPrimary, "3:4")}
                 alt="ריקי שוסטרמן בחממה — חקלאית מגבול הצפון"
                 fill
                 className="object-cover"
@@ -133,7 +134,7 @@ export function AboutSection({ about: aboutProp }: Props) {
           <motion.div {...anim(0.15)} className="relative">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.15)]">
               <Image
-                src={CONFIG.images.aboutNorth}
+                src={withFaceCrop(CONFIG.images.aboutNorth, "4:3")}
                 alt="נוף גבול הצפון — מושב לימן, שדות המשק"
                 fill
                 className="object-cover"
