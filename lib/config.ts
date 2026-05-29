@@ -4,6 +4,15 @@ export const CONFIG = {
   // 🔴 REPLACE — real WhatsApp number, international format, no + or dashes
   whatsappNumber: "972525242155",
 
+  // 🔴 REPLACE — get from Google Business Profile dashboard after setup
+  googlePlaceId: "YOUR_GOOGLE_PLACE_ID",
+
+  seo: {
+    // 🔴 REPLACE with real domain before launch
+    siteUrl: "https://mashak-shusterman.co.il",
+    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780053629/Gemini_Generated_Image_fu702yfu702yfu70_v41c7p.png",
+  },
+
   brand: {
     name: "משק שוסטרמן",
     tagline: "זו לא רק חקלאות. זו דרך חיים. זו שליחות.",

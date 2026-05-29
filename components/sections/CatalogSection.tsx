@@ -7,6 +7,7 @@ import { CONFIG } from "@/lib/config";
 import { withFaceCrop } from "@/lib/cloudinary";
 import { MessageCircle } from "lucide-react";
 import type { Package } from "@/lib/types";
+import { ShareButton } from "@/components/ShareButton";
 
 interface Props {
   packages?: Package[];
@@ -154,6 +155,11 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                   <MessageCircle className="w-4 h-4" />
                   שאל/י את ריקי
                 </button>
+                <ShareButton
+                  title={`${pkg.name} — ${CONFIG.brand.name}`}
+                  text={`${pkg.name} | ${CONFIG.brand.name} — ${pkg.description.slice(0, 60)}...`}
+                  className="mt-2 justify-center"
+                />
               </div>
             </motion.article>
           ))}

@@ -5,6 +5,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
 import { withFaceCrop } from "@/lib/cloudinary";
+import { ShareButton } from "@/components/ShareButton";
 
 interface Props {
   about?: { headline: string; body: string };
@@ -127,6 +128,12 @@ export function AboutSection({ about: aboutProp }: Props) {
                 &ldquo;{CONFIG.about.pullQuotes[1]}&rdquo;
               </p>
               <p className="text-white/50 text-sm mt-4 font-medium">— {CONFIG.brand.ownerName}</p>
+            </motion.div>
+            <motion.div {...anim(0.3)} className="mt-6">
+              <ShareButton
+                title={`${CONFIG.brand.name} — ${CONFIG.about.headline}`}
+                text={`"${CONFIG.about.pullQuotes[0]}" | ${CONFIG.brand.name}`}
+              />
             </motion.div>
           </div>
 
