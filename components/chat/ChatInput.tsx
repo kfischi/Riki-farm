@@ -33,12 +33,8 @@ export function ChatInput({ onSend, inputRef }: Props) {
         onChange={(e) => setValue(e.target.value)}
         placeholder="כתוב/י הודעה..."
         aria-label="הקלד/י הודעה לריקי"
-        className="flex-1 text-sm rounded-xl px-3 py-2 border transition-colors outline-none"
-        style={{
-          backgroundColor: "#FAF9F6",
-          color: "#1B4332",
-          borderColor: "rgba(27,67,50,0.1)",
-        }}
+        className="flex-1 rounded-xl px-3 py-2 border transition-colors outline-none"
+        style={{ fontSize: "16px", backgroundColor: "#FAF9F6", color: "#1B4332", borderColor: "rgba(27,67,50,0.1)" }}
         dir="rtl"
       />
       <button

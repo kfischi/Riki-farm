@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Heebo } from "next/font/google";
 import "./globals.css";
 import { AccessibilityWidget } from "@/components/AccessibilityWidget";
@@ -10,6 +10,14 @@ const heebo = Heebo({
   display: "swap",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "משק שוסטרמן — מארזים חקלאיים יוקרתיים לחברות",
