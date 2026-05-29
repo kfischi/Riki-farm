@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import type { MessageType } from "@/lib/types";
 import { QuickReplies } from "./QuickReplies";
 import { VideoCard } from "./VideoCard";
 import { CatalogCarousel } from "./CatalogCarousel";
 import { WhatsAppButton } from "./WhatsAppButton";
-import { CONFIG } from "@/lib/config";
+import { RickyAvatar } from "./RickyAvatar";
 
 interface Props {
   message: MessageType;
@@ -27,8 +26,8 @@ export function MessageBubble({ message, onSend }: Props) {
   // Bot message
   const withAvatar = (content: React.ReactNode) => (
     <div className="flex items-end gap-2">
-      <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 border self-end mb-0.5" style={{ borderColor: "rgba(27,67,50,0.1)" }}>
-        <Image src={CONFIG.rickyAvatar} alt="" width={28} height={28} className="object-cover" unoptimized />
+      <div className="self-end mb-0.5">
+        <RickyAvatar size={28} />
       </div>
       <div className="flex-1 min-w-0">{content}</div>
     </div>

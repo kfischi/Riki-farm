@@ -11,8 +11,7 @@ export const CONFIG = {
     ownerTitle: "חקלאית, מושב לימן, גבול הצפון",
   },
 
-  // 🔴 Optional: replace with a real cropped headshot
-  rickyAvatar: "https://placehold.co/100x100/2D6A4F/ffffff?text=ריקי",
+  rickyAvatar: "https://res.cloudinary.com/dptyfvwyo/image/upload/c_thumb,g_face,w_400,h_400,r_max,f_auto,q_auto/v1780033949/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C_c4mdpc.png",
 
   // ===== REAL PHOTOS (Cloudinary CDN) =====
   // ⚠️ Verify the tractor photo (aboutNorth) is not AI-processed before go-live.

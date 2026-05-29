@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { CONFIG } from "@/lib/config";
+import { RickyAvatar } from "./RickyAvatar";
 
 interface Props {
   isOpen: boolean;
@@ -29,17 +28,8 @@ export function ChatLauncher({ isOpen, unread, onOpen }: Props) {
       />
 
       {/* Avatar circle */}
-      <div className="relative w-16 h-16 rounded-full overflow-hidden border-[3px] border-wheat shadow-[0_4px_20px_rgba(27,67,50,0.4)] group-hover:scale-105 transition-transform duration-200" style={{ borderColor: "#E9C46A" }}>
-        <Image
-          src={CONFIG.rickyAvatar}
-          alt="ריקי מהמשק"
-          fill
-          className="object-cover"
-          sizes="64px"
-          unoptimized
-        />
-        {/* Online indicator */}
-        <span className="absolute bottom-1 right-1 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-white" aria-hidden="true" />
+      <div className="shadow-[0_4px_20px_rgba(27,67,50,0.4)] group-hover:scale-105 transition-transform duration-200 rounded-full" style={{ outline: "3px solid #E9C46A" }}>
+        <RickyAvatar size={64} withPresence />
       </div>
 
       {/* Unread badge */}

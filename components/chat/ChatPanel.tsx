@@ -7,7 +7,7 @@ import { MessageList } from "./MessageList";
 import { ChatInput } from "./ChatInput";
 import { CONFIG } from "@/lib/config";
 import type { MessageType } from "@/lib/types";
-import Image from "next/image";
+import { RickyAvatar } from "./RickyAvatar";
 
 interface Props {
   messages: MessageType[];
@@ -64,20 +64,10 @@ export function ChatPanel({ messages, isTyping, onClose, onSend, onReset, inputR
     >
       {/* Header */}
       <div className="relative flex items-center gap-3 px-4 py-3 flex-shrink-0" style={{ backgroundColor: "#1B4332", color: "white" }}>
-        <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 flex-shrink-0" style={{ borderColor: "rgba(233,196,106,0.6)" }}>
-          <Image
-            src={CONFIG.rickyAvatar}
-            alt="ריקי מהמשק"
-            fill
-            className="object-cover"
-            sizes="40px"
-            unoptimized
-          />
-        </div>
+        <RickyAvatar size={40} withPresence />
         <div className="flex-1 min-w-0">
           <p className="font-bold text-sm leading-tight">{CONFIG.brand.ownerName}</p>
           <p className="text-xs flex items-center gap-1" style={{ color: "rgba(255,255,255,0.7)" }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
             מחובר/ת עכשיו
           </p>
         </div>
