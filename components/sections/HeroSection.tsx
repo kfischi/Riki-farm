@@ -23,7 +23,7 @@ export function HeroSection() {
   return (
     <header className="bg-forest grain-overlay overflow-hidden">
       {/* ===== VIDEO ===== */}
-      <div className="relative w-full min-h-[85svh] md:min-h-0 md:aspect-video overflow-hidden">
+      <div className="relative w-full min-h-[70svh] md:min-h-0 md:aspect-video overflow-hidden">
         <video
           src="/mashak-shusterman-brand.mp4"
           autoPlay
@@ -44,7 +44,7 @@ export function HeroSection() {
 
         <div className="relative z-10 w-full">
           {/* Badge */}
-          <motion.div {...fadeUp(0.1)} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-wheat/15 border border-wheat/25 text-wheat text-sm font-medium mb-8">
+          <motion.div {...fadeUp(0.1)} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-wheat/15 border border-wheat/25 text-wheat text-sm font-medium mb-5">
             <Leaf className="w-3.5 h-3.5 flex-shrink-0" />
             <span>מושב לימן · גבול הצפון</span>
           </motion.div>
@@ -55,7 +55,7 @@ export function HeroSection() {
           </motion.p>
 
           {/* Vision headline */}
-          <motion.h1 {...fadeUp(0.25)} className="text-2xl sm:text-4xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-4">
+          <motion.h1 {...fadeUp(0.25)} className="text-xl sm:text-4xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-3">
             {CONFIG.about.heroLine}
           </motion.h1>
 
