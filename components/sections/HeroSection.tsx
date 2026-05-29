@@ -23,7 +23,7 @@ export function HeroSection() {
   return (
     <header className="bg-forest grain-overlay overflow-hidden">
       {/* ===== VIDEO ===== */}
-      <div className="relative w-full min-h-[100svh] md:min-h-0 md:aspect-video overflow-hidden">
+      <div className="relative w-full min-h-[85svh] md:min-h-0 md:aspect-video overflow-hidden">
         <video
           src="/mashak-shusterman-brand.mp4"
           autoPlay
@@ -38,7 +38,7 @@ export function HeroSection() {
       </div>
 
       {/* ===== TEXT BELOW VIDEO ===== */}
-      <div className="relative px-5 py-10 sm:py-14 lg:py-20 flex flex-col items-center text-center max-w-3xl mx-auto">
+      <div className="relative px-5 py-7 sm:py-14 lg:py-20 flex flex-col items-center text-center max-w-3xl mx-auto">
         {/* Decorative blob */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-60 rounded-full bg-wheat/5 blur-3xl pointer-events-none" aria-hidden="true" />
 
@@ -55,31 +55,31 @@ export function HeroSection() {
           </motion.p>
 
           {/* Vision headline */}
-          <motion.h1 {...fadeUp(0.25)} className="text-3xl sm:text-4xl lg:text-6xl font-black text-white leading-[1.08] tracking-tight mb-5">
+          <motion.h1 {...fadeUp(0.25)} className="text-2xl sm:text-4xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-4">
             {CONFIG.about.heroLine}
           </motion.h1>
 
           {/* Divider */}
-          <motion.div {...fadeUp(0.32)} className="w-12 h-0.5 bg-wheat/50 mx-auto mb-5" aria-hidden="true" />
+          <motion.div {...fadeUp(0.32)} className="w-10 h-0.5 bg-wheat/50 mx-auto mb-4" aria-hidden="true" />
 
           {/* Sub-tagline */}
-          <motion.p {...fadeUp(0.38)} className="text-white/60 text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-xl mx-auto">
+          <motion.p {...fadeUp(0.38)} className="text-white/60 text-sm sm:text-lg leading-relaxed mb-6 sm:mb-10 max-w-xl mx-auto">
             מארזים חקלאיים יוקרתיים לחברות — תוצרת טרייה ואמיתית, ישירות מהשדה.
           </motion.p>
 
           {/* CTAs */}
-          <motion.div {...fadeUp(0.48)} className="flex flex-wrap justify-center gap-4 mb-14">
+          <motion.div {...fadeUp(0.48)} className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-14">
             <button
               onClick={openChat}
-              className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-wheat text-forest font-bold text-base hover:bg-wheat/90 active:scale-[0.98] transition-all shadow-[0_4px_24px_rgba(233,196,106,0.25)] hover:shadow-[0_8px_32px_rgba(233,196,106,0.35)]"
+              className="group inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl bg-wheat text-forest font-bold text-sm sm:text-base hover:bg-wheat/90 active:scale-[0.98] transition-all shadow-[0_4px_24px_rgba(233,196,106,0.25)] hover:shadow-[0_8px_32px_rgba(233,196,106,0.35)]"
               aria-label="פתח/י שיחה עם ריקי"
             >
-              <MessageCircle className="w-5 h-5" />
+              <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
               דברו עם ריקי
             </button>
             <a
               href="#catalog"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/20 text-white font-semibold text-base hover:border-white/40 hover:bg-white/5 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl border border-white/20 text-white font-semibold text-sm sm:text-base hover:border-white/40 hover:bg-white/5 transition-all"
             >
               לקטלוג
               <ArrowLeft className="w-4 h-4" />
@@ -87,14 +87,14 @@ export function HeroSection() {
           </motion.div>
 
           {/* Stats */}
-          <motion.div {...fadeUp(0.6)} className="flex justify-center gap-8 sm:gap-12 pt-8 border-t border-white/10">
+          <motion.div {...fadeUp(0.6)} className="flex justify-center gap-6 sm:gap-12 pt-6 sm:pt-8 border-t border-white/10">
             {[
               { num: "500+", label: "חברות מרוצות" },
               { num: "100%", label: "תוצרת ישראלית" },
               { num: "דור ג׳", label: "חקלאות משפחתית" },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <p className="text-2xl font-black text-wheat tabular-nums">{s.num}</p>
+                <p className="text-xl sm:text-2xl font-black text-wheat tabular-nums">{s.num}</p>
                 <p className="text-xs text-white/45 mt-0.5 leading-tight">{s.label}</p>
               </div>
             ))}

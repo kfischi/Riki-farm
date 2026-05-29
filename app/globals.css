@@ -47,6 +47,8 @@ body {
   color: var(--forest);
   font-family: var(--font-heebo), "Heebo", "Assistant", "Rubik", system-ui, sans-serif;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* ===== ACCESSIBILITY MODES ===== */
