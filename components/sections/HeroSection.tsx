@@ -23,14 +23,14 @@ export function HeroSection() {
   return (
     <header className="bg-forest grain-overlay overflow-hidden">
       {/* ===== VIDEO ===== */}
-      <div className="w-full aspect-[9/16] md:aspect-video relative overflow-hidden">
+      <div className="relative w-full min-h-[100svh] md:min-h-0 md:aspect-video overflow-hidden">
         <video
           src="/mashak-shusterman-brand.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
           aria-label="סרטון תדמית — משק שוסטרמן"
         />
         {/* Bottom fade into forest green */}
@@ -38,7 +38,7 @@ export function HeroSection() {
       </div>
 
       {/* ===== TEXT BELOW VIDEO ===== */}
-      <div className="relative px-6 py-14 lg:py-20 flex flex-col items-center text-center max-w-3xl mx-auto">
+      <div className="relative px-5 py-10 sm:py-14 lg:py-20 flex flex-col items-center text-center max-w-3xl mx-auto">
         {/* Decorative blob */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-60 rounded-full bg-wheat/5 blur-3xl pointer-events-none" aria-hidden="true" />
 
@@ -55,7 +55,7 @@ export function HeroSection() {
           </motion.p>
 
           {/* Vision headline */}
-          <motion.h1 {...fadeUp(0.25)} className="text-4xl lg:text-6xl font-black text-white leading-[1.08] tracking-tight mb-5">
+          <motion.h1 {...fadeUp(0.25)} className="text-3xl sm:text-4xl lg:text-6xl font-black text-white leading-[1.08] tracking-tight mb-5">
             {CONFIG.about.heroLine}
           </motion.h1>
 
@@ -63,7 +63,7 @@ export function HeroSection() {
           <motion.div {...fadeUp(0.32)} className="w-12 h-0.5 bg-wheat/50 mx-auto mb-5" aria-hidden="true" />
 
           {/* Sub-tagline */}
-          <motion.p {...fadeUp(0.38)} className="text-white/60 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+          <motion.p {...fadeUp(0.38)} className="text-white/60 text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-xl mx-auto">
             מארזים חקלאיים יוקרתיים לחברות — תוצרת טרייה ואמיתית, ישירות מהשדה.
           </motion.p>
 
@@ -87,7 +87,7 @@ export function HeroSection() {
           </motion.div>
 
           {/* Stats */}
-          <motion.div {...fadeUp(0.6)} className="flex justify-center gap-12 pt-8 border-t border-white/10">
+          <motion.div {...fadeUp(0.6)} className="flex justify-center gap-8 sm:gap-12 pt-8 border-t border-white/10">
             {[
               { num: "500+", label: "חברות מרוצות" },
               { num: "100%", label: "תוצרת ישראלית" },

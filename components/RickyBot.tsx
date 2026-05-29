@@ -39,6 +39,7 @@ export function RickyBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [unread, setUnread] = useState(true);
+  const [autoOpened, setAutoOpened] = useState(false);
   const [state, dispatch] = useReducer(botReducer, initialState);
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingMessages = useRef<MessageType[]>([]);
@@ -55,6 +56,7 @@ export function RickyBot() {
     const alreadyOpened = sessionStorage.getItem("rickybot_opened");
     if (alreadyOpened) return;
     const timer = setTimeout(() => {
+      setAutoOpened(true);
       setIsOpen(true);
       setHasOpened(true);
       setUnread(false);
@@ -64,6 +66,7 @@ export function RickyBot() {
   }, []);
 
   const open = useCallback(() => {
+    setAutoOpened(false); // user-triggered: allow focus
     setIsOpen(true);
     setUnread(false);
     if (!hasOpened) {
@@ -156,6 +159,7 @@ export function RickyBot() {
             onSend={handleUserInput}
             onReset={handleReset}
             inputRef={inputRef}
+            autoOpened={autoOpened}
           />
         )}
       </AnimatePresence>

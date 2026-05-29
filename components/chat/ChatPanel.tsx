@@ -16,9 +16,11 @@ interface Props {
   onSend: (input: string) => void;
   onReset: () => void;
   inputRef: React.RefObject<HTMLInputElement | null>;
+  /** When true the panel was auto-opened (timer), not by user click — skip focus steal */
+  autoOpened?: boolean;
 }
 
-export function ChatPanel({ messages, isTyping, onClose, onSend, onReset, inputRef }: Props) {
+export function ChatPanel({ messages, isTyping, onClose, onSend, onReset, inputRef, autoOpened = false }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Focus trap
@@ -42,7 +44,9 @@ export function ChatPanel({ messages, isTyping, onClose, onSend, onReset, inputR
     };
 
     panel.addEventListener("keydown", handleKeyDown);
-    first?.focus();
+    // Only steal focus on explicit user open — not on 15-second auto-open
+    // (auto-focus on timer causes iOS Safari viewport jump)
+    if (!autoOpened) first?.focus();
     return () => panel.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
