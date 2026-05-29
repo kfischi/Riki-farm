@@ -24,7 +24,7 @@ export const CONFIG = {
     // ⚠️ VERIFY: may be AI-processed — see README
     aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
     // Catalog — produce crate / fruit in hand
-    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/9_qckiss.jpg",
+    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780053629/Gemini_Generated_Image_fu702yfu702yfu70_v41c7p.png",
   },
 
   videos: [
