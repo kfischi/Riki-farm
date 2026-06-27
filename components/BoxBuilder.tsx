@@ -34,20 +34,26 @@ const BOX_TYPE_PLACEHOLDERS: Record<string, { gradient: string; icon: string }> 
 
 const BOX_PRODUCTS: BoxProduct[] = [
   { id: "olive_oil",  name: "שמן זית כתית מעולה",    unitPrice: 45, image: "" },
-  { id: "honey",      name: "דבש פרחי שדה",            unitPrice: 38, image: "" },
   { id: "halva",      name: "חלבה ממרח",               unitPrice: 22, image: "" },
   { id: "date_syrup", name: "סילאן תמרים",             unitPrice: 28, image: "" },
-  { id: "herbs",      name: "עשבי תיבול מיובשים",      unitPrice: 18, image: "" },
   { id: "jam",        name: "ריבה תוצרת בית",          unitPrice: 25, image: "" },
+  ...CONFIG.borderProducts,
 ];
 
 const BOX_PRODUCT_ICONS: Record<string, string> = {
   olive_oil:  "🫒",
-  honey:      "🍯",
   halva:      "🌰",
   date_syrup: "🌴",
-  herbs:      "🌿",
   jam:        "🫙",
+  "border-honey-oil": "🍯",
+  "border-bread": "🍞",
+  "border-spices": "🌿",
+  "border-honey-tahini": "🍯",
+  "border-berries": "🫐",
+  "border-orchid": "🌺",
+  "border-red-algae": "🌊",
+  "border-candles": "🕯️",
+  "border-soaps": "🧼",
 };
 
 function isValidSrc(src: string): boolean {

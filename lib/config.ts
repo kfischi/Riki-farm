@@ -1,4 +1,5 @@
 import type { Package, Video, Testimonial, FAQItem, USP } from "./types";
+import type { BoxProduct } from "./pricing";
 
 export const CONFIG = {
   // 🔴 REPLACE — real WhatsApp number, international format, no + or dashes
@@ -86,21 +87,51 @@ export const CONFIG = {
     },
   ] as Package[],
 
+  // ===== "מארזים מחקלאים ויצרנים מקו הגבול" — second catalog category =====
+  // Sourced from neighboring border-region farmers & producers, alongside Ricky's own packages.
+  // Shown both as standalone catalog cards AND as add-on items inside the box builder.
+  // 🔴 REPLACE prices and add real Cloudinary photos before go-live
+  borderCategoryLabel: "משק שוסטרמן | מארזים מחקלאים ויצרנים מקו הגבול",
+
+  borderPackages: [
+    { id: "border-honey-oil",  name: "דבש עם שמן זית",        description: "צנצנת דבש פרחי בר ובקבוק שמן זית כתית מעולה, משני יצרנים בגבול הצפון.", price: "₪65",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-bread",      name: "לחם מחמצת עם מטבלים",    description: "לחם מחמצת תוצרת בית עם מבחר מטבלים גלילים — מומלץ לחברה שאוהבת חוויה.",      price: "₪55",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-spices",     name: "מתבלים מהצפון",           description: "סט מתבלים יבשים מגידולי קו העימות — תערובות ביתיות ללא תוספות.",            price: "₪40",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-honey-tahini", name: "דבש וטחינה",             description: "צנצנת דבש פרחי בר וטחינה גולמית מהרי הצפון — שילוב קלאסי וישראלי.",          price: "₪50",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-berries",    name: "מארז פירות יער",          description: "פירות יער טריים מהעונה מגידולי קו העימות — מתנה צבעונית ומפנקת.",            price: "₪60",  image: "", tags: ["מקו הגבול", "עונתי"] },
+    { id: "border-orchid",     name: "עציץ סחלב",               description: "עציץ סחלב מטופח מחממות קו הגבול — מתנה מהממת שנשארת.",                       price: "₪70",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-red-algae",  name: "מוצרי אצה אדומה",         description: "מוצרי אצה אדומה ממגדלי קו הגבול — תוסף טבעי איכותי.",                        price: "₪80",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-candles",    name: "נרות",                    description: "נרות עבודת יד מיצרני קו הגבול — ניחוחות עדינים ועיצוב כפרי.",                price: "₪35",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-soaps",      name: "סבונים",                  description: "סבונים טבעיים בעבודת יד מיצרני קו הגבול — ללא חומרים משמרים.",               price: "₪30",  image: "", tags: ["מקו הגבול"] },
+  ] as Package[],
+
+  borderProducts: [
+    { id: "border-honey-oil",     name: "דבש עם שמן זית",    unitPrice: 65, image: "" },
+    { id: "border-bread",         name: "לחם מחמצת עם מטבלים", unitPrice: 55, image: "" },
+    { id: "border-spices",        name: "מתבלים מהצפון",      unitPrice: 40, image: "" },
+    { id: "border-honey-tahini",  name: "דבש וטחינה",         unitPrice: 50, image: "" },
+    { id: "border-berries",       name: "מארז פירות יער",     unitPrice: 60, image: "" },
+    { id: "border-orchid",        name: "עציץ סחלב",          unitPrice: 70, image: "" },
+    { id: "border-red-algae",     name: "מוצרי אצה אדומה",    unitPrice: 80, image: "" },
+    { id: "border-candles",       name: "נרות",               unitPrice: 35, image: "" },
+    { id: "border-soaps",         name: "סבונים",             unitPrice: 30, image: "" },
+  ] as BoxProduct[],
+
   about: {
     headline: "החזון של ריקי",
-    heroLine: "זו לא רק חקלאות. זו דרך חיים. זו שליחות.",
+    heroLine: "חקלאות היא הקיום והבסיס להכל — ובפרט בגבולות הארץ.",
     // Short version for chatbot "info" bubble
-    body: "ריקי שוסטרמן היא חקלאית מדור שלישי ממושב לימן בגבול הצפון. היא מאמינה שאוכל טוב מתחיל ביושרה — ביחסים אמיתיים בין האדם לאדמה. משק שוסטרמן מספק מארזים חקלאיים יוקרתיים לחברות שמחפשות מתנה שאומרת משהו אמיתי.",
+    body: "ריקי שוסטרמן היא חקלאית במושב לימן, בגבול הצפון, כ-22 שנה. בוגרת בית הספר החקלאי נהלל במגמת גד\"ש, מחוברת לטבע ולאדמה מאז ומתמיד. הפרויקט של מארז בהתאמה אישית נולד במלחמה, כדי לתת בית לתוצרת שנשארה בלי יציאה ולחבר בין כל אדם לתוצרת המופלאה של חקלאי קו העימות.",
     // Pull quotes for editorial display
     pullQuotes: [
-      "עבורי חקלאות היא לא מקצוע — היא שליחות.",
-      "להחזיר את האמון בין אנשים לאוכל שהם צורכים.",
+      "חקלאות היא הקיום והבסיס להכל, ובפרט בגבולות הארץ. אמא אדמה.",
+      "הרצון שלי להגיע לכל אדם עם התוצרת המופלאה שלנו.",
     ],
     // Full story paragraphs for the about section
     story: [
-      "ריקי שוסטרמן גדלה במושב לימן, בגבול הצפון, שם החקלאות היא לא בחירה — היא גורל, מורשת, ואהבה. דור שלישי לאדמה, היא ינקה את הקשר לטבע עוד לפני שידעה להגדיר אותו.",
-      "\"עבורי חקלאות היא לא מקצוע — היא שליחות. להחזיר את האמון בין אנשים לאוכל שהם צורכים. לדעת מי גידל את האוכל שלך, איך, ומאיזה אדמה.\"",
-      "משק שוסטרמן נולד מתוך הרצון הזה: לחבר בין חברות ואנשים לתוצרת חקלאית אמיתית, עם פנים ועם סיפור. כל מארז שיוצא מהמשק נושא איתו חתיכה מהאדמה הזו.",
+      "שמי ריקי שוסטרמן. מאז ומתמיד הייתי מחוברת לטבע — למדתי בבית הספר החקלאי נהלל, במגמת גד\"ש. כבר בגיל 15 זרעתי את זרעי הכותנה הראשונים שלי, ועד היום ריח האדמה הוא חלק מחיי. כיום אני חיה במושב לימן כ-22 שנה, אני חקלאית, ואנחנו מגדלים הרבה גידולים.",
+      "\"חקלאות היא הקיום והבסיס להכל, ובפרט בגבולות הארץ — אמא אדמה.\"",
+      "הפרויקט של מארז בהתאמה אישית נולד במלחמה, כשאנחנו וחקלאי הצפון נשארנו עם המון תוצרת. אז עלה לי הרעיון: שנעשה מארז עם התוצרת שלנו, ועם פירות וירקות של מגדלי קו העימות. הרצון שלי הוא להגיע לכל אדם עם התוצרת המופלאה שלנו.",
     ],
   },
 
@@ -111,28 +142,28 @@ export const CONFIG = {
     { icon: "💬", title: "ליווי אישי מריקי", text: "לא בוט, לא מענה אוטומטי — ריקי בעצמה" },
   ] as USP[],
 
-  // 🔴 REPLACE with real client testimonials before go-live
+  // Real client WhatsApp feedback — 🔴 author/role/company need confirmation from Ricky
   testimonials: [
     {
       id: "t1",
-      quote: "המארזים של ריקי הפכו למתנת החג הקבועה שלנו לעובדים. כל שנה מבקשים שוב.",
-      author: "מיכל לוי",
-      role: "מנהלת רווחה",
-      company: "חברת הייטק, תל אביב",
+      quote: "תודה רבה! אין עליכם בעולם! התענגנו פה על כל קלמנטינה ובננה ותפוח, והיה בשפע לכולם.",
+      author: "לקוחה עסקית", // 🔴 REPLACE with real name
+      role: "משוב מוואטסאפ",
+      company: "חברה מרוצה", // 🔴 REPLACE with real company name
     },
     {
       id: "t2",
-      quote: "תקשורת מהירה, התאמה מדויקת לתקציב, ואיכות שאי אפשר להשיג בסופר. ממליצים בחום.",
-      author: "אבי כהן",
-      role: "מנהל רכש",
-      company: "חברת ביטוח",
+      quote: "האיכות הגבוהה מאד של הפירות הוסיפה לאווירה החיובית, כולם נהנו ושמחו.",
+      author: "אייל", // 🔴 REPLACE/confirm full name
+      role: "משוב מוואטסאפ",
+      company: "חברה מרוצה", // 🔴 REPLACE with real company name
     },
     {
       id: "t3",
-      quote: "ריקי ליוותה אותנו מהשיחה הראשונה ועד המשלוח. הרגשנו שמדברים עם אדם, לא עם ספק.",
-      author: "דנה שמש",
-      role: "HR Business Partner",
-      company: "סטארטאפ פינטק",
+      quote: "אנשים מאוד התלהבו מהפידבקים על המארזים.",
+      author: "לקוחה עסקית", // 🔴 REPLACE with real name
+      role: "משוב מוואטסאפ",
+      company: "חברה מרוצה", // 🔴 REPLACE with real company name
     },
   ] as Testimonial[],
 
@@ -167,10 +198,10 @@ export const CONFIG = {
 
   // B2B social proof — replace with real client logos
   clientLogos: [
-    { name: "חברה א׳", logo: "" }, // 🔴 REPLACE with real logo URLs
-    { name: "חברה ב׳", logo: "" },
-    { name: "חברה ג׳", logo: "" },
-    { name: "חברה ד׳", logo: "" },
+    { name: "לובינסקי רפאל", logo: "" }, // 🔴 REPLACE with real logo URL
+    { name: "ערוץ 12", logo: "" }, // 🔴 REPLACE with real logo URL
+    { name: "הטכניון", logo: "" }, // 🔴 REPLACE with real logo URL
+    { name: "ועוד", logo: "" }, // 🔴 REPLACE with another real client logo
   ],
 
   legal: {

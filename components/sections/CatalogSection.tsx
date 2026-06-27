@@ -9,6 +9,18 @@ import { MessageCircle } from "lucide-react";
 import type { Package } from "@/lib/types";
 import { ShareButton } from "@/components/ShareButton";
 
+const BORDER_PACKAGE_ICONS: Record<string, string> = {
+  "border-honey-oil": "🍯",
+  "border-bread": "🍞",
+  "border-spices": "🌿",
+  "border-honey-tahini": "🍯",
+  "border-berries": "🫐",
+  "border-orchid": "🌺",
+  "border-red-algae": "🌊",
+  "border-candles": "🕯️",
+  "border-soaps": "🧼",
+};
+
 interface Props {
   packages?: Package[];
 }
@@ -18,6 +30,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReduced = useReducedMotion();
   const pkgs = packagesProp ?? CONFIG.packages;
+  const borderPkgs = CONFIG.borderPackages;
 
   const openChatWithPkg = (pkgId: string) => {
     window.dispatchEvent(new CustomEvent("rickybot:open", { detail: { pkgId } }));
@@ -163,6 +176,87 @@ export function CatalogSection({ packages: packagesProp }: Props) {
               </div>
             </motion.article>
           ))}
+        </div>
+
+        {/* ===== Border-region producers category ===== */}
+        <div className="mt-16 lg:mt-24">
+          <motion.div {...anim(0.1)} className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-px bg-clay" aria-hidden="true" />
+            <span className="text-clay text-sm font-semibold uppercase tracking-[0.2em]">
+              שיתופי פעולה
+            </span>
+          </motion.div>
+          <motion.h2 {...anim(0.15)} className="text-3xl lg:text-4xl font-black text-forest leading-tight mb-8 lg:mb-10">
+            {CONFIG.borderCategoryLabel}
+          </motion.h2>
+
+          <div
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
+            role="list"
+            aria-label="קטלוג מארזים מקו הגבול"
+          >
+            {borderPkgs.map((pkg, i) => (
+              <motion.article
+                key={pkg.id}
+                role="listitem"
+                {...anim(0.06 * i + 0.2)}
+                className="card-lift group flex flex-col bg-offwhite rounded-3xl overflow-hidden shadow-[0_2px_12px_rgba(27,67,50,0.08)] hover:shadow-[0_16px_44px_rgba(27,67,50,0.18)] border border-forest/4 hover:border-wheat/40"
+              >
+                <div className="relative h-48 overflow-hidden">
+                  {pkg.image && !pkg.image.includes("placehold.co") ? (
+                    <Image
+                      src={pkg.image}
+                      alt={pkg.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-forest/10 via-wheat/10 to-stone-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                      <span className="text-5xl" aria-hidden="true">
+                        {BORDER_PACKAGE_ICONS[pkg.id] ?? "🌾"}
+                      </span>
+                    </div>
+                  )}
+                  {pkg.tags && pkg.tags.length > 0 && (
+                    <div className="absolute top-3 right-3 flex gap-1.5">
+                      {pkg.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] px-2 py-0.5 rounded-full bg-wheat/90 text-forest font-bold backdrop-blur-sm"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="p-5 flex flex-col flex-1">
+                  <h3 className="text-base font-bold text-forest">{pkg.name}</h3>
+                  <p className="text-sm text-forest/55 mt-2 leading-relaxed flex-1 line-clamp-3">
+                    {pkg.description}
+                  </p>
+                  {pkg.price && (
+                    <p className="text-xl font-black text-clay mt-3 tabular-nums">{pkg.price}</p>
+                  )}
+                  <button
+                    onClick={() => openChatWithPkg(pkg.id)}
+                    className="btn-sheen mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-forest text-white font-semibold text-sm hover:bg-forest-mid hover:shadow-[0_4px_16px_rgba(27,67,50,0.3)] active:scale-[0.98] transition-all duration-300"
+                    aria-label={`שאל את ריקי על ${pkg.name}`}
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    שאל/י את ריקי
+                  </button>
+                  <ShareButton
+                    title={`${pkg.name} — ${CONFIG.brand.name}`}
+                    text={`${pkg.name} | ${CONFIG.brand.name} — ${pkg.description.slice(0, 60)}...`}
+                    className="mt-2 justify-center"
+                  />
+                </div>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
