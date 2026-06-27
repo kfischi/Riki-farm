@@ -44,7 +44,11 @@ export function HeroSection() {
 
         <div className="relative z-10 w-full">
           {/* Badge */}
-          <motion.div {...fadeUp(0.1)} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-wheat/15 border border-wheat/25 text-wheat text-sm font-medium mb-5">
+          <motion.div
+            {...fadeUp(0.1)}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-wheat/15 border border-wheat/25 text-wheat text-sm font-medium mb-5"
+            style={{ backdropFilter: "blur(8px)" }}
+          >
             <Leaf className="w-3.5 h-3.5 flex-shrink-0" />
             <span>מושב לימן · גבול הצפון</span>
           </motion.div>
@@ -71,7 +75,7 @@ export function HeroSection() {
           <motion.div {...fadeUp(0.48)} className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-14">
             <button
               onClick={openChat}
-              className="group inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl bg-wheat text-forest font-bold text-sm sm:text-base hover:bg-wheat/90 active:scale-[0.98] transition-all shadow-[0_4px_24px_rgba(233,196,106,0.25)] hover:shadow-[0_8px_32px_rgba(233,196,106,0.35)]"
+              className="btn-sheen group inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl bg-wheat text-forest font-bold text-sm sm:text-base hover:bg-wheat/90 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-glow-wheat hover:shadow-glow-wheat-lg"
               aria-label="פתח/י שיחה עם ריקי"
             >
               <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -79,10 +83,10 @@ export function HeroSection() {
             </button>
             <a
               href="#catalog"
-              className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl border border-white/20 text-white font-semibold text-sm sm:text-base hover:border-white/40 hover:bg-white/5 transition-all"
+              className="group inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl border border-white/20 text-white font-semibold text-sm sm:text-base hover:border-white/40 hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300"
             >
               לקטלוג
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
             </a>
           </motion.div>
 

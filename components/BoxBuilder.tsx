@@ -207,7 +207,7 @@ export function BoxBuilder() {
                     <button
                       key={bt.id}
                       onClick={() => dispatch({ type: "SELECT_BOX", payload: bt })}
-                      className={`rounded-2xl overflow-hidden border-2 text-right transition-all hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-wheat ${state.selectedBox?.id === bt.id ? "border-forest shadow-green-md" : "border-transparent shadow-green-sm"}`}
+                      className={`rounded-2xl overflow-hidden border-2 text-right transition-all duration-300 hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-wheat ${state.selectedBox?.id === bt.id ? "border-forest shadow-glow-wheat" : "border-transparent shadow-green-sm hover:shadow-green-lg"}`}
                       aria-pressed={state.selectedBox?.id === bt.id}
                     >
                       <div className="relative h-32 w-full overflow-hidden">
@@ -356,7 +356,7 @@ export function BoxBuilder() {
                   <button
                     onClick={openChatWithBox}
                     disabled={filledItems.length === 0}
-                    className="mt-6 w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#25D366] text-white font-bold text-base hover:bg-[#20ba5a] disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] transition-all shadow-md"
+                    className="btn-sheen mt-6 w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#25D366] text-white font-bold text-base hover:bg-[#20ba5a] hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.35)] hover:shadow-[0_8px_28px_rgba(37,211,102,0.45)]"
                   >
                     <ShoppingBasket className="w-5 h-5" />
                     שלח/י בקשה להזמנה לריקי

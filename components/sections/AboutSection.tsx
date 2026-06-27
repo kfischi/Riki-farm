@@ -50,8 +50,8 @@ export function AboutSection({ about: aboutProp }: Props) {
         {/* ===== ROW 1: Greenhouse photo + Opening story ===== */}
         <div className="grid lg:grid-cols-[2fr_3fr] gap-10 lg:gap-20 items-center mb-12 lg:mb-24">
           {/* Photo */}
-          <motion.div {...anim(0.1)} className="relative">
-            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.18)]">
+          <motion.div {...anim(0.1)} className="relative card-lift">
+            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.18)] hover:shadow-[0_16px_56px_rgba(27,67,50,0.26)] transition-shadow duration-400">
               <Image
                 src={withFaceCrop(CONFIG.images.aboutPrimary, "3:4")}
                 alt="ריקי שוסטרמן בחממה — חקלאית מגבול הצפון"
@@ -63,7 +63,7 @@ export function AboutSection({ about: aboutProp }: Props) {
               <div className="absolute inset-0 bg-[#BC6C25]/10 mix-blend-multiply" />
             </div>
             {/* Floating name badge */}
-            <div className="absolute -bottom-4 right-2 lg:-right-4 bg-white rounded-2xl shadow-[0_4px_20px_rgba(27,67,50,0.12)] px-4 py-3 border border-forest/5">
+            <div className="absolute -bottom-4 right-2 lg:-right-4 glass-light rounded-2xl shadow-[0_4px_20px_rgba(27,67,50,0.12)] px-4 py-3">
               <p className="text-sm font-bold text-forest">{CONFIG.brand.ownerName}</p>
               <p className="text-xs text-forest/50">{CONFIG.brand.ownerTitle}</p>
             </div>
@@ -74,7 +74,7 @@ export function AboutSection({ about: aboutProp }: Props) {
             <motion.h2
               {...anim(0.2)}
               id="about-heading"
-              className="text-4xl lg:text-5xl font-black text-forest leading-[1.1] mb-8"
+              className="text-4xl lg:text-6xl font-black text-forest leading-[1.05] tracking-tight mb-8"
             >
               {aboutProp?.headline ?? CONFIG.about.headline}
             </motion.h2>
@@ -138,8 +138,8 @@ export function AboutSection({ about: aboutProp }: Props) {
           </div>
 
           {/* Northern hills photo */}
-          <motion.div {...anim(0.15)} className="relative">
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.15)]">
+          <motion.div {...anim(0.15)} className="relative card-lift">
+            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.15)] hover:shadow-[0_16px_56px_rgba(27,67,50,0.22)] transition-shadow duration-400">
               <Image
                 src={withFaceCrop(CONFIG.images.aboutNorth, "4:3")}
                 alt="נוף גבול הצפון — מושב לימן, שדות המשק"

@@ -14,6 +14,26 @@ export interface Package {
   tags?: string[];
 }
 
+export interface Testimonial {
+  id: string;
+  quote: string;
+  author: string;
+  role: string;
+  company: string;
+}
+
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export interface USP {
+  icon: string;
+  title: string;
+  text: string;
+}
+
 export interface QuickReply {
   label: string;
   value: string;

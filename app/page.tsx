@@ -1,7 +1,10 @@
 import { HeroSection } from "@/components/sections/HeroSection";
+import { USPStrip } from "@/components/sections/USPStrip";
 import { SocialProofStrip } from "@/components/sections/SocialProofStrip";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { CatalogSection } from "@/components/sections/CatalogSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { FAQSection } from "@/components/sections/FAQSection";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
@@ -42,10 +45,13 @@ export default async function HomePage() {
       )}
       <main id="main-content">
         <HeroSection />
+        <USPStrip />
         <SocialProofStrip />
         <AboutSection about={about} />
         <CatalogSection packages={packages} />
         <BoxBuilder />
+        <TestimonialsSection />
+        <FAQSection />
       </main>
       <SiteFooter />
       <RickyBot />

@@ -109,7 +109,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
               key={pkg.id}
               role="listitem"
               {...anim(0.08 * i + 0.3)}
-              className="group flex flex-col bg-offwhite rounded-3xl overflow-hidden shadow-[0_2px_12px_rgba(27,67,50,0.08)] hover:shadow-[0_8px_32px_rgba(27,67,50,0.14)] hover:-translate-y-1.5 transition-all duration-300 border border-forest/4"
+              className="card-lift group flex flex-col bg-offwhite rounded-3xl overflow-hidden shadow-[0_2px_12px_rgba(27,67,50,0.08)] hover:shadow-[0_16px_44px_rgba(27,67,50,0.18)] border border-forest/4 hover:border-wheat/40"
             >
               <div className="relative h-48 overflow-hidden">
                 {pkg.image && !pkg.image.includes("placehold.co") ? (
@@ -149,7 +149,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                 )}
                 <button
                   onClick={() => openChatWithPkg(pkg.id)}
-                  className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-forest text-white font-semibold text-sm hover:bg-forest-mid active:scale-[0.98] transition-all"
+                  className="btn-sheen mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-forest text-white font-semibold text-sm hover:bg-forest-mid hover:shadow-[0_4px_16px_rgba(27,67,50,0.3)] active:scale-[0.98] transition-all duration-300"
                   aria-label={`שאל את ריקי על ${pkg.name}`}
                 >
                   <MessageCircle className="w-4 h-4" />

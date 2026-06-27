@@ -170,3 +170,58 @@ html.highlight-links a {
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
+
+/* ===== GLASS / DEPTH ===== */
+.glass-dark {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.glass-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ===== GLOW SHADOWS ===== */
+.shadow-glow-wheat {
+  box-shadow: 0 8px 30px rgba(233, 196, 106, 0.35), 0 2px 10px rgba(233, 196, 106, 0.2);
+}
+.shadow-glow-wheat-lg {
+  box-shadow: 0 16px 48px rgba(233, 196, 106, 0.4), 0 4px 16px rgba(233, 196, 106, 0.25);
+}
+
+/* ===== GRADIENT TEXT ===== */
+.text-gradient-wheat {
+  background: linear-gradient(120deg, #E9C46A 0%, #F4DFA0 45%, #E9C46A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ===== CARD LIFT ===== */
+.card-lift {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.card-lift:hover {
+  transform: translateY(-6px);
+}
+
+/* ===== BUTTON SHEEN (sweep highlight on hover) ===== */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.6s ease;
+}
+.btn-sheen:hover::after {
+  transform: translateX(120%);
+}
