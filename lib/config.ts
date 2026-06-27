@@ -1,0 +1,221 @@
+import type { Package, Video, Testimonial, FAQItem, USP } from "./types";
+import type { BoxProduct } from "./pricing";
+
+export const CONFIG = {
+  // 🔴 REPLACE — real WhatsApp number, international format, no + or dashes
+  whatsappNumber: "972525242155",
+
+  // 🔴 REPLACE — get from Google Business Profile dashboard after setup
+  googlePlaceId: "YOUR_GOOGLE_PLACE_ID",
+
+  seo: {
+    // 🔴 REPLACE with real domain before launch
+    siteUrl: "https://mashak-shusterman.co.il",
+    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780053629/Gemini_Generated_Image_fu702yfu702yfu70_v41c7p.png",
+  },
+
+  brand: {
+    name: "משק שוסטרמן",
+    tagline: "זו לא רק חקלאות. זו דרך חיים. זו שליחות.",
+    ownerName: "ריקי שוסטרמן",
+    ownerTitle: "חקלאית, מושב לימן, גבול הצפון",
+  },
+
+  rickyAvatar: "https://res.cloudinary.com/dptyfvwyo/image/upload/c_thumb,g_face,w_400,h_400,r_max,f_auto,q_auto/v1780033949/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C_c4mdpc.png",
+
+  // ===== REAL PHOTOS (Cloudinary CDN) =====
+  // ⚠️ Verify the tractor photo (aboutNorth) is not AI-processed before go-live.
+  images: {
+    // Hero — golden-hour, dynamic (nuts falling). Use SPLIT layout on desktop.
+    hero: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651767/16_sipmwd.jpg",
+    // About — greenhouse, authentic working-farmer feel
+    aboutPrimary: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/2_cypuwa.jpg",
+    // About — tractor + northern hills (ties to the גבול הצפון story)
+    // ⚠️ VERIFY: may be AI-processed — see README
+    aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
+    // Catalog — produce crate / fruit in hand
+    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780053629/Gemini_Generated_Image_fu702yfu702yfu70_v41c7p.png",
+  },
+
+  videos: [
+    {
+      id: "v1",
+      title: "ריקי מספרת על המשק",
+      thumbnail: "https://placehold.co/320x180/1B4332/E9C46A?text=המשק+של+ריקי",
+      url: "https://youtube.com/", // 🔴 REPLACE
+    },
+    {
+      id: "v2",
+      title: "עונת הקציר במשק",
+      thumbnail: "https://placehold.co/320x180/2D6A4F/E9C46A?text=עונת+הקציר",
+      url: "https://youtube.com/", // 🔴 REPLACE
+    },
+  ] as Video[],
+
+  packages: [
+    {
+      id: "custom-box-1",
+      name: "מארז תוצרת גלילית",
+      description: "מארז בהתאמה אישית — התכולה משתנה לפי גידולי העונה הטרייה. דוגמה: לחם מחמצת עם ממרחים גלילים עשויים בעבודת יד.",
+      price: "₪120",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg",
+      tags: ["מותאם אישית", "מתנה"],
+    },
+    {
+      id: "custom-bag-small",
+      name: "סל קטן מהמשק",
+      description: "סל ירקות ופירות טריים בהתאמה אישית — מה שגדל השבוע, מגיע אליכם. מושלם לעובד אחד או כמתנה קטנה.",
+      price: "₪50",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/2_gq21ly.jpg",
+      tags: ["קטן", "טרי"],
+    },
+    {
+      id: "custom-care",
+      name: "מארז טיפוח גלילי",
+      description: "מארז טיפוח בהתאמה אישית — שילוב תוצרת המשק עם מוצרי טיפוח גלילים. מותאם לפי בקשה ולפי העונה.",
+      price: "₪120",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/3_hh1piz.jpg",
+      tags: ["יוקרה", "טיפוח"],
+    },
+    {
+      id: "custom-box-2",
+      name: "ארגז תוצרת גלילית",
+      description: "ארגז ירקות ופירות בהתאמה אישית — מה שהשדה נותן הפעם. מושלם למשרדים, לאירועי צוות ולמתנות bulk.",
+      price: "₪120",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/1_suo2t3.jpg",
+      tags: ["עונתי", "bulk"],
+    },
+  ] as Package[],
+
+  // ===== "מארזים מחקלאים ויצרנים מקו הגבול" — second catalog category =====
+  // Sourced from neighboring border-region farmers & producers, alongside Ricky's own packages.
+  // Shown both as standalone catalog cards AND as add-on items inside the box builder.
+  // 🔴 REPLACE prices and add real Cloudinary photos before go-live
+  borderCategoryLabel: "משק שוסטרמן | מארזים מחקלאים ויצרנים מקו הגבול",
+
+  borderPackages: [
+    { id: "border-honey-oil",  name: "דבש עם שמן זית",        description: "צנצנת דבש פרחי בר ובקבוק שמן זית כתית מעולה, משני יצרנים בגבול הצפון.", price: "₪65",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-bread",      name: "לחם מחמצת עם מטבלים",    description: "לחם מחמצת תוצרת בית עם מבחר מטבלים גלילים — מומלץ לחברה שאוהבת חוויה.",      price: "₪55",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-spices",     name: "מתבלים מהצפון",           description: "סט מתבלים יבשים מגידולי קו העימות — תערובות ביתיות ללא תוספות.",            price: "₪40",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-honey-tahini", name: "דבש וטחינה",             description: "צנצנת דבש פרחי בר וטחינה גולמית מהרי הצפון — שילוב קלאסי וישראלי.",          price: "₪50",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-berries",    name: "מארז פירות יער",          description: "פירות יער טריים מהעונה מגידולי קו העימות — מתנה צבעונית ומפנקת.",            price: "₪60",  image: "", tags: ["מקו הגבול", "עונתי"] },
+    { id: "border-orchid",     name: "עציץ סחלב",               description: "עציץ סחלב מטופח מחממות קו הגבול — מתנה מהממת שנשארת.",                       price: "₪70",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-red-algae",  name: "מוצרי אצה אדומה",         description: "מוצרי אצה אדומה ממגדלי קו הגבול — תוסף טבעי איכותי.",                        price: "₪80",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-candles",    name: "נרות",                    description: "נרות עבודת יד מיצרני קו הגבול — ניחוחות עדינים ועיצוב כפרי.",                price: "₪35",  image: "", tags: ["מקו הגבול"] },
+    { id: "border-soaps",      name: "סבונים",                  description: "סבונים טבעיים בעבודת יד מיצרני קו הגבול — ללא חומרים משמרים.",               price: "₪30",  image: "", tags: ["מקו הגבול"] },
+  ] as Package[],
+
+  borderProducts: [
+    { id: "border-honey-oil",     name: "דבש עם שמן זית",    unitPrice: 65, image: "" },
+    { id: "border-bread",         name: "לחם מחמצת עם מטבלים", unitPrice: 55, image: "" },
+    { id: "border-spices",        name: "מתבלים מהצפון",      unitPrice: 40, image: "" },
+    { id: "border-honey-tahini",  name: "דבש וטחינה",         unitPrice: 50, image: "" },
+    { id: "border-berries",       name: "מארז פירות יער",     unitPrice: 60, image: "" },
+    { id: "border-orchid",        name: "עציץ סחלב",          unitPrice: 70, image: "" },
+    { id: "border-red-algae",     name: "מוצרי אצה אדומה",    unitPrice: 80, image: "" },
+    { id: "border-candles",       name: "נרות",               unitPrice: 35, image: "" },
+    { id: "border-soaps",         name: "סבונים",             unitPrice: 30, image: "" },
+  ] as BoxProduct[],
+
+  about: {
+    headline: "החזון של ריקי",
+    heroLine: "חקלאות היא הקיום והבסיס להכל — ובפרט בגבולות הארץ.",
+    // Short version for chatbot "info" bubble
+    body: "ריקי שוסטרמן היא חקלאית במושב לימן, בגבול הצפון, כ-22 שנה. בוגרת בית הספר החקלאי נהלל במגמת גד\"ש, מחוברת לטבע ולאדמה מאז ומתמיד. הפרויקט של מארז בהתאמה אישית נולד במלחמה, כדי לתת בית לתוצרת שנשארה בלי יציאה ולחבר בין כל אדם לתוצרת המופלאה של חקלאי קו העימות.",
+    // Pull quotes for editorial display
+    pullQuotes: [
+      "חקלאות היא הקיום והבסיס להכל, ובפרט בגבולות הארץ. אמא אדמה.",
+      "הרצון שלי להגיע לכל אדם עם התוצרת המופלאה שלנו.",
+    ],
+    // Full story paragraphs for the about section
+    story: [
+      "שמי ריקי שוסטרמן. מאז ומתמיד הייתי מחוברת לטבע — למדתי בבית הספר החקלאי נהלל, במגמת גד\"ש. כבר בגיל 15 זרעתי את זרעי הכותנה הראשונים שלי, ועד היום ריח האדמה הוא חלק מחיי. כיום אני חיה במושב לימן כ-22 שנה, אני חקלאית, ואנחנו מגדלים הרבה גידולים.",
+      "\"חקלאות היא הקיום והבסיס להכל, ובפרט בגבולות הארץ — אמא אדמה.\"",
+      "הפרויקט של מארז בהתאמה אישית נולד במלחמה, כשאנחנו וחקלאי הצפון נשארנו עם המון תוצרת. אז עלה לי הרעיון: שנעשה מארז עם התוצרת שלנו, ועם פירות וירקות של מגדלי קו העימות. הרצון שלי הוא להגיע לכל אדם עם התוצרת המופלאה שלנו.",
+    ],
+  },
+
+  usps: [
+    { icon: "🌾", title: "תוצרת טרייה מהשדה", text: "נקטף ונארז בתוך ימים, לא שבועות" },
+    { icon: "🎁", title: "התאמה אישית מלאה", text: "כל מארז נבנה לפי הצרכים והתקציב שלכם" },
+    { icon: "🚚", title: "משלוח לכל הארץ", text: "מהצפון ועד הדרום, ישירות אליכם" },
+    { icon: "💬", title: "ליווי אישי מריקי", text: "לא בוט, לא מענה אוטומטי — ריקי בעצמה" },
+  ] as USP[],
+
+  // Real client WhatsApp feedback — 🔴 author/role/company need confirmation from Ricky
+  testimonials: [
+    {
+      id: "t1",
+      quote: "תודה רבה! אין עליכם בעולם! התענגנו פה על כל קלמנטינה ובננה ותפוח, והיה בשפע לכולם.",
+      author: "לקוחה עסקית", // 🔴 REPLACE with real name
+      role: "משוב מוואטסאפ",
+      company: "חברה מרוצה", // 🔴 REPLACE with real company name
+    },
+    {
+      id: "t2",
+      quote: "האיכות הגבוהה מאד של הפירות הוסיפה לאווירה החיובית, כולם נהנו ושמחו.",
+      author: "אייל", // 🔴 REPLACE/confirm full name
+      role: "משוב מוואטסאפ",
+      company: "חברה מרוצה", // 🔴 REPLACE with real company name
+    },
+    {
+      id: "t3",
+      quote: "אנשים מאוד התלהבו מהפידבקים על המארזים.",
+      author: "לקוחה עסקית", // 🔴 REPLACE with real name
+      role: "משוב מוואטסאפ",
+      company: "חברה מרוצה", // 🔴 REPLACE with real company name
+    },
+  ] as Testimonial[],
+
+  // 🔴 Review answers before go-live
+  faq: [
+    {
+      id: "f1",
+      question: "מה זמן האספקה למארז מותאם?",
+      answer: "בממוצע 5–7 ימי עסקים ממועד אישור ההזמנה, בהתאם לעונה ולכמות. למארזים גדולים מומלץ להזמין מראש.",
+    },
+    {
+      id: "f2",
+      question: "האם אפשר להתאים מארז לפי תקציב מסוים?",
+      answer: "בהחלט — זו בדיוק הדרך שבה אנחנו עובדים. ספרו לנו את התקציב הרצוי ונבנה מארז שמתאים לו בדיוק.",
+    },
+    {
+      id: "f3",
+      question: "יש הנחה לכמות גדולה (50+ מארזים)?",
+      answer: "כן, יש מדרגות הנחה לפי כמות. דברו עם ריקי בוואטסאפ לקבלת הצעת מחיר מדויקת.",
+    },
+    {
+      id: "f4",
+      question: "איך מתבצע התשלום?",
+      answer: "לאחר אישור ההצעה והכמות נשלח חשבונית/הזמנת עבודה. ניתן לשלם בהעברה בנקאית או באמצעי תשלום מוסכם אחר.",
+    },
+    {
+      id: "f5",
+      question: "אפשר לקבל דוגמה לפני הזמנה גדולה?",
+      answer: "כן — אנחנו מאפשרים מארז דוגמה במחיר מסובסד עבור הזמנות bulk, כדי שתוכלו להתרשם לפני ההחלטה הסופית.",
+    },
+  ] as FAQItem[],
+
+  // B2B social proof — replace with real client logos
+  clientLogos: [
+    { name: "לובינסקי רפאל", logo: "" }, // 🔴 REPLACE with real logo URL
+    { name: "ערוץ 12", logo: "" }, // 🔴 REPLACE with real logo URL
+    { name: "הטכניון", logo: "" }, // 🔴 REPLACE with real logo URL
+    { name: "ועוד", logo: "" }, // 🔴 REPLACE with another real client logo
+  ],
+
+  legal: {
+    companyLegalName: "משק שוסטרמן בע\"מ",
+    companyId: "ח.פ XXXXXXXXX", // 🔴
+    address: "מושב לימן, גבול הצפון", // 🔴 כתובת מלאה
+    contactEmail: "info@example.co.il", // 🔴
+    contactPhone: "0XX-XXXXXXX", // 🔴
+    accessibilityCoordinator: {
+      name: "שם רכז/ת הנגישות", // 🔴
+      phone: "0XX-XXXXXXX", // 🔴
+      email: "accessibility@example.co.il", // 🔴
+    },
+    lastUpdated: "2026-05-22",
+    privacyOwnerName: "ריקי שוסטרמן", // 🔴 confirm legal name
+  },
+};
