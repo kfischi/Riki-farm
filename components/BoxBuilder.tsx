@@ -17,6 +17,7 @@ import {
 } from "@/lib/pricing";
 import { CONFIG } from "@/lib/config";
 import { saveLead } from "@/lib/saveLead";
+import { isValidIsraeliPhone, REGIONS } from "@/lib/botEngine";
 
 // ===== Static placeholder data — replaced by Sanity in Phase C =====
 const BOX_TYPES: BoxType[] = [
@@ -54,17 +55,26 @@ function isValidSrc(src: string): boolean {
 }
 
 // ===== State =====
+interface ContactDetails {
+  name: string;
+  phone: string;
+  city: string;
+  region: string;
+}
+
 interface BuilderState {
   selectedBox: BoxType | null;
   items: BoxItem[];
   orderQty: number;
-  step: "choose_box" | "add_products" | "set_qty" | "summary";
+  contact: ContactDetails;
+  step: "choose_box" | "add_products" | "set_qty" | "contact_details" | "summary";
 }
 
 type BuilderAction =
   | { type: "SELECT_BOX"; payload: BoxType }
   | { type: "SET_ITEM_QTY"; payload: { productId: string; delta: number } }
   | { type: "SET_ORDER_QTY"; payload: number }
+  | { type: "SET_CONTACT_FIELD"; payload: { field: keyof ContactDetails; value: string } }
   | { type: "NEXT_STEP" }
   | { type: "PREV_STEP" }
   | { type: "RESET" };
@@ -73,6 +83,7 @@ const initialBuilderState: BuilderState = {
   selectedBox: null,
   items: BOX_PRODUCTS.map((p) => ({ product: p, qty: 0 })),
   orderQty: 1,
+  contact: { name: "", phone: "", city: "", region: "" },
   step: "choose_box",
 };
 
@@ -95,13 +106,15 @@ function builderReducer(state: BuilderState, action: BuilderAction): BuilderStat
     }
     case "SET_ORDER_QTY":
       return { ...state, orderQty: Math.max(1, action.payload) };
+    case "SET_CONTACT_FIELD":
+      return { ...state, contact: { ...state.contact, [action.payload.field]: action.payload.value } };
     case "NEXT_STEP": {
-      const steps: BuilderState["step"][] = ["choose_box", "add_products", "set_qty", "summary"];
+      const steps: BuilderState["step"][] = ["choose_box", "add_products", "set_qty", "contact_details", "summary"];
       const idx = steps.indexOf(state.step);
       return { ...state, step: steps[Math.min(idx + 1, steps.length - 1)] };
     }
     case "PREV_STEP": {
-      const steps: BuilderState["step"][] = ["choose_box", "add_products", "set_qty", "summary"];
+      const steps: BuilderState["step"][] = ["choose_box", "add_products", "set_qty", "contact_details", "summary"];
       const idx = steps.indexOf(state.step);
       return { ...state, step: steps[Math.max(idx - 1, 0)] };
     }
@@ -123,25 +136,32 @@ export function BoxBuilder() {
   const total = computeTotal(unitPrice, state.orderQty);
   const itemCount = totalItemCount(state.items);
 
+  const isContactValid =
+    state.contact.name.trim().length > 1 &&
+    isValidIsraeliPhone(state.contact.phone) &&
+    state.contact.city.trim().length > 1 &&
+    state.contact.region.trim().length > 0;
+
   const openChatWithBox = useCallback(() => {
-    if (!state.selectedBox) return;
+    if (!state.selectedBox || !isContactValid) return;
     const summaryText = buildBoxSummaryText(
       state.selectedBox,
       filledItems,
       unitPrice,
-      state.orderQty
+      state.orderQty,
+      state.contact
     );
     const waText = `שלום ריקי! 👋 אשמח לקבל הצעת מחיר על מארז מותאם:\n\n${summaryText}`;
     const href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(waText)}`;
 
-    // Save lead (no personal data yet — will be partial)
     saveLead({
-      name: "—", company: "—", region: "—", address: "—", email: "—", phone: "—",
+      name: state.contact.name, company: "—", region: state.contact.region,
+      address: state.contact.city, email: "—", phone: state.contact.phone,
       pkg: `מארז מותאם: ${state.selectedBox.name}`,
       quantity: String(state.orderQty),
       consent: false,
       source: "ricky-chatbot",
-      status: "partial",
+      status: "complete",
       boxType: state.selectedBox.name,
       boxItems: filledItems.map((i) => `${i.product.name}×${i.qty}`).join(", "),
       unitPrice: formatPrice(unitPrice),
@@ -150,13 +170,14 @@ export function BoxBuilder() {
     });
 
     window.open(href, "_blank", "noopener,noreferrer");
-  }, [state, filledItems, unitPrice, total]);
+  }, [state, filledItems, unitPrice, total, isContactValid]);
 
   const steps = [
-    { id: "choose_box",   label: "סוג קופסה" },
-    { id: "add_products", label: "בחירת מוצרים" },
-    { id: "set_qty",      label: "כמות" },
-    { id: "summary",      label: "סיכום" },
+    { id: "choose_box",      label: "סוג קופסה" },
+    { id: "add_products",    label: "בחירת מוצרים" },
+    { id: "set_qty",         label: "כמות" },
+    { id: "contact_details", label: "פרטים ליצירת קשר" },
+    { id: "summary",         label: "סיכום" },
   ];
   const currentStepIdx = steps.findIndex((s) => s.id === state.step);
 
@@ -319,11 +340,102 @@ export function BoxBuilder() {
               </div>
             )}
 
+            {state.step === "contact_details" && (
+              <div className="max-w-md mx-auto">
+                <p className="text-center text-forest/70 mb-6">
+                  עוד כמה פרטים כדי שריקי תוכל לחזור אליכם:
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="bb-name" className="block text-sm font-semibold text-forest mb-1.5">
+                      שם מלא
+                    </label>
+                    <input
+                      id="bb-name"
+                      type="text"
+                      value={state.contact.name}
+                      onChange={(e) => dispatch({ type: "SET_CONTACT_FIELD", payload: { field: "name", value: e.target.value } })}
+                      placeholder="לדוגמה: דנה כהן"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-forest/15 text-forest focus:border-forest focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="bb-phone" className="block text-sm font-semibold text-forest mb-1.5">
+                      טלפון
+                    </label>
+                    <input
+                      id="bb-phone"
+                      type="tel"
+                      inputMode="tel"
+                      value={state.contact.phone}
+                      onChange={(e) => dispatch({ type: "SET_CONTACT_FIELD", payload: { field: "phone", value: e.target.value } })}
+                      placeholder="050-1234567"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-forest/15 text-forest focus:border-forest focus:outline-none transition-colors"
+                    />
+                    {state.contact.phone.length > 0 && !isValidIsraeliPhone(state.contact.phone) && (
+                      <p className="text-xs text-red-500 mt-1.5">מספר טלפון לא תקין</p>
+                    )}
+                  </div>
+                  <div>
+                    <label htmlFor="bb-city" className="block text-sm font-semibold text-forest mb-1.5">
+                      יישוב
+                    </label>
+                    <input
+                      id="bb-city"
+                      type="text"
+                      value={state.contact.city}
+                      onChange={(e) => dispatch({ type: "SET_CONTACT_FIELD", payload: { field: "city", value: e.target.value } })}
+                      placeholder="לדוגמה: לימן"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-forest/15 text-forest focus:border-forest focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <p className="block text-sm font-semibold text-forest mb-2">אזור בארץ</p>
+                    <div className="flex flex-wrap gap-2" role="list" aria-label="אזור בארץ">
+                      {REGIONS.map((r) => (
+                        <button
+                          key={r.value}
+                          type="button"
+                          role="listitem"
+                          onClick={() => dispatch({ type: "SET_CONTACT_FIELD", payload: { field: "region", value: r.value } })}
+                          aria-pressed={state.contact.region === r.value}
+                          className={`px-3.5 py-2 rounded-xl text-sm font-semibold border-2 transition-colors ${
+                            state.contact.region === r.value
+                              ? "bg-forest text-white border-forest"
+                              : "bg-white text-forest/70 border-forest/15 hover:border-forest"
+                          }`}
+                        >
+                          {r.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {state.step === "summary" && state.selectedBox && (
               <div className="max-w-md mx-auto">
                 <div className="bg-white rounded-3xl shadow-green-md p-6 border border-forest/5">
                   <h3 className="font-black text-forest text-lg mb-4">סיכום המארז שלך</h3>
                   <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-forest/60">שם:</span>
+                      <span className="font-semibold text-forest">{state.contact.name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-forest/60">טלפון:</span>
+                      <span className="font-semibold text-forest">{state.contact.phone}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-forest/60">יישוב:</span>
+                      <span className="font-semibold text-forest">{state.contact.city}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-forest/60">אזור:</span>
+                      <span className="font-semibold text-forest">{state.contact.region}</span>
+                    </div>
+                    <div className="border-t border-forest/10 my-2" />
                     <div className="flex justify-between">
                       <span className="text-forest/60">קופסה:</span>
                       <span className="font-semibold text-forest">{state.selectedBox.name}</span>
@@ -355,7 +467,7 @@ export function BoxBuilder() {
                   </p>
                   <button
                     onClick={openChatWithBox}
-                    disabled={filledItems.length === 0}
+                    disabled={filledItems.length === 0 || !isContactValid}
                     className="btn-sheen mt-6 w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#25D366] text-white font-bold text-base hover:bg-[#20ba5a] hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.35)] hover:shadow-[0_8px_28px_rgba(37,211,102,0.45)]"
                   >
                     <ShoppingBasket className="w-5 h-5" />
@@ -379,7 +491,10 @@ export function BoxBuilder() {
           {state.step !== "summary" && (
             <button
               onClick={() => dispatch({ type: "NEXT_STEP" })}
-              disabled={state.step === "choose_box" && !state.selectedBox}
+              disabled={
+                (state.step === "choose_box" && !state.selectedBox) ||
+                (state.step === "contact_details" && !isContactValid)
+              }
               className="px-6 py-2.5 rounded-xl bg-forest text-white font-bold text-sm disabled:opacity-40 hover:bg-forest-mid active:scale-95 transition-all flex items-center gap-2"
             >
               הבא <ChevronDown className="w-4 h-4 rotate-[-90deg]" />

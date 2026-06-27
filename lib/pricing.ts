@@ -32,12 +32,20 @@ export function totalItemCount(items: BoxItem[]): number {
   return items.reduce((sum, i) => sum + i.qty, 0);
 }
 
+export interface BoxBuilderContact {
+  name: string;
+  phone: string;
+  city: string;
+  region: string;
+}
+
 // Formats a Box Builder order into a WhatsApp-ready Hebrew summary
 export function buildBoxSummaryText(
   boxType: BoxType,
   items: BoxItem[],
   unitPrice: number,
-  orderQty: number
+  orderQty: number,
+  contact?: BoxBuilderContact
 ): string {
   const total = computeTotal(unitPrice, orderQty);
   const itemLines = items
@@ -45,9 +53,20 @@ export function buildBoxSummaryText(
     .map((i) => `  • ${i.product.name} ×${i.qty} (${formatPrice(i.product.unitPrice * i.qty)})`)
     .join("\n");
 
+  const contactLines = contact
+    ? [
+        `שם: ${contact.name}`,
+        `טלפון: ${contact.phone}`,
+        `יישוב: ${contact.city}`,
+        `אזור: ${contact.region}`,
+        ``,
+      ]
+    : [];
+
   return [
     `📦 בקשת הרכבת מארז מותאם:`,
     ``,
+    ...contactLines,
     `סוג קופסה: ${boxType.name} (${formatPrice(boxType.basePrice)})`,
     `תכולה:`,
     itemLines || "  (ריק)",

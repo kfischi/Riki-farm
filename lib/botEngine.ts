@@ -6,7 +6,7 @@ export function newId(): string {
   return `msg-${++_counter}`;
 }
 
-const REGIONS: QuickReply[] = [
+export const REGIONS: QuickReply[] = [
   { label: "צפון", value: "צפון" },
   { label: "חיפה והקריות", value: "חיפה והקריות" },
   { label: "השרון", value: "השרון" },
