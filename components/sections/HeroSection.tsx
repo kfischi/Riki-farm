@@ -26,10 +26,12 @@ export function HeroSection() {
       <div className="relative w-full min-h-[70svh] md:min-h-0 md:aspect-video overflow-hidden">
         <video
           src="/mashak-shusterman-brand.mp4"
+          poster="/mashak-shusterman-poster.jpg"
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
           aria-label="סרטון תדמית — משק שוסטרמן"
         />
