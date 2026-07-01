@@ -60,7 +60,7 @@ export function TestimonialsSection() {
               </div>
               <figcaption className="border-t border-white/10 pt-4">
                 <p className="font-bold text-white text-sm">{t.author}</p>
-                <p className="text-white/50 text-xs mt-0.5">{t.role} · {t.company}</p>
+                {t.role && <p className="text-white/50 text-xs mt-0.5">{t.role}</p>}
               </figcaption>
             </motion.figure>
           ))}

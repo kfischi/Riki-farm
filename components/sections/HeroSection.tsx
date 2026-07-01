@@ -95,9 +95,9 @@ export function HeroSection() {
           {/* Stats */}
           <motion.div {...fadeUp(0.6)} className="flex justify-center gap-6 sm:gap-12 pt-6 sm:pt-8 border-t border-white/10">
             {[
-              { num: "500+", label: "חברות מרוצות" },
+              { num: "22", label: "שנות חקלאות" },
               { num: "100%", label: "תוצרת ישראלית" },
-              { num: "דור ג׳", label: "חקלאות משפחתית" },
+              { num: "מושב לימן", label: "גבול הצפון" },
             ].map((s) => (
               <div key={s.label} className="text-center">
                 <p className="text-xl sm:text-2xl font-black text-wheat tabular-nums">{s.num}</p>

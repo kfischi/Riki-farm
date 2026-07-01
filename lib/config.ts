@@ -142,28 +142,28 @@ export const CONFIG = {
     { icon: "💬", title: "ליווי אישי מריקי", text: "לא בוט, לא מענה אוטומטי — ריקי בעצמה" },
   ] as USP[],
 
-  // Real client WhatsApp feedback — 🔴 author/role/company need confirmation from Ricky
+  // Real client WhatsApp feedback — 🔴 confirm first/last names with Ricky before launch
   testimonials: [
     {
       id: "t1",
       quote: "תודה רבה! אין עליכם בעולם! התענגנו פה על כל קלמנטינה ובננה ותפוח, והיה בשפע לכולם.",
-      author: "לקוחה עסקית", // 🔴 REPLACE with real name
+      author: "לקוחה מרוצה", // 🔴 REPLACE — confirm real name with Ricky
       role: "משוב מוואטסאפ",
-      company: "חברה מרוצה", // 🔴 REPLACE with real company name
+      company: "",
     },
     {
       id: "t2",
       quote: "האיכות הגבוהה מאד של הפירות הוסיפה לאווירה החיובית, כולם נהנו ושמחו.",
-      author: "אייל", // 🔴 REPLACE/confirm full name
+      author: "אייל", // 🔴 REPLACE/confirm full name with Ricky
       role: "משוב מוואטסאפ",
-      company: "חברה מרוצה", // 🔴 REPLACE with real company name
+      company: "",
     },
     {
       id: "t3",
       quote: "אנשים מאוד התלהבו מהפידבקים על המארזים.",
-      author: "לקוחה עסקית", // 🔴 REPLACE with real name
+      author: "לקוחה מרוצה", // 🔴 REPLACE — confirm real name with Ricky
       role: "משוב מוואטסאפ",
-      company: "חברה מרוצה", // 🔴 REPLACE with real company name
+      company: "",
     },
   ] as Testimonial[],
 
