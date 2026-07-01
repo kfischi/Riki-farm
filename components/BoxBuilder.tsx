@@ -248,8 +248,6 @@ export function BoxBuilder() {
                       </div>
                       <div className="p-4 bg-white">
                         <p className="font-bold text-forest">{bt.name}</p>
-                        <p className="text-clay font-black mt-1">{formatPrice(bt.basePrice)}</p>
-                        <p className="text-xs text-forest/50 mt-0.5">מחיר בסיס לקופסה</p>
                       </div>
                     </button>
                   ))}
@@ -279,7 +277,6 @@ export function BoxBuilder() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-forest leading-tight">{product.name}</p>
-                        <p className="text-xs text-clay font-bold">{formatPrice(product.unitPrice)}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
@@ -303,13 +300,6 @@ export function BoxBuilder() {
                     </div>
                   ))}
                 </div>
-                {/* Live unit price */}
-                {state.selectedBox && (
-                  <div className="mt-6 bg-forest/5 rounded-2xl p-4 flex items-center justify-between">
-                    <span className="text-sm text-forest/70">מחיר ליחידה כרגע:</span>
-                    <span className="text-2xl font-black text-forest">{formatPrice(unitPrice)}</span>
-                  </div>
-                )}
               </div>
             )}
 
@@ -336,13 +326,9 @@ export function BoxBuilder() {
                     <Plus className="w-5 h-5 text-forest" />
                   </button>
                 </div>
-                {state.selectedBox && (
-                  <div className="bg-forest rounded-2xl p-6 text-white">
-                    <p className="text-white/70 text-sm mb-1">סה&quot;כ משוער</p>
-                    <p className="text-4xl font-black text-wheat">{formatPrice(total)}</p>
-                    <p className="text-white/50 text-xs mt-2">המחיר אינו כולל משלוח וכפוף לאישור סופי</p>
-                  </div>
-                )}
+                <div className="bg-forest/5 rounded-2xl p-5 text-center">
+                  <p className="text-forest/70 text-sm">ריקי תחזור אליכם עם הצעת מחיר מותאמת</p>
+                </div>
               </div>
             )}
 
@@ -448,28 +434,20 @@ export function BoxBuilder() {
                     </div>
                     {filledItems.map((i) => (
                       <div key={i.product.id} className="flex justify-between">
-                        <span className="text-forest/60">{i.product.name} ×{i.qty}</span>
-                        <span className="font-semibold text-forest">{formatPrice(i.product.unitPrice * i.qty)}</span>
+                        <span className="text-forest/60">{i.product.name}</span>
+                        <span className="font-semibold text-forest">×{i.qty}</span>
                       </div>
                     ))}
                     {filledItems.length === 0 && <p className="text-forest/40 text-center py-2">לא נבחרו מוצרים</p>}
-                    <div className="border-t border-forest/10 pt-3 mt-3 space-y-1">
+                    <div className="border-t border-forest/10 pt-3 mt-3">
                       <div className="flex justify-between">
-                        <span className="text-forest/60">מחיר ליחידה:</span>
-                        <span className="font-bold text-forest">{formatPrice(unitPrice)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-forest/60">כמות:</span>
+                        <span className="text-forest/60">כמות מארזים:</span>
                         <span className="font-bold text-forest">{state.orderQty}</span>
-                      </div>
-                      <div className="flex justify-between text-base">
-                        <span className="font-bold text-forest">סה&quot;כ:</span>
-                        <span className="font-black text-clay text-xl">{formatPrice(total)}</span>
                       </div>
                     </div>
                   </div>
                   <p className="text-xs text-forest/40 mt-4 text-center">
-                    * המחיר אינו כולל משלוח וכפוף לאישור סופי
+                    ריקי תחזור אליכם עם הצעת מחיר לאחר קבלת הפרטים
                   </p>
                   <button
                     onClick={openChatWithBox}

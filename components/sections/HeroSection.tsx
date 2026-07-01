@@ -70,7 +70,7 @@ export function HeroSection() {
 
           {/* Sub-tagline */}
           <motion.p {...fadeUp(0.38)} className="text-white/60 text-sm sm:text-lg leading-relaxed mb-6 sm:mb-10 max-w-xl mx-auto">
-            מארזים חקלאיים יוקרתיים לחברות — תוצרת טרייה ואמיתית, ישירות מהשדה.
+            ליצ'י טרי ומארזים עונתיים ישירות מהמשק — נקטף אצלנו, מגיע אליכם.
           </motion.p>
 
           {/* CTAs */}

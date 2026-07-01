@@ -61,7 +61,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             <motion.div {...anim(0)} className="flex items-center gap-3 mb-4">
               <div className="w-8 h-px bg-clay" aria-hidden="true" />
               <span className="text-clay text-sm font-semibold uppercase tracking-[0.2em]">
-                מארזים נבחרים
+                ליצ'י ותוצרת טרייה
               </span>
             </motion.div>
             <motion.h2
@@ -69,10 +69,10 @@ export function CatalogSection({ packages: packagesProp }: Props) {
               id="catalog-heading"
               className="text-4xl lg:text-5xl font-black text-forest leading-tight"
             >
-              מארזים בהתאמה אישית
+              ליצ'י טרי ומארזים מהמשק
             </motion.h2>
             <motion.p {...anim(0.13)} className="text-clay font-semibold text-sm mt-2">
-              התכולה משתנה לפי גידולי העונה
+              נקטף אצלנו, מגיע אליכם — טרי ועונתי תמיד
             </motion.p>
           </div>
           <motion.p {...anim(0.15)} className="text-forest/55 text-sm lg:text-base max-w-xs leading-relaxed lg:text-right">
@@ -99,13 +99,13 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
                 style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
               >
-                ישירות מהשדה<br />לשולחן שלכם
+                ליצ'י טרי<br />ישירות מהמשק
               </h2>
               <p
                 className="text-lg sm:text-xl md:text-2xl font-medium mt-4 sm:mt-6 tracking-wide"
                 style={{ textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}
               >
-                תוצרת טרייה, עונתית, ואמיתית
+                נקטף במושב לימן, מגיע אליכם תוך שעות
               </p>
             </div>
           </div>
@@ -157,9 +157,6 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                 <p className="text-sm text-forest/55 mt-2 leading-relaxed flex-1 line-clamp-3">
                   {pkg.description}
                 </p>
-                {pkg.price && (
-                  <p className="text-xl font-black text-clay mt-3 tabular-nums">{pkg.price}</p>
-                )}
                 <button
                   onClick={() => openChatWithPkg(pkg.id)}
                   className="btn-sheen mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-forest text-white font-semibold text-sm hover:bg-forest-mid hover:shadow-[0_4px_16px_rgba(27,67,50,0.3)] active:scale-[0.98] transition-all duration-300"
@@ -237,9 +234,6 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                   <p className="text-sm text-forest/55 mt-2 leading-relaxed flex-1 line-clamp-3">
                     {pkg.description}
                   </p>
-                  {pkg.price && (
-                    <p className="text-xl font-black text-clay mt-3 tabular-nums">{pkg.price}</p>
-                  )}
                   <button
                     onClick={() => openChatWithPkg(pkg.id)}
                     className="btn-sheen mt-4 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-forest text-white font-semibold text-sm hover:bg-forest-mid hover:shadow-[0_4px_16px_rgba(27,67,50,0.3)] active:scale-[0.98] transition-all duration-300"
