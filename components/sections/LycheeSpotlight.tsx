@@ -24,14 +24,18 @@ export function LycheeSpotlight() {
     prefersReduced
       ? {}
       : {
-          initial: { opacity: 0, y: 24 },
+          initial: { opacity: 0, y: 20 },
           animate: inView ? { opacity: 1, y: 0 } : {},
-          transition: { duration: 0.7, delay, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+          transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
         };
 
   return (
-    <section ref={ref} className="relative overflow-hidden" aria-label="ליצ'י טרי ממשק שוסטרמן">
-      {/* Background video */}
+    <section
+      ref={ref}
+      className="relative overflow-hidden min-h-[80svh] flex flex-col justify-end"
+      aria-label="ליצ'י טרי ממשק שוסטרמן"
+    >
+      {/* Background video — top stays clear so the fruit/Ricky shows */}
       <div className="absolute inset-0">
         <video
           autoPlay
@@ -52,38 +56,48 @@ export function LycheeSpotlight() {
             type="video/mp4"
           />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/75" />
+        {/* Gradient only from bottom — keeps top of video clear */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="relative px-6 py-20 lg:py-36 text-center flex flex-col items-center max-w-3xl mx-auto" dir="rtl">
-        <motion.p
-          {...anim(0)}
-          className="inline-flex items-center gap-2 text-wheat text-xs font-bold tracking-[0.2em] uppercase mb-8"
-        >
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" aria-hidden="true" />
-          עכשיו בעונה
-        </motion.p>
+      {/* Content anchored to bottom so video shows at top */}
+      <div className="relative px-6 pb-12 lg:pb-20 pt-16 text-center flex flex-col items-center max-w-3xl mx-auto w-full" dir="rtl">
 
-        <motion.h2
-          {...anim(0.1)}
-          className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.05] mb-6"
+        {/* "עכשיו בעונה" — larger, pulsing badge on mobile */}
+        <motion.div
+          {...anim(0)}
+          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-green-400/40 bg-green-400/10 mb-6"
         >
-          לא הפרי<br />
-          <span className="text-gradient-wheat">שקנית בסופר.</span>
+          <span
+            className="w-2.5 h-2.5 rounded-full bg-green-400 flex-shrink-0"
+            style={{ animation: "pulse-dot 1.5s ease-in-out infinite" }}
+            aria-hidden="true"
+          />
+          <span className="text-green-300 text-sm sm:text-base font-bold tracking-[0.15em] uppercase">
+            עכשיו בעונה
+          </span>
+        </motion.div>
+
+        {/* Main headline */}
+        <motion.h2
+          {...anim(0.08)}
+          className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.05] mb-3"
+        >
+          ליצ'י עסיסי,{" "}
+          <span className="text-gradient-wheat">מתוק וטרי.</span>
         </motion.h2>
 
+        {/* Sub-headline — small, elegant */}
         <motion.p
-          {...anim(0.2)}
-          className="text-white/75 text-base sm:text-xl lg:text-2xl leading-relaxed mb-10 max-w-lg"
+          {...anim(0.16)}
+          className="text-white/70 text-base sm:text-lg font-medium mb-8"
         >
-          הליצ'י שנקטף הבוקר במושב לימן,{" "}
-          <br className="hidden sm:inline" />
-          מגיע אליכם עוד היום. עסיסי, מתוק, ואמיתי.
+          מגיע מהעץ ישר אליכם
         </motion.p>
 
+        {/* CTA */}
         <motion.a
-          {...anim(0.3)}
+          {...anim(0.24)}
           href={waUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -94,11 +108,12 @@ export function LycheeSpotlight() {
           הזמינו עכשיו בוואטסאפ
         </motion.a>
 
+        {/* Trust signals */}
         <motion.div
-          {...anim(0.45)}
-          className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-10 text-white/50 text-xs sm:text-sm"
+          {...anim(0.35)}
+          className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-8 text-white/45 text-xs sm:text-sm"
         >
-          <span>🚚 משלוח 24–48 שעות</span>
+          <span>🚚 משלוחים לצפון ומרכז הארץ</span>
           <span>📦 ללא מינימום הזמנה</span>
           <span>🌿 ישירות מהמשק</span>
         </motion.div>
