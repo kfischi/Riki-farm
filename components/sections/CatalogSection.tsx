@@ -5,21 +5,43 @@ import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
 import { withFaceCrop } from "@/lib/cloudinary";
-import { MessageCircle } from "lucide-react";
+import {
+  MessageCircle,
+  Droplets,
+  Wheat,
+  Leaf,
+  Flower2,
+  Waves,
+  Flame,
+  Sparkles,
+  Sprout,
+  type LucideIcon,
+} from "lucide-react";
 import type { Package } from "@/lib/types";
 import { ShareButton } from "@/components/ShareButton";
 
-const BORDER_PACKAGE_ICONS: Record<string, string> = {
-  "border-honey-oil": "🍯",
-  "border-bread": "🍞",
-  "border-spices": "🌿",
-  "border-honey-tahini": "🍯",
-  "border-berries": "🫐",
-  "border-orchid": "🌺",
-  "border-red-algae": "🌊",
-  "border-candles": "🕯️",
-  "border-soaps": "🧼",
+const BORDER_PACKAGE_ICONS: Record<string, LucideIcon> = {
+  "border-honey-oil": Droplets,
+  "border-bread": Wheat,
+  "border-spices": Leaf,
+  "border-honey-tahini": Droplets,
+  "border-berries": Flower2,
+  "border-orchid": Flower2,
+  "border-red-algae": Waves,
+  "border-candles": Flame,
+  "border-soaps": Sparkles,
 };
+
+function PremiumPlaceholder({ icon: Icon = Sprout }: { icon?: LucideIcon }) {
+  return (
+    <div className="w-full h-full bg-gradient-to-br from-forest via-forest-mid to-forest relative overflow-hidden flex items-center justify-center">
+      <div className="absolute inset-0 grain-overlay" />
+      <div className="absolute -right-6 -top-6 w-28 h-28 rounded-full border border-wheat/8 pointer-events-none" />
+      <div className="absolute -left-4 -bottom-4 w-20 h-20 rounded-full border border-wheat/6 pointer-events-none" />
+      <Icon className="w-16 h-16 text-wheat/20 relative z-10" strokeWidth={0.75} />
+    </div>
+  );
+}
 
 interface Props {
   packages?: Package[];
@@ -135,8 +157,8 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                     unoptimized
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-forest/10 via-wheat/10 to-stone-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                    <span className="text-5xl" aria-hidden="true">🌾</span>
+                  <div className="group-hover:scale-105 transition-transform duration-500 w-full h-full">
+                    <PremiumPlaceholder />
                   </div>
                 )}
                 {pkg.tags && pkg.tags.length > 0 && (
@@ -210,10 +232,8 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                       unoptimized
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-forest/10 via-wheat/10 to-stone-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                      <span className="text-5xl" aria-hidden="true">
-                        {BORDER_PACKAGE_ICONS[pkg.id] ?? "🌾"}
-                      </span>
+                    <div className="group-hover:scale-105 transition-transform duration-500 w-full h-full">
+                      <PremiumPlaceholder icon={BORDER_PACKAGE_ICONS[pkg.id]} />
                     </div>
                   )}
                   {pkg.tags && pkg.tags.length > 0 && (
