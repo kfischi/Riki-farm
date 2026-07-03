@@ -9,6 +9,7 @@ import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { RickyBot } from "@/components/RickyBot";
+import { ArditBot } from "@/components/ArditBot";
 import { BoxBuilder } from "@/components/BoxBuilder";
 import { fetchPackages, fetchSiteSettings } from "@/lib/sanity";
 import { CONFIG } from "@/lib/config";
@@ -55,6 +56,7 @@ export default async function HomePage() {
       </main>
       <SiteFooter />
       <RickyBot />
+      <ArditBot />
       <WhatsAppFloat />
     </>
   );

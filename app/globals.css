@@ -9,6 +9,7 @@
   --color-wheat: #E9C46A;
   --color-wheat-light: #F4DFA0;
   --color-offwhite: #FAF9F6;
+  --color-ardit: #80182c;
 
   --font-heebo: "Heebo", "Assistant", sans-serif;
 }
@@ -27,6 +28,12 @@
   0%   { box-shadow: 0 0 0 0 rgba(233,196,106,0.6); }
   70%  { box-shadow: 0 0 0 14px rgba(233,196,106,0); }
   100% { box-shadow: 0 0 0 0 rgba(233,196,106,0); }
+}
+
+@keyframes ardit-ping {
+  0%   { box-shadow: 0 0 0 0 rgba(128,24,44,0.5); }
+  70%  { box-shadow: 0 0 0 14px rgba(128,24,44,0); }
+  100% { box-shadow: 0 0 0 0 rgba(128,24,44,0); }
 }
 
 :root {
