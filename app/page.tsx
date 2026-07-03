@@ -10,7 +10,6 @@ import { SiteNav } from "@/components/SiteNav";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { RickyBot } from "@/components/RickyBot";
 import { BoxBuilder } from "@/components/BoxBuilder";
-import { LycheeSpotlight } from "@/components/sections/LycheeSpotlight";
 import { StickyOrderBar } from "@/components/StickyOrderBar";
 import { fetchPackages, fetchSiteSettings } from "@/lib/sanity";
 import { CONFIG } from "@/lib/config";
@@ -47,7 +46,6 @@ export default async function HomePage() {
       )}
       <main id="main-content">
         <HeroSection />
-        <LycheeSpotlight />
         <SocialProofStrip />
         <AboutSection about={about} />
         <CatalogSection packages={packages} />
