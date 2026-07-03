@@ -30,6 +30,7 @@ export function TestimonialsSection() {
   return (
     <section
       ref={ref}
+      id="testimonials"
       aria-labelledby="testimonials-heading"
       className="relative py-16 lg:py-28 bg-forest grain-overlay overflow-hidden"
       dir="rtl"
@@ -52,7 +53,7 @@ export function TestimonialsSection() {
           לקוחות <span className="text-gradient-wheat">מדברים</span>
         </motion.h2>
         <motion.p {...anim(0.12)} className="text-white/55 text-center text-sm sm:text-base mb-12">
-          ביקורות אמיתיות מלקוחות מרוצים — ישירות מהווטסאפ
+          הנה טעימה מהפידבקים שקיבלנו
         </motion.p>
 
         {/* Screenshot grid */}

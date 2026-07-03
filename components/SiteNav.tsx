@@ -5,11 +5,11 @@ import { Menu, X, Leaf, MessageCircle } from "lucide-react";
 import { CONFIG } from "@/lib/config";
 
 const NAV_LINKS = [
-  { href: "#main-content", label: "בית" },
-  { href: "#about",        label: "אודות" },
-  { href: "#catalog",      label: "קטלוג" },
-  { href: "#box-builder",  label: "בנה מארז" },
-  { href: "#faq",          label: "שאלות נפוצות" },
+  { href: "#main-content",  label: "בית" },
+  { href: "#about",         label: "אודות" },
+  { href: "#catalog",       label: "הזמנות" },
+  { href: "#testimonials",  label: "מה אומרים עלינו" },
+  { href: "#faq",           label: "שאלות נפוצות" },
 ];
 
 export function SiteNav() {
