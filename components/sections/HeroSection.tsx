@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
 import { CONFIG } from "@/lib/config";
 
 const BRAND_VIDEO_SRC = "/mashak-shusterman-brand.mp4";
@@ -12,6 +13,13 @@ const LYCHEE_VIDEO_MP4 =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
 const LYCHEE_POSTER =
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
+
+const CAPTIONS = [
+  "מארזי שי בהתאמה אישית עם כל טוב ממשק שוסטרמן",
+  "פירות העונה טריים ועסיסיים שלא תמצאו בסופר",
+  "מתמחים בשיווק לחברות וארגונים",
+  "תוצרת חקלאית מובחרת ממושב לימן בצפון הארץ",
+];
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -25,12 +33,16 @@ function WhatsAppIcon({ className }: { className?: string }) {
 export function HeroSection() {
   const prefersReduced = useReducedMotion();
   const [isLychee, setIsLychee] = useState(false);
+  const [captionIndex, setCaptionIndex] = useState(0);
   const brandRef = useRef<HTMLVideoElement>(null);
   const lycheeRef = useRef<HTMLVideoElement>(null);
 
   const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
     "שלום, אני רוצה להזמין ליצ'י 🌿"
   )}`;
+
+  const openChat = () =>
+    window.dispatchEvent(new CustomEvent("rickybot:open", {}));
 
   const switchToLychee = useCallback(() => {
     setIsLychee(true);
@@ -47,6 +59,16 @@ export function HeroSection() {
       brandRef.current.play();
     }
   }, []);
+
+  /* Rotate captions every 4 s — only during brand video */
+  useEffect(() => {
+    if (isLychee || prefersReduced) return;
+    const id = setInterval(
+      () => setCaptionIndex((i) => (i + 1) % CAPTIONS.length),
+      4000
+    );
+    return () => clearInterval(id);
+  }, [isLychee, prefersReduced]);
 
   return (
     <header
@@ -104,7 +126,47 @@ export function HeroSection() {
         aria-hidden="true"
       />
 
-      {/* Lychee segment — text + CTA, fades in when lychee video plays */}
+      {/* Brand segment — rotating captions + chatbot CTA */}
+      <AnimatePresence>
+        {!isLychee && !prefersReduced && (
+          <motion.div
+            key="brand-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center"
+          >
+            {/* Rotating caption */}
+            <div className="min-h-[3.5rem] flex items-end justify-center mb-6">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={captionIndex}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-white text-lg sm:text-xl md:text-2xl font-bold leading-snug text-balance"
+                >
+                  {CAPTIONS[captionIndex]}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            {/* Chatbot CTA */}
+            <button
+              onClick={openChat}
+              className="btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white/15 border border-white/30 text-white font-bold text-sm md:text-base hover:bg-white/25 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 backdrop-blur-sm"
+              aria-label="לשאלות והזמנות — פתח צ'אט"
+            >
+              <MessageCircle className="w-5 h-5" />
+              להזמנות — לחצו כאן
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Lychee segment — badge + headline + WhatsApp */}
       <AnimatePresence>
         {(isLychee || prefersReduced) && (
           <motion.div
