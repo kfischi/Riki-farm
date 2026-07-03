@@ -4,33 +4,22 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
-import { withFaceCrop } from "@/lib/cloudinary";
 import {
   MessageCircle,
-  Droplets,
-  Wheat,
-  Leaf,
-  Flower2,
-  Waves,
-  Flame,
-  Sparkles,
   Sprout,
   type LucideIcon,
 } from "lucide-react";
 import type { Package } from "@/lib/types";
 import { ShareButton } from "@/components/ShareButton";
 
-const BORDER_PACKAGE_ICONS: Record<string, LucideIcon> = {
-  "border-honey-oil": Droplets,
-  "border-bread": Wheat,
-  "border-spices": Leaf,
-  "border-honey-tahini": Droplets,
-  "border-berries": Flower2,
-  "border-orchid": Flower2,
-  "border-red-algae": Waves,
-  "border-candles": Flame,
-  "border-soaps": Sparkles,
-};
+const LYCHEE_COLLAGE = [
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0083_i9m3hk.jpg",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783106314/Gemini_Generated_Image_wxe3qkwxe3qkwxe3_zpcylb.png",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0088_bpaxlk.jpg",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0093_fxwxvw.jpg",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
+];
 
 function PremiumPlaceholder({ icon: Icon = Sprout }: { icon?: LucideIcon }) {
   return (
@@ -52,7 +41,6 @@ export function CatalogSection({ packages: packagesProp }: Props) {
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReduced = useReducedMotion();
   const pkgs = packagesProp ?? CONFIG.packages;
-  const borderPkgs = CONFIG.borderPackages;
 
   const openChatWithPkg = (pkgId: string) => {
     window.dispatchEvent(new CustomEvent("rickybot:open", { detail: { pkgId } }));
@@ -102,35 +90,24 @@ export function CatalogSection({ packages: packagesProp }: Props) {
           </motion.p>
         </div>
 
-        {/* ===== Feature image strip ===== */}
-        <motion.div {...anim(0.2)} className="relative w-full overflow-hidden rounded-3xl mb-12 shadow-[0_4px_24px_rgba(27,67,50,0.12)]">
-          <div className="absolute inset-0">
-            <Image
-              src={withFaceCrop(CONFIG.images.catalogFeature, "16:9")}
-              alt="ישירות מהשדה — תוצרת טרייה מהמשק של ריקי"
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent md:bg-gradient-to-l md:from-transparent md:via-transparent md:to-black/55" />
-          </div>
-          <div className="relative grid grid-cols-12 min-h-[60vh] md:min-h-[70vh] items-center px-6 sm:px-10 md:px-16 py-12">
-            <div className="col-span-12 md:col-span-5 text-white text-right">
-              <h2
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
-                style={{ textShadow: "0 2px 12px rgba(0,0,0,0.45)" }}
-              >
-                ליצ'י טרי<br />ישירות מהמשק
-              </h2>
-              <p
-                className="text-lg sm:text-xl md:text-2xl font-medium mt-4 sm:mt-6 tracking-wide"
-                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}
-              >
-                נקטף במושב לימן, מגיע אליכם תוך שעות
-              </p>
+        {/* ===== Lychee photo collage ===== */}
+        <motion.div
+          {...anim(0.2)}
+          className="grid grid-cols-3 gap-2 mb-12 rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(27,67,50,0.12)] h-[45vh] md:h-[55vh]"
+          style={{ gridTemplateRows: "1fr 1fr" }}
+        >
+          {LYCHEE_COLLAGE.map((src, i) => (
+            <div key={src} className="relative overflow-hidden">
+              <Image
+                src={src}
+                alt={`ליצ'י ממשק שוסטרמן ${i + 1}`}
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 768px) 33vw, 33vw"
+                unoptimized
+              />
             </div>
-          </div>
+          ))}
         </motion.div>
 
         {/* ===== Package grid ===== */}

@@ -9,7 +9,6 @@ import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { RickyBot } from "@/components/RickyBot";
-import { BoxBuilder } from "@/components/BoxBuilder";
 import { StickyOrderBar } from "@/components/StickyOrderBar";
 import { fetchPackages, fetchSiteSettings } from "@/lib/sanity";
 import { CONFIG } from "@/lib/config";
@@ -49,8 +48,7 @@ export default async function HomePage() {
         <SocialProofStrip />
         <AboutSection about={about} />
         <CatalogSection packages={packages} />
-        <BoxBuilder />
-        <TestimonialsSection />
+<TestimonialsSection />
         <FAQSection />
       </main>
       <SiteFooter />
