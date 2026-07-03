@@ -44,7 +44,7 @@ export function SiteNav() {
             <a
               key={l.href}
               href={l.href}
-              className="relative px-4 py-2 rounded-xl text-sm font-medium text-white/75 hover:text-white hover:bg-white/10 transition-all duration-200 group"
+              className="relative px-4 py-2 rounded-xl text-[15px] font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 group"
             >
               {l.label}
               <span className="absolute bottom-1 right-4 left-4 h-px bg-wheat scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" aria-hidden="true" />
@@ -83,7 +83,7 @@ export function SiteNav() {
               key={l.href}
               href={l.href}
               onClick={close}
-              className="px-4 py-3 rounded-xl text-base font-medium text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+              className="px-4 py-3 rounded-xl text-lg font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
             >
               {l.label}
             </a>

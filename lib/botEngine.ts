@@ -27,8 +27,8 @@ const LYCHEE_QUANTITIES: QuickReply[] = [
 
 const MAIN_MENU_REPLIES: QuickReply[] = [
   { label: "🍒 הזמנת ליצ'י טרי", value: "lychee" },
-  { label: "📦 מארז שי ותוצרת חקלאית", value: "order" },
-  { label: "ℹ️ ספר/י לי עוד על המשק", value: "info" },
+  { label: "📦 מארז שי לחברה / ועד עובדים", value: "order" },
+  { label: "💬 שאלה? נדבר ישירות", value: "whatsapp" },
 ];
 
 export function mainMenuMessage(): MessageType {
@@ -131,6 +131,10 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
           { id: newId(), sender: "bot", type: "quick-replies", text: "מצא/ה משהו שאהבת?", replies: MAIN_MENU_REPLIES },
         ];
         nextStep = "catalog";
+      } else if (trimmed === "whatsapp") {
+        const href = `https://wa.me/${CONFIG.whatsappNumber}`;
+        messages = [{ id: newId(), sender: "bot", type: "whatsapp-cta", href, summaryText: "לחצו לפתיחת שיחה עם ריקי ישירות בוואטסאפ 💬" }];
+        nextStep = "idle";
       } else {
         messages = [{ id: newId(), sender: "bot", type: "quick-replies", text: "לא הבנתי לגמרי 😊 הנה מה שאפשר:", replies: MAIN_MENU_REPLIES }];
       }
