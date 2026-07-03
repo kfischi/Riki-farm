@@ -52,6 +52,9 @@ export type Step =
   | "videos"
   | "info"
   | "catalog"
+  | "lychee_quantity"
+  | "lychee_name"
+  | "lychee_phone"
   | "order_name"
   | "order_company"
   | "order_region"
@@ -73,6 +76,7 @@ export interface Order {
   pkg?: string;
   quantity?: number;
   consent?: boolean;
+  lycheeQty?: string;
 }
 
 export interface BotState {
