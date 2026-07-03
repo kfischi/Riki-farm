@@ -14,11 +14,11 @@ import { ShareButton } from "@/components/ShareButton";
 
 const LYCHEE_COLLAGE = [
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0083_i9m3hk.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783106314/Gemini_Generated_Image_wxe3qkwxe3qkwxe3_zpcylb.png",
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0088_bpaxlk.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0093_fxwxvw.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783106314/Gemini_Generated_Image_wxe3qkwxe3qkwxe3_zpcylb.png",
 ];
 
 function PremiumPlaceholder({ icon: Icon = Sprout }: { icon?: LucideIcon }) {
