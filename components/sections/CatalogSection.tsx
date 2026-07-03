@@ -71,7 +71,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             <motion.div {...anim(0)} className="flex items-center gap-3 mb-4">
               <div className="w-8 h-px bg-clay" aria-hidden="true" />
               <span className="text-clay text-sm font-semibold uppercase tracking-[0.2em]">
-                ליצ'י ותוצרת טרייה
+                הזמנת מארזים עם תוצרת חקלאית ופירות העונה
               </span>
             </motion.div>
             <motion.h2
@@ -82,12 +82,9 @@ export function CatalogSection({ packages: packagesProp }: Props) {
               ליצ'י טרי ומארזים מהמשק
             </motion.h2>
             <motion.p {...anim(0.13)} className="text-clay font-semibold text-sm mt-2">
-              נקטף אצלנו, מגיע אליכם — טרי ועונתי תמיד
+              עונת הליצ'י בעיצומה. נקטף אצלינו ומגיע עד אליכם - טרי, עסיסי וטעים בטירוף
             </motion.p>
           </div>
-          <motion.p {...anim(0.15)} className="text-forest/55 text-sm lg:text-base max-w-xs leading-relaxed lg:text-right">
-            אלו דוגמאות — כל מארז נבנה מחדש לפי מה שהשדה נותן
-          </motion.p>
         </div>
 
         {/* ===== Lychee photo collage ===== */}
