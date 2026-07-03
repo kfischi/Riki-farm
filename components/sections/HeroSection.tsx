@@ -87,7 +87,7 @@ export function HeroSection() {
             preload="metadata"
             poster={LYCHEE_POSTER}
             onEnded={switchToBrand}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 scale-[0.9] origin-center ${
               isLychee ? "opacity-100" : "opacity-0"
             }`}
             aria-hidden="true"
