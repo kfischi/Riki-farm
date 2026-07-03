@@ -11,7 +11,7 @@ export const CONFIG = {
   seo: {
     // 🔴 REPLACE with real domain before launch
     siteUrl: "https://mashak-shusterman.co.il",
-    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780053629/Gemini_Generated_Image_fu702yfu702yfu70_v41c7p.png",
+    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg",
   },
 
   brand: {
@@ -33,8 +33,8 @@ export const CONFIG = {
     // About — tractor + northern hills (ties to the גבול הצפון story)
     // ⚠️ VERIFY: may be AI-processed — see README
     aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
-    // Catalog — produce crate / fruit in hand
-    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780053629/Gemini_Generated_Image_fu702yfu702yfu70_v41c7p.png",
+    // Catalog — lychee feature banner
+    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg",
   },
 
   videos: [
@@ -57,28 +57,28 @@ export const CONFIG = {
       id: "lychee-fresh",
       name: "ליצ'י טרי מהמשק",
       description: "ליצ'י נקטף ישירות מהעצים במושב לימן ומגיע אליכם תוך שעות. עסיסי, מתוק, ואמיתי — הדבר שרק הקרבה למשק יכולה לתת.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0083_i9m3hk.jpg",
       tags: ["ליצ'י", "טרי", "עונתי"],
     },
     {
       id: "lychee-box-corp",
       name: "מארז ליצ'י לחברות",
       description: "מארז ליצ'י טרי בהתאמה אישית לחברות ומשרדים — כמות לפי בקשה, אריזה נקייה ומרשימה. מתנה שאנשים זוכרים.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/1_suo2t3.jpg",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0088_bpaxlk.jpg",
       tags: ["ליצ'י", "לחברות"],
     },
     {
       id: "lychee-seasonal",
       name: "סל ליצ'י + תוצרת עונתית",
       description: "ליצ'י טרי לצד מה שהשדה נותן השבוע — פירות וירקות עונתיים ממשק שוסטרמן. מתחדש כל שבוע לפי הגידולים.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/2_gq21ly.jpg",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0093_fxwxvw.jpg",
       tags: ["ליצ'י", "עונתי", "מגוון"],
     },
     {
       id: "fresh-box-custom",
       name: "מארז תוצרת בהתאמה אישית",
       description: "מארז תוצרת טרייה בהרכב מותאם — ליצ'י, ירקות, פירות ועוד, לפי מה שמתאים לכם ולעונה. ריקי בונה יחד איתכם.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/3_hh1piz.jpg",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
       tags: ["מותאם אישית", "טרי"],
     },
   ] as Package[],
