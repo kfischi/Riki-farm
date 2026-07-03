@@ -18,7 +18,7 @@ const LYCHEE_COLLAGE = [
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0083_i9m3hk.jpg",
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0088_bpaxlk.jpg",
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783106314/Gemini_Generated_Image_wxe3qkwxe3qkwxe3_zpcylb.png",
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg",
 ];
 
 function PremiumPlaceholder({ icon: Icon = Sprout }: { icon?: LucideIcon }) {
