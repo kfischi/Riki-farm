@@ -48,11 +48,11 @@ export function CatalogSection({ packages: packagesProp }: Props) {
   const FEATURED_CARDS = [
     {
       pkg: pkgs.find((p) => p.id === "lychee-fresh"),
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
     },
     {
       pkg: pkgs.find((p) => p.id === "fresh-box-custom"),
-      image: null as string | null,
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg" as string | null,
     },
   ].filter((f) => f.pkg);
 
