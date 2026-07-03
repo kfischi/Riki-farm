@@ -4,6 +4,13 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { CONFIG } from "@/lib/config";
 
+const LYCHEE_VIDEO_WEBM =
+  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_webm,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
+const LYCHEE_VIDEO_MP4 =
+  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
+const LYCHEE_POSTER =
+  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
+
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -16,7 +23,9 @@ function WhatsAppIcon({ className }: { className?: string }) {
 export function HeroSection() {
   const prefersReduced = useReducedMotion();
 
-  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent("שלום ריקי! אני רוצה להזמין ליצ'י טרי מהמשק 🌿")}`;
+  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
+    "שלום, אני מעוניין בהצעת מחיר למארזי שי לחברה"
+  )}`;
 
   const fadeUp = (delay: number) =>
     prefersReduced
@@ -28,96 +37,92 @@ export function HeroSection() {
         };
 
   return (
-    <header className="bg-forest grain-overlay overflow-hidden">
-      {/* ===== VIDEO ===== */}
-      <div className="relative w-full h-[100svh] md:h-auto md:aspect-[64/29] overflow-hidden">
+    <header
+      className="relative h-[80svh] max-h-[720px] md:h-[88vh] overflow-hidden bg-forest"
+      dir="rtl"
+    >
+      {/* Video — full-bleed background */}
+      {prefersReduced ? (
+        <img
+          src={LYCHEE_POSTER}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          aria-hidden="true"
+        />
+      ) : (
         <video
-          src="/mashak-shusterman-brand.mp4"
-          poster="/mashak-shusterman-poster.jpg"
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster={LYCHEE_POSTER}
           className="absolute inset-0 w-full h-full object-cover"
-          aria-label="סרטון תדמית — משק שוסטרמן"
-        />
-        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-forest to-transparent pointer-events-none" />
-      </div>
+          aria-hidden="true"
+        >
+          <source src={LYCHEE_VIDEO_WEBM} type="video/webm" />
+          <source src={LYCHEE_VIDEO_MP4} type="video/mp4" />
+        </video>
+      )}
 
-      {/* ===== TEXT BELOW VIDEO ===== */}
-      <div className="relative px-5 py-7 sm:py-14 lg:py-20 flex flex-col items-center text-center max-w-3xl mx-auto">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-60 rounded-full bg-wheat/5 blur-3xl pointer-events-none" aria-hidden="true" />
+      {/* Gradient — bottom only, lychee stays visible at top */}
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"
+        aria-hidden="true"
+      />
 
-        <div className="relative z-10 w-full">
-          {/* Badge — live seasonal status */}
-          <motion.div
-            {...fadeUp(0.1)}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-wheat/15 border border-wheat/25 text-wheat text-sm font-medium mb-5"
-            style={{ backdropFilter: "blur(8px)" }}
+      {/* Content — anchored to bottom third */}
+      <div className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center">
+
+        {/* Eyebrow */}
+        <motion.div
+          {...fadeUp(0.1)}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-sm font-medium mb-4"
+          style={{ backdropFilter: "blur(8px)" }}
+        >
+          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" aria-hidden="true" />
+          <span>עונת הליצ&#39;י · מארזי שי לחברות</span>
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          {...fadeUp(0.2)}
+          className="text-3xl md:text-6xl font-black text-white leading-[1.1] tracking-tight mb-4 text-balance"
+        >
+          קטיף העונה, במיתוג של החברה שלכם
+        </motion.h1>
+
+        {/* Sub-headline */}
+        <motion.p
+          {...fadeUp(0.3)}
+          className="text-white/80 text-sm md:text-lg leading-relaxed mb-7 text-balance"
+        >
+          מארזי ליצ&#39;י פרימיום לעובדים, ללקוחות ולאירועי חברה — קטיף טרי מהמטע, מיתוג לוגו, ואספקה מתואמת בפריסה ארצית.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          {...fadeUp(0.4)}
+          className="flex flex-col sm:flex-row gap-3 justify-center"
+        >
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#25D366] text-white font-bold text-sm md:text-base hover:bg-[#20b858] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.4)]"
+            aria-label="לקבלת הצעת מחיר לחברה בוואטסאפ"
           >
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" aria-hidden="true" />
-            <span>עונת הליצ'י פתוחה · מושב לימן</span>
-          </motion.div>
-
-          {/* Brand name */}
-          <motion.p {...fadeUp(0.15)} className="text-white/45 text-xs font-semibold tracking-[0.2em] uppercase mb-4">
-            {CONFIG.brand.name}
-          </motion.p>
-
-          {/* Vision headline */}
-          <motion.h1 {...fadeUp(0.25)} className="text-xl sm:text-4xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-3">
-            {CONFIG.about.heroLine}
-          </motion.h1>
-
-          {/* Divider */}
-          <motion.div {...fadeUp(0.32)} className="w-10 h-0.5 bg-wheat/50 mx-auto mb-4" aria-hidden="true" />
-
-          {/* Urgency line */}
-          <motion.p {...fadeUp(0.35)} className="text-wheat/90 text-sm font-semibold mb-3">
-            נקטף הבוקר · משלוח 24–48 שעות לכל הארץ
-          </motion.p>
-
-          {/* Sub-tagline */}
-          <motion.p {...fadeUp(0.38)} className="text-white/60 text-sm sm:text-lg leading-relaxed mb-6 sm:mb-10 max-w-xl mx-auto">
-            נקטף אצלנו במושב לימן, מגיע אליכם תוך שעות — טרי, עסיסי, ואמיתי.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div {...fadeUp(0.48)} className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-14">
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-sheen group inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl bg-[#25D366] text-white font-bold text-sm sm:text-base hover:bg-[#20b858] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:shadow-[0_8px_32px_rgba(37,211,102,0.55)]"
-              aria-label="הזמינו ליצ'י עכשיו בוואטסאפ"
-            >
-              <WhatsAppIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-              הזמינו עכשיו
-            </a>
-            <a
-              href="#catalog"
-              className="group inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-2xl border border-white/20 text-white font-semibold text-sm sm:text-base hover:border-white/40 hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300"
-            >
-              לקטלוג
-              <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-            </a>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div {...fadeUp(0.6)} className="flex justify-center gap-6 sm:gap-12 pt-6 sm:pt-8 border-t border-white/10">
-            {[
-              { num: "22", label: "שנות חקלאות" },
-              { num: "100%", label: "תוצרת ישראלית" },
-              { num: "מושב לימן", label: "גבול הצפון" },
-            ].map((s) => (
-              <div key={s.label} className="text-center">
-                <p className="text-xl sm:text-2xl font-black text-wheat tabular-nums">{s.num}</p>
-                <p className="text-xs text-white/45 mt-0.5 leading-tight">{s.label}</p>
-              </div>
-            ))}
-          </motion.div>
-        </div>
+            <WhatsAppIcon className="w-4 h-4" />
+            לקבלת הצעת מחיר לחברה
+          </a>
+          <a
+            href="#catalog"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl border border-white/25 text-white font-semibold text-sm md:text-base hover:border-white/50 hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300"
+          >
+            לצפייה במארזים
+            <ArrowLeft className="w-4 h-4" />
+          </a>
+        </motion.div>
       </div>
     </header>
   );
