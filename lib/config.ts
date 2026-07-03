@@ -204,8 +204,8 @@ export const CONFIG = {
     companyLegalName: "משק שוסטרמן בע\"מ",
     companyId: "ח.פ XXXXXXXXX", // 🔴
     address: "מושב לימן, גבול הצפון", // 🔴 כתובת מלאה
-    contactEmail: "info@example.co.il", // 🔴
-    contactPhone: "0XX-XXXXXXX", // 🔴
+    contactEmail: "meshek.shusterman@gmail.com",
+    contactPhone: "052-524-2155",
     accessibilityCoordinator: {
       name: "שם רכז/ת הנגישות", // 🔴
       phone: "0XX-XXXXXXX", // 🔴
