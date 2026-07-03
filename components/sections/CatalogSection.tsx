@@ -45,6 +45,17 @@ export function CatalogSection({ packages: packagesProp }: Props) {
     window.dispatchEvent(new CustomEvent("rickybot:open", { detail: { pkgId } }));
   };
 
+  const FEATURED_CARDS = [
+    {
+      pkg: pkgs.find((p) => p.id === "lychee-fresh"),
+      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
+    },
+    {
+      pkg: pkgs.find((p) => p.id === "fresh-box-custom"),
+      image: null as string | null,
+    },
+  ].filter((f) => f.pkg);
+
   const anim = (delay = 0) =>
     prefersReduced
       ? {}
@@ -108,45 +119,49 @@ export function CatalogSection({ packages: packagesProp }: Props) {
 
         {/* ===== Featured order cards ===== */}
         <div className="grid sm:grid-cols-2 gap-5 mb-12" role="list" aria-label="הזמנות">
-          {pkgs.slice(0, 2).map((pkg, i) => (
-            <motion.article
-              key={`order-${pkg.id}`}
-              role="listitem"
-              {...anim(0.28 + i * 0.1)}
-              className="card-lift group flex flex-col sm:flex-row bg-offwhite rounded-3xl overflow-hidden shadow-[0_4px_20px_rgba(27,67,50,0.1)] border border-forest/5 hover:shadow-[0_16px_44px_rgba(27,67,50,0.16)] hover:border-wheat/40"
-            >
-              <div className="relative h-52 sm:h-auto sm:w-48 flex-shrink-0 overflow-hidden">
-                {pkg.image && !pkg.image.includes("placehold.co") ? (
-                  <Image
-                    src={pkg.image}
-                    alt={pkg.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, 192px"
-                    unoptimized
-                  />
-                ) : (
-                  <div className="w-full h-full">
-                    <PremiumPlaceholder />
-                  </div>
-                )}
-              </div>
-              <div className="p-6 flex flex-col flex-1 justify-between">
-                <div>
-                  <h3 className="text-xl font-black text-forest mb-2">{pkg.name}</h3>
-                  <p className="text-sm text-forest/60 leading-relaxed line-clamp-3">{pkg.description}</p>
+          {FEATURED_CARDS.map(({ pkg, image }, i) => {
+            if (!pkg) return null;
+            const src = image ?? pkg.image;
+            return (
+              <motion.article
+                key={`order-${pkg.id}`}
+                role="listitem"
+                {...anim(0.28 + i * 0.1)}
+                className="card-lift group flex flex-col sm:flex-row bg-offwhite rounded-3xl overflow-hidden shadow-[0_4px_20px_rgba(27,67,50,0.1)] border border-forest/5 hover:shadow-[0_16px_44px_rgba(27,67,50,0.16)] hover:border-wheat/40"
+              >
+                <div className="relative h-52 sm:h-auto sm:w-48 flex-shrink-0 overflow-hidden">
+                  {src && !src.includes("placehold.co") ? (
+                    <Image
+                      src={src}
+                      alt={pkg.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, 192px"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="w-full h-full">
+                      <PremiumPlaceholder />
+                    </div>
+                  )}
                 </div>
-                <button
-                  onClick={() => openChatWithPkg(pkg.id)}
-                  className="btn-sheen mt-5 flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-forest text-white font-bold text-sm hover:bg-forest-mid hover:shadow-[0_4px_16px_rgba(27,67,50,0.3)] active:scale-[0.98] transition-all duration-300"
-                  aria-label={`שאל את ריקי על ${pkg.name}`}
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  שאל/י את ריקי
-                </button>
-              </div>
-            </motion.article>
-          ))}
+                <div className="p-6 flex flex-col flex-1 justify-between">
+                  <div>
+                    <h3 className="text-xl font-black text-forest mb-2">{pkg.name}</h3>
+                    <p className="text-sm text-forest/60 leading-relaxed line-clamp-3">{pkg.description}</p>
+                  </div>
+                  <button
+                    onClick={() => openChatWithPkg(pkg.id)}
+                    className="btn-sheen mt-5 flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-forest text-white font-bold text-sm hover:bg-forest-mid hover:shadow-[0_4px_16px_rgba(27,67,50,0.3)] active:scale-[0.98] transition-all duration-300"
+                    aria-label={`שאל את ריקי על ${pkg.name}`}
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    שאל/י את ריקי
+                  </button>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
 
 
