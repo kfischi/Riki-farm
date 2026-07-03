@@ -23,7 +23,7 @@ export function HeroSection() {
   return (
     <header className="bg-forest grain-overlay overflow-hidden">
       {/* ===== VIDEO ===== */}
-      <div className="relative w-full min-h-[70svh] md:min-h-0 md:aspect-video overflow-hidden">
+      <div className="relative w-full aspect-[64/29] overflow-hidden">
         <video
           src="/mashak-shusterman-brand.mp4"
           poster="/mashak-shusterman-poster.jpg"
