@@ -47,7 +47,6 @@ export default async function HomePage() {
       )}
       <main id="main-content">
         <HeroSection />
-        <USPStrip />
         <LycheeSpotlight />
         <SocialProofStrip />
         <AboutSection about={about} />

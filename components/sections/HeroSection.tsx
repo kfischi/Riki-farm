@@ -80,7 +80,7 @@ export function HeroSection() {
 
           {/* Sub-tagline */}
           <motion.p {...fadeUp(0.38)} className="text-white/60 text-sm sm:text-lg leading-relaxed mb-6 sm:mb-10 max-w-xl mx-auto">
-            ליצ'י טרי ומארזים עונתיים ישירות מהמשק — נקטף אצלנו, מגיע אליכם.
+            נקטף אצלנו במושב לימן, מגיע אליכם תוך שעות — טרי, עסיסי, ואמיתי.
           </motion.p>
 
           {/* CTAs */}
