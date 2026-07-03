@@ -1,9 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CONFIG } from "@/lib/config";
 
+const BRAND_VIDEO_SRC = "/mashak-shusterman-brand.mp4";
+const BRAND_POSTER = "/mashak-shusterman-poster.jpg";
 const LYCHEE_VIDEO_WEBM =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_webm,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
 const LYCHEE_VIDEO_MP4 =
@@ -22,26 +24,35 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export function HeroSection() {
   const prefersReduced = useReducedMotion();
+  const [isLychee, setIsLychee] = useState(false);
+  const brandRef = useRef<HTMLVideoElement>(null);
+  const lycheeRef = useRef<HTMLVideoElement>(null);
 
   const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
-    "שלום, אני מעוניין בהצעת מחיר למארזי שי לחברה"
+    "שלום, אני רוצה להזמין ליצ'י 🌿"
   )}`;
 
-  const fadeUp = (delay: number) =>
-    prefersReduced
-      ? {}
-      : {
-          initial: { opacity: 0, y: 24 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.7, delay, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
-        };
+  const switchToLychee = useCallback(() => {
+    setIsLychee(true);
+    if (lycheeRef.current) {
+      lycheeRef.current.currentTime = 0;
+      lycheeRef.current.play();
+    }
+  }, []);
+
+  const switchToBrand = useCallback(() => {
+    setIsLychee(false);
+    if (brandRef.current) {
+      brandRef.current.currentTime = 0;
+      brandRef.current.play();
+    }
+  }, []);
 
   return (
     <header
       className="relative h-[80svh] max-h-[720px] md:h-[88vh] overflow-hidden bg-forest"
       dir="rtl"
     >
-      {/* Video — full-bleed background */}
       {prefersReduced ? (
         <img
           src={LYCHEE_POSTER}
@@ -50,80 +61,85 @@ export function HeroSection() {
           aria-hidden="true"
         />
       ) : (
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={LYCHEE_POSTER}
-          className="absolute inset-0 w-full h-full object-cover"
-          aria-hidden="true"
-        >
-          <source src={LYCHEE_VIDEO_WEBM} type="video/webm" />
-          <source src={LYCHEE_VIDEO_MP4} type="video/mp4" />
-        </video>
+        <>
+          {/* Brand video — plays first */}
+          <video
+            ref={brandRef}
+            autoPlay
+            muted
+            playsInline
+            preload="metadata"
+            poster={BRAND_POSTER}
+            onEnded={switchToLychee}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              isLychee ? "opacity-0" : "opacity-100"
+            }`}
+            aria-hidden="true"
+          >
+            <source src={BRAND_VIDEO_SRC} type="video/mp4" />
+          </video>
+
+          {/* Lychee video — plays second */}
+          <video
+            ref={lycheeRef}
+            muted
+            playsInline
+            preload="metadata"
+            poster={LYCHEE_POSTER}
+            onEnded={switchToBrand}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              isLychee ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden="true"
+          >
+            <source src={LYCHEE_VIDEO_WEBM} type="video/webm" />
+            <source src={LYCHEE_VIDEO_MP4} type="video/mp4" />
+          </video>
+        </>
       )}
 
-      {/* Gradient — bottom only, lychee stays visible at top */}
+      {/* Gradient — bottom only */}
       <div
         className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"
         aria-hidden="true"
       />
 
-      {/* Content — anchored to bottom third */}
-      <div className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center">
-
-        {/* Eyebrow */}
-        <motion.div
-          {...fadeUp(0.1)}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-sm font-medium mb-4"
-          style={{ backdropFilter: "blur(8px)" }}
-        >
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" aria-hidden="true" />
-          <span>עונת הליצ&#39;י · מארזי שי לחברות</span>
-        </motion.div>
-
-        {/* Headline */}
-        <motion.h1
-          {...fadeUp(0.2)}
-          className="text-3xl md:text-6xl font-black text-white leading-[1.1] tracking-tight mb-4 text-balance"
-        >
-          קטיף העונה, במיתוג של החברה שלכם
-        </motion.h1>
-
-        {/* Sub-headline */}
-        <motion.p
-          {...fadeUp(0.3)}
-          className="text-white/80 text-sm md:text-lg leading-relaxed mb-7 text-balance"
-        >
-          מארזי ליצ&#39;י פרימיום לעובדים, ללקוחות ולאירועי חברה — קטיף טרי מהמטע, מיתוג לוגו, ואספקה מתואמת בפריסה ארצית.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          {...fadeUp(0.4)}
-          className="flex flex-col sm:flex-row gap-3 justify-center"
-        >
-          <a
-            href={waUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#25D366] text-white font-bold text-sm md:text-base hover:bg-[#20b858] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.4)]"
-            aria-label="לקבלת הצעת מחיר לחברה בוואטסאפ"
+      {/* Lychee segment — text + CTA, fades in when lychee video plays */}
+      <AnimatePresence>
+        {(isLychee || prefersReduced) && (
+          <motion.div
+            key="lychee-overlay"
+            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center"
           >
-            <WhatsAppIcon className="w-4 h-4" />
-            לקבלת הצעת מחיר לחברה
-          </a>
-          <a
-            href="#catalog"
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl border border-white/25 text-white font-semibold text-sm md:text-base hover:border-white/50 hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300"
-          >
-            לצפייה במארזים
-            <ArrowLeft className="w-4 h-4" />
-          </a>
-        </motion.div>
-      </div>
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-400/40 bg-green-400/10 text-green-300 text-sm font-bold tracking-[0.15em] mb-5">
+              <span className="w-2.5 h-2.5 rounded-full bg-green-400 flex-shrink-0 animate-pulse-dot" aria-hidden="true" />
+              עכשיו בעונה
+            </div>
+
+            {/* Headline */}
+            <h1 className="text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight mb-6 text-balance">
+              ליצ&#39;י מובחר, מתוק ועסיסי
+            </h1>
+
+            {/* WhatsApp CTA */}
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#25D366] text-white font-bold text-sm md:text-base hover:bg-[#20b858] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.4)]"
+              aria-label="הזמינו ליצ'י עכשיו בוואטסאפ"
+            >
+              <WhatsAppIcon className="w-5 h-5" />
+              הזמינו עכשיו בוואטסאפ
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
