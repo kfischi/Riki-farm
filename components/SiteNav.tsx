@@ -35,7 +35,7 @@ export function SiteNav() {
         {/* Brand */}
         <a href="#main-content" className="flex items-center gap-1.5 focus-visible:outline-none min-w-0" aria-label="חזרה לראש הדף">
           <Leaf className="w-4 h-4 md:w-5 md:h-5 text-wheat flex-shrink-0" />
-          <span className="font-black text-white text-xs md:text-base leading-tight whitespace-nowrap">{CONFIG.brand.name}</span>
+          <span className="font-black text-white text-[10px] md:text-sm leading-tight whitespace-nowrap">{CONFIG.brand.name}</span>
         </a>
 
         {/* Desktop links */}
