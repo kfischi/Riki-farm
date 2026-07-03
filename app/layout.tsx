@@ -21,31 +21,65 @@ export const viewport: Viewport = {
 const OG_IMAGE = "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
 
 export const metadata: Metadata = {
-  // 🔴 REPLACE with real domain before launch
   metadataBase: new URL("https://mashak-shusterman.co.il"),
-  title: "משק שוסטרמן — מארזים חקלאיים יוקרתיים לחברות",
+  title: {
+    default: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים מגבול הצפון",
+    template: "%s | משק שוסטרמן",
+  },
   description:
-    "מארזים חקלאיים יוקרתיים לחברות וארגונים — תוצרת טרייה ומובחרת ישירות מהמשק. מתנות עסקיות ייחודיות לחגים ולאירועים.",
-  keywords: "מארזים חקלאיים, מתנות לחברות, מתנות עסקיות, מארזי חג, תוצרת חקלאית, משק שוסטרמן, ריקי שוסטרמן, מושב לימן",
+    "ליצ'י טרי שנקטף ישירות מהעצים במושב לימן, גבול הצפון — עסיסי, מתוק ומגיע אליכם תוך שעות. מארזים חקלאיים יוקרתיים לחברות וועדי עובדים. ריקי שוסטרמן, 22 שנות חקלאות.",
+  keywords: [
+    "ליצ'י טרי", "ליצ'י מהמשק", "ליצ'י ישראלי", "ליצ'י גליל",
+    "מארזים חקלאיים", "מתנות לחברות", "מתנות עסקיות", "מארזי חג",
+    "ועד עובדים", "מתנות לעובדים", "תוצרת חקלאית", "תוצרת טרייה",
+    "משק שוסטרמן", "ריקי שוסטרמן", "מושב לימן", "גבול הצפון", "גליל מערבי",
+  ],
+  authors: [{ name: "ריקי שוסטרמן", url: "https://mashak-shusterman.co.il" }],
+  creator: "ריקי שוסטרמן",
+  publisher: "משק שוסטרמן",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://mashak-shusterman.co.il",
+    languages: { "he-IL": "https://mashak-shusterman.co.il" },
+  },
   openGraph: {
-    title: "משק שוסטרמן — מארזים חקלאיים יוקרתיים",
-    description: "מארזים חקלאיים יוקרתיים לחברות — תוצרת טרייה ומובחרת ישירות מהמשק.",
+    title: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים מגבול הצפון",
+    description:
+      "ליצ'י טרי שנקטף ישירות מהעצים במושב לימן — עסיסי, מתוק ומגיע אליכם ישירות מהשדה. מארזים לחברות ויחידים.",
     locale: "he_IL",
     type: "website",
+    siteName: "משק שוסטרמן",
+    url: "https://mashak-shusterman.co.il",
     images: [
       {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "משק שוסטרמן — מארזים חקלאיים יוקרתיים מגבול הצפון",
+        alt: "ליצ'י טרי ממשק שוסטרמן, מושב לימן, גבול הצפון",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "משק שוסטרמן — מארזים חקלאיים יוקרתיים",
-    description: "מארזים חקלאיים לחברות — תוצרת טרייה ישירות מהמשק.",
+    title: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים",
+    description: "ליצ'י טרי שנקטף ישירות מהעצים במושב לימן — ישירות מהמשק אליכם.",
     images: [OG_IMAGE],
+  },
+  other: {
+    "geo.region": "IL-HA",
+    "geo.placename": "מושב לימן, גליל מערבי, ישראל",
+    "geo.position": "33.067;35.136",
+    "ICBM": "33.067, 35.136",
   },
 };
 
