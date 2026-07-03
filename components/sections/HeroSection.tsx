@@ -153,15 +153,23 @@ export function HeroSection() {
               </AnimatePresence>
             </div>
 
-            {/* Chatbot CTA */}
-            <button
-              onClick={openChat}
-              className="btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white/15 border border-white/30 text-white font-bold text-sm md:text-base hover:bg-white/25 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 backdrop-blur-sm"
-              aria-label="לשאלות והזמנות — פתח צ'אט"
-            >
-              <MessageCircle className="w-5 h-5" />
-              להזמנות — לחצו כאן
-            </button>
+            {/* Chatbot CTA — pulsing */}
+            <div className="relative inline-flex w-full sm:w-auto justify-center">
+              <motion.span
+                className="absolute inset-0 rounded-2xl bg-white/40"
+                animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                aria-hidden="true"
+              />
+              <button
+                onClick={openChat}
+                className="relative btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white text-forest font-black text-sm md:text-base hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_24px_rgba(255,255,255,0.35)]"
+                aria-label="לשאלות והזמנות — פתח צ'אט"
+              >
+                <MessageCircle className="w-5 h-5" />
+                להזמנות — לחצו כאן
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
