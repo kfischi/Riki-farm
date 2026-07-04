@@ -14,13 +14,13 @@ const LYCHEE_VIDEO_MP4 =
 const LYCHEE_POSTER =
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
 
-// First 3 images span 2 columns each; last 2 span 3 columns each (3+2 layout)
+// Row 1: farm shot (span 2) + Riki & Ron wider shot (span 4); Row 2: three equal images (span 2 each)
 const PACKAGES_COLLAGE = [
   { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/5_pzixdg.jpg",        span: 2 },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg", span: 4, objectPosition: "center 30%" },
   { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg",        span: 2 },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg", span: 2 },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg", span: 3 },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg",       span: 3 },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg", span: 2 },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg",       span: 2 },
 ];
 
 function PremiumPlaceholder({ icon: Icon = Sprout }: { icon?: LucideIcon }) {
@@ -130,13 +130,14 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             className="grid gap-2 rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(27,67,50,0.12)] h-[45vh] md:h-[55vh] mb-6"
             style={{ gridTemplateColumns: "repeat(6, 1fr)", gridTemplateRows: "1fr 1fr" }}
           >
-            {PACKAGES_COLLAGE.map(({ src, span }, i) => (
+            {PACKAGES_COLLAGE.map(({ src, span, objectPosition }, i) => (
               <div key={src} className="relative overflow-hidden" style={{ gridColumn: `span ${span}` }}>
                 <Image
                   src={src}
                   alt={`מארז תוצרת חקלאית ממשק שוסטרמן ${i + 1}`}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-500"
+                  style={objectPosition ? { objectPosition } : undefined}
                   sizes="(max-width: 768px) 50vw, 33vw"
                   unoptimized
                 />
