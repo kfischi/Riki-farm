@@ -18,7 +18,7 @@ export function QuickReplies({ replies, onSelect }: Props) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: i * 0.05 }}
           onClick={() => onSelect(r.label)}
-          className="text-xs px-3 py-1.5 rounded-full border-2 bg-white font-medium transition-all"
+          className="text-sm px-4 py-2 rounded-full border-2 bg-white font-medium transition-all"
           style={{ borderColor: "rgba(27,67,50,0.2)", color: "#1B4332" }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = "#1B4332";

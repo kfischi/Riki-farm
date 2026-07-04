@@ -17,7 +17,7 @@ export function MessageBubble({ message, onSend }: Props) {
     return (
       <div className="flex justify-start">
         <div className="max-w-[80%] rounded-2xl rounded-bl-sm px-4 py-2.5 shadow-green-sm" style={{ backgroundColor: "#1B4332", color: "white" }}>
-          <p className="text-base leading-relaxed whitespace-pre-wrap">{message.type === "text" ? message.text : ""}</p>
+          <p className="text-[17px] leading-relaxed whitespace-pre-wrap">{message.type === "text" ? message.text : ""}</p>
         </div>
       </div>
     );
@@ -37,7 +37,7 @@ export function MessageBubble({ message, onSend }: Props) {
     case "text":
       return withAvatar(
         <div className="max-w-[85%] bg-white rounded-2xl rounded-br-sm px-4 py-2.5 shadow-green-sm">
-          <p className="text-base leading-relaxed whitespace-pre-wrap" style={{ color: "rgba(27,67,50,0.9)" }}>
+          <p className="text-[17px] leading-relaxed whitespace-pre-wrap" style={{ color: "rgba(27,67,50,0.9)" }}>
             {message.text}
           </p>
         </div>
@@ -48,7 +48,7 @@ export function MessageBubble({ message, onSend }: Props) {
         <div className="flex flex-col gap-2">
           {message.text && (
             <div className="max-w-[85%] bg-white rounded-2xl rounded-br-sm px-4 py-2.5 shadow-green-sm">
-              <p className="text-base leading-relaxed whitespace-pre-wrap" style={{ color: "rgba(27,67,50,0.9)" }}>
+              <p className="text-[17px] leading-relaxed whitespace-pre-wrap" style={{ color: "rgba(27,67,50,0.9)" }}>
                 {message.text}
               </p>
             </div>
