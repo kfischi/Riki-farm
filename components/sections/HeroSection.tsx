@@ -72,9 +72,14 @@ export function HeroSection() {
 
   return (
     <header
+      id="main-content"
       className="relative h-[80svh] max-h-[720px] md:h-[88vh] overflow-hidden bg-forest"
       dir="rtl"
     >
+      {/* Always-indexed H1 for SEO — visually hidden, always in DOM */}
+      <h1 className="sr-only">
+        ליצ&#39;י טרי ומארזים חקלאיים — משק שוסטרמן, מושב לימן, גבול הצפון
+      </h1>
       {prefersReduced ? (
         <img
           src={LYCHEE_POSTER}
@@ -192,9 +197,9 @@ export function HeroSection() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight mb-6 text-balance">
+            <p className="text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight mb-6 text-balance" aria-hidden="true">
               ליצ&#39;י מובחר, מתוק ועסיסי
-            </h1>
+            </p>
 
             {/* WhatsApp CTA */}
             <a
