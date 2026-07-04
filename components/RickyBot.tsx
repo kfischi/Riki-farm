@@ -119,8 +119,8 @@ export function RickyBot() {
 
       const nextOrder = { ...currentState.order, ...result.orderPatch };
 
-      // Save complete lead when reaching confirm
-      if (result.nextStep === "order_confirm" && nextOrder.phone) {
+      // Save complete lead when reaching confirm — B2B orders only (lychee leads go via WhatsApp)
+      if (result.nextStep === "order_confirm" && nextOrder.phone && nextOrder.interest !== "lychee") {
         saveLead({
           name: nextOrder.name ?? "—",
           company: nextOrder.company ?? "—",

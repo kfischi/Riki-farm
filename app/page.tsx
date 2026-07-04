@@ -1,5 +1,4 @@
 import { HeroSection } from "@/components/sections/HeroSection";
-import { USPStrip } from "@/components/sections/USPStrip";
 import { SocialProofStrip } from "@/components/sections/SocialProofStrip";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { CatalogSection } from "@/components/sections/CatalogSection";
