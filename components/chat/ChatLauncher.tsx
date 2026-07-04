@@ -18,7 +18,7 @@ export function ChatLauncher({ isOpen, unread, onOpen }: Props) {
       transition={{ type: "spring", delay: 0.5 }}
       onClick={onOpen}
       aria-label="פתח/י שיחה עם ריקי"
-      className="fixed bottom-6 left-6 z-50 group"
+      className="fixed bottom-6 left-6 z-[9100] group"
     >
       {/* Outer pulse ring */}
       <span
