@@ -17,7 +17,7 @@ export function SiteFooter() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Leaf className="w-5 h-5" style={{ color: "#E9C46A" }} />
-              <span className="font-black text-xl">{CONFIG.brand.name}</span>
+              <span className="font-black text-2xl">{CONFIG.brand.name}</span>
             </div>
             <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{CONFIG.brand.tagline}</p>
             <a
@@ -110,7 +110,7 @@ export function SiteFooter() {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
           <p>
-            © {year} {CONFIG.legal.companyLegalName} | {CONFIG.legal.companyId}
+            © {year} {CONFIG.legal.companyLegalName}
           </p>
           <p>
             {CONFIG.brand.name} | {CONFIG.legal.address}
