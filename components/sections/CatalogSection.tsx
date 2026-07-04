@@ -14,13 +14,13 @@ const LYCHEE_VIDEO_MP4 =
 const LYCHEE_POSTER =
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
 
+// First 3 images span 2 columns each; last 2 span 3 columns each (3+2 layout)
 const PACKAGES_COLLAGE = [
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0083_i9m3hk.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0088_bpaxlk.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg",
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/5_pzixdg.jpg",        span: 2 },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg",        span: 2 },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg", span: 2 },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg", span: 3 },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg",       span: 3 },
 ];
 
 function PremiumPlaceholder({ icon: Icon = Sprout }: { icon?: LucideIcon }) {
@@ -127,17 +127,17 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             מארזי תוצרת חקלאית
           </h3>
           <div
-            className="grid grid-cols-3 gap-2 rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(27,67,50,0.12)] h-[45vh] md:h-[55vh] mb-6"
-            style={{ gridTemplateRows: "1fr 1fr" }}
+            className="grid gap-2 rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(27,67,50,0.12)] h-[45vh] md:h-[55vh] mb-6"
+            style={{ gridTemplateColumns: "repeat(6, 1fr)", gridTemplateRows: "1fr 1fr" }}
           >
-            {PACKAGES_COLLAGE.map((src, i) => (
-              <div key={src} className="relative overflow-hidden">
+            {PACKAGES_COLLAGE.map(({ src, span }, i) => (
+              <div key={src} className="relative overflow-hidden" style={{ gridColumn: `span ${span}` }}>
                 <Image
                   src={src}
                   alt={`מארז תוצרת חקלאית ממשק שוסטרמן ${i + 1}`}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 33vw, 33vw"
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   unoptimized
                 />
               </div>
