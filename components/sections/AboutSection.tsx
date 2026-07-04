@@ -47,22 +47,71 @@ export function AboutSection({ about: aboutProp }: Props) {
           </span>
         </motion.div>
 
-        {/* ===== Intro block ===== */}
-        <motion.div {...anim(0.05)} className="mb-16 max-w-3xl" dir="rtl">
-          <h2 className="text-2xl lg:text-3xl font-black text-forest mb-5">
-            משק שוסטרמן – חקלאות ישראלית מהלב
-          </h2>
-          <div className="space-y-4">
-            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
-              ברוכים הבאים למשק שוסטרמן במושב לימן. המשק שלנו מביא אליכם חקלאות ישראלית שורשית, טרייה ואיכותית כבר למעלה מ-22 שנה.
-            </p>
-            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
-              אנו מתמחים בגידול מגוון רחב של פירות וירקות מובחרים, ומציעים שירות ייחודי של מארזים בהתאמה אישית הישר מהשדה. המארזים שלנו משלבים בגאווה את התוצרת המשקית שלנו לצד גידולים מעולים של חקלאי קו העימות, מתוך רוח של ערבות הדדית ותמיכה בצפון.
-            </p>
-            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
-              אנו מספקים תוצרת חקלאית ומארזים לוועדי עובדים, חברות, ארגונים ונקודות מכירה, לצד שירות ללקוחות פרטיים.
-            </p>
+        {/* ===== Intro block + lychee banner ===== */}
+        <motion.div {...anim(0.05)} className="mb-16 flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12" dir="rtl">
+          {/* Text */}
+          <div className="flex-1 min-w-0">
+            <h2 className="text-2xl lg:text-3xl font-black text-forest mb-5">
+              משק שוסטרמן – חקלאות ישראלית מהלב
+            </h2>
+            <div className="space-y-4">
+              <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+                ברוכים הבאים למשק שוסטרמן במושב לימן. המשק שלנו מביא אליכם חקלאות ישראלית שורשית, טרייה ואיכותית כבר למעלה מ-22 שנה.
+              </p>
+              <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+                אנו מתמחים בגידול מגוון רחב של פירות וירקות מובחרים, ומציעים שירות ייחודי של מארזים בהתאמה אישית הישר מהשדה. המארזים שלנו משלבים בגאווה את התוצרת המשקית שלנו לצד גידולים מעולים של חקלאי קו העימות, מתוך רוח של ערבות הדדית ותמיכה בצפון.
+              </p>
+              <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+                אנו מספקים תוצרת חקלאית ומארזים לוועדי עובדים, חברות, ארגונים ונקודות מכירה, לצד שירות ללקוחות פרטיים.
+              </p>
+            </div>
           </div>
+
+          {/* Lychee season banner — pulsing lychee-color glow */}
+          <motion.div
+            animate={{ boxShadow: ["0 0 0 0px rgba(180,32,64,0.6)", "0 0 0 10px rgba(180,32,64,0)", "0 0 0 0px rgba(180,32,64,0.6)"] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+            className="flex-shrink-0 self-start rounded-2xl w-full lg:w-52"
+          >
+            <button
+              onClick={() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" })}
+              className="w-full rounded-2xl overflow-hidden hover:-translate-y-1 active:scale-[0.97] transition-transform duration-300 block"
+              aria-label="עונת הליצ'י בעיצומה – עברו לסרטון"
+            >
+              <div className="relative">
+                <Image
+                  src="https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg"
+                  alt="ליצ'י מהמשק"
+                  width={208}
+                  height={156}
+                  className="w-full h-36 object-cover"
+                  unoptimized
+                />
+                {/* Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#b42040]/90 via-[#b42040]/30 to-transparent" />
+                {/* Badge */}
+                <div className="absolute top-2 right-2">
+                  <motion.span
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#b42040] text-white text-[10px] font-bold tracking-wide"
+                    animate={{ opacity: [1, 0.3, 1] }}
+                    transition={{ duration: 0.85, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-white" aria-hidden="true" />
+                    עכשיו בעונה
+                  </motion.span>
+                </div>
+                {/* Text overlay */}
+                <div className="absolute bottom-0 inset-x-0 p-3 text-center">
+                  <p className="text-white text-sm font-black leading-tight">
+                    עונת הליצ&apos;י בעיצומה
+                  </p>
+                  <p className="text-white/85 text-xs font-semibold mt-0.5 underline underline-offset-2">
+                    לחצו כאן לפרטים
+                  </p>
+                </div>
+              </div>
+            </button>
+          </motion.div>
         </motion.div>
 
         {/* ===== ROW 1: Greenhouse photo + Opening story ===== */}
