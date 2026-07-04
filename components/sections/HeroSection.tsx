@@ -6,7 +6,7 @@ import { MessageCircle } from "lucide-react";
 import { CONFIG } from "@/lib/config";
 
 const BRAND_VIDEO_SRC =
-  "https://res.cloudinary.com/dptyfvwyo/video/upload/so_2,eo_31,f_mp4,q_auto/v1783165404/mashakshustermanbrand_vxbk4e.mp4";
+  "https://res.cloudinary.com/dptyfvwyo/video/upload/so_2,eo_4/l_video:mashakshustermanbrand_vxbk4e,so_7,eo_31,fl_splice/f_mp4,q_auto/v1783165404/mashakshustermanbrand_vxbk4e.mp4";
 const BRAND_POSTER =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/so_2,f_jpg,q_auto/v1783165404/mashakshustermanbrand_vxbk4e.mp4";
 const LYCHEE_VIDEO_WEBM =
