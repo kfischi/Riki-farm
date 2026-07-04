@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { CONFIG } from "@/lib/config";
-import { Leaf, MapPin, Phone, Mail, Star } from "lucide-react";
+import { Leaf, MapPin, Phone, Mail } from "lucide-react";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -132,18 +132,6 @@ export function SiteFooter() {
               </li>
             </ul>
 
-            {/* Google Review CTA */}
-            <a
-              href={reviewUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
-              style={{ backgroundColor: "rgba(233,196,106,0.15)", color: "#E9C46A", border: "1px solid rgba(233,196,106,0.3)" }}
-              aria-label="כתבו לנו ביקורת בגוגל"
-            >
-              <Star className="w-4 h-4 fill-current" />
-              כתבו לנו ביקורת בגוגל
-            </a>
           </address>
         </div>
 
