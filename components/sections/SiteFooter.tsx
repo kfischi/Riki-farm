@@ -1,6 +1,22 @@
 import Link from "next/link";
 import { CONFIG } from "@/lib/config";
-import { MessageCircle, Leaf, MapPin, Phone, Mail, Star } from "lucide-react";
+import { Leaf, MapPin, Phone, Mail, Star } from "lucide-react";
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M16 3C8.82 3 3 8.82 3 16c0 2.3.61 4.47 1.68 6.34L3 29l6.84-1.65A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm6.37 18.17c-.26.72-1.52 1.38-2.07 1.42-.52.04-1.02.23-3.44-.72-2.9-1.13-4.76-4.07-4.9-4.26-.14-.2-1.17-1.55-1.17-2.96 0-1.41.74-2.1 1-2.38.26-.28.57-.35.76-.35l.55.01c.18 0 .42-.07.65.5l.84 2.07c.1.22.06.48-.07.68l-.37.54c-.14.2-.28.41-.12.7.46.85 1.14 1.7 1.96 2.38.84.7 1.7 1.02 2.12 1.14.3.08.54-.03.74-.26l.53-.63c.2-.23.44-.28.69-.18l2.1.98c.25.12.41.18.47.27.07.1.07.56-.19 1.29z"/>
+    </svg>
+  );
+}
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -28,9 +44,33 @@ export function SiteFooter() {
               style={{ backgroundColor: "#25D366" }}
               aria-label="צור/י קשר עם ריקי בוואטסאפ"
             >
-              <MessageCircle className="w-4 h-4" />
+              <WhatsAppIcon className="w-4 h-4" />
               וואטסאפ עם ריקי
             </a>
+
+            {/* Social icons */}
+            <div className="flex items-center gap-3 mt-4">
+              <a
+                href="https://www.facebook.com/share/1BtRYnhYM9/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="עמוד הפייסבוק שלנו"
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:opacity-80 active:scale-95"
+                style={{ backgroundColor: "#1877F2", color: "white" }}
+              >
+                <FacebookIcon className="w-4 h-4" />
+              </a>
+              <a
+                href={`https://wa.me/${CONFIG.whatsappNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="וואטסאפ"
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:opacity-80 active:scale-95"
+                style={{ backgroundColor: "#25D366", color: "white" }}
+              >
+                <WhatsAppIcon className="w-5 h-5" />
+              </a>
+            </div>
           </div>
 
           {/* Navigation */}
