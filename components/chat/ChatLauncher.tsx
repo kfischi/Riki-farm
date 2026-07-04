@@ -27,6 +27,11 @@ export function ChatLauncher({ isOpen, unread, onOpen }: Props) {
         aria-hidden="true"
       />
 
+      {/* Label above avatar */}
+      <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap bg-forest text-wheat text-xs font-bold px-3 py-1 rounded-full shadow-md pointer-events-none" dir="rtl">
+        להזמנות דברו איתי
+      </span>
+
       {/* Avatar circle */}
       <div className="shadow-[0_4px_20px_rgba(27,67,50,0.4)] group-hover:scale-105 transition-transform duration-200 rounded-full" style={{ outline: "3px solid #E9C46A" }}>
         <RickyAvatar size={64} withPresence />
