@@ -22,16 +22,16 @@ export function JsonLd() {
         "@type": ["Organization", "LocalBusiness", "FoodEstablishment"],
         "@id": `${SITE_URL}/#organization`,
         name: CONFIG.brand.name,
-        alternateName: ["משק שוסטרמן", "Meshek Shusterman", "ריקי שוסטרמן"],
+        alternateName: ["משק שוסטרמן", "Meshek Shusterman", "ריקי שוסטרמן", "Riki Shusterman Farm"],
         url: SITE_URL,
         logo: {
           "@type": "ImageObject",
           url: CONFIG.rickyAvatar,
-          caption: "ריקי שוסטרמן, חקלאית, מושב לימן",
+          caption: "ריקי שוסטרמן, חקלאית, מושב לימן, גבול הצפון",
         },
         image: CONFIG.seo.ogImage,
         description:
-          "משק שוסטרמן, מושב לימן — ריקי שוסטרמן, חקלאית עם 22 שנות ניסיון. מגדלת ליצ'י טרי ומוכרת מארזים חקלאיים עונתיים לחברות ויחידים ישירות מהשדה.",
+          "משק שוסטרמן במושב לימן, גבול הצפון — ריקי שוסטרמן, חקלאית עם למעלה מ-22 שנות ניסיון. מגדלים ומשווקים ליצ'י טרי ומארזים חקלאיים בהתאמה אישית, ישירות מהשדה. מספקים לוועדי עובדים, חברות, ארגונים ונקודות מכירה בכל רחבי ישראל. המארזים משלבים תוצרת משקית עם גידולים מובחרים של חקלאי קו העימות, מתוך ערבות הדדית ותמיכה בחקלאות הצפון.",
         foundingDate: "2004",
         address: {
           "@type": "PostalAddress",
@@ -52,25 +52,62 @@ export function JsonLd() {
         priceRange: "₪₪",
         currenciesAccepted: "ILS",
         paymentAccepted: "העברה בנקאית",
-        areaServed: {
-          "@type": "Country",
-          name: "ישראל",
+        areaServed: [
+          { "@type": "Country", name: "ישראל" },
+          { "@type": "State", name: "גליל מערבי" },
+          { "@type": "State", name: "גבול הצפון" },
+        ],
+        servesCuisine: ["ליצ'י טרי", "תוצרת חקלאית עונתית", "מארזים בהתאמה אישית"],
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "מארזים ותוצרת משק שוסטרמן",
+          itemListElement: [
+            { "@type": "Offer", itemOffered: { "@type": "Product", name: "ליצ'י טרי מהמשק" } },
+            { "@type": "Offer", itemOffered: { "@type": "Product", name: "מארז תוצרת חקלאית לחברות" } },
+            { "@type": "Offer", itemOffered: { "@type": "Product", name: "מארז שי בהתאמה אישית לוועד עובדים" } },
+          ],
         },
-        servesCuisine: "Fresh Farm Produce",
         sameAs: [
           `https://wa.me/${CONFIG.whatsappNumber}`,
         ],
+        keywords: "ליצ'י טרי, מארזים חקלאיים, ועד עובדים, נקודות מכירה, גבול הצפון, מושב לימן, חקלאות ישראלית",
         founder: {
           "@type": "Person",
           name: "ריקי שוסטרמן",
           jobTitle: "חקלאית",
-          knowsAbout: ["חקלאות", "ליצ'י", "גידולי שדה", "מארזים חקלאיים"],
+          description: "חקלאית ותושבת מושב לימן מזה למעלה מ-22 שנה, בוגרת מגמת גידולי שדה בבית הספר החקלאי נהלל.",
+          knowsAbout: [
+            "חקלאות", "ליצ'י", "גידולי שדה", "מארזים חקלאיים",
+            "שיווק חקלאי", "חקלאות קו עימות", "תוצרת עונתית",
+          ],
           address: {
             "@type": "PostalAddress",
             addressLocality: "מושב לימן",
             addressRegion: "גליל מערבי",
             addressCountry: "IL",
           },
+        },
+      },
+
+      // ── B2B Package Service ───────────────────────────────────────────────
+      {
+        "@type": "Service",
+        "@id": `${SITE_URL}/#b2b-service`,
+        name: "מארזים חקלאיים בהתאמה אישית לחברות וארגונים",
+        description:
+          "שירות בניית מארזי תוצרת חקלאית מותאמים לוועדי עובדים, חברות, ארגונים ונקודות מכירה. ריקי שוסטרמן בונה יחד עם הלקוח מארז הכולל ליצ'י, פירות וירקות עונתיים ותוצרת של חקלאי קו העימות — ישירות מהשדה לכל רחבי ישראל.",
+        provider: { "@id": `${SITE_URL}/#organization` },
+        serviceType: "מארזים חקלאיים עסקיים",
+        areaServed: { "@type": "Country", name: "ישראל" },
+        audience: {
+          "@type": "Audience",
+          audienceType: "ועדי עובדים, חברות, ארגונים, נקודות מכירה",
+        },
+        offers: {
+          "@type": "Offer",
+          availability: "https://schema.org/InStock",
+          priceCurrency: "ILS",
+          seller: { "@id": `${SITE_URL}/#organization` },
         },
       },
 
@@ -120,7 +157,7 @@ export function JsonLd() {
         "@id": `${SITE_URL}/#corporate-box`,
         name: "מארז תוצרת חקלאית לחברות",
         description:
-          "מארז תוצרת טרייה בהתאמה אישית לחברות, ועדי עובדים וארגונים. ליצ'י, ירקות, פירות עונתיים ועוד — ריקי בונה יחד איתכם.",
+          "מארז תוצרת חקלאית טרייה בהתאמה אישית לחברות, ועדי עובדים וארגונים. כולל ליצ'י מובחר, ירקות ופירות עונתיים ותוצרת של חקלאי קו העימות בצפון. ריקי שוסטרמן בונה יחד עם הלקוח מארז שי בלתי נשכח — ישירות מהשדה לכל רחבי ישראל.",
         image: CONFIG.images.catalogFeature,
         brand: {
           "@type": "Brand",
@@ -159,7 +196,7 @@ export function JsonLd() {
         url: SITE_URL,
         name: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים מגבול הצפון",
         description:
-          "ליצ'י טרי שנקטף ישירות מהעצים במושב לימן, גבול הצפון. מארזים חקלאיים לחברות וועדי עובדים. ריקי שוסטרמן — 22 שנות חקלאות.",
+          "ליצ'י טרי שנקטף ישירות מהעצים במושב לימן, גבול הצפון. מארזים חקלאיים בהתאמה אישית לחברות, ועדי עובדים, ארגונים ונקודות מכירה. ריקי שוסטרמן — חקלאות ישראלית אמיתית מ-2004, ישירות מהשדה לכל הארץ.",
         inLanguage: "he-IL",
         isPartOf: { "@id": `${SITE_URL}/#website` },
         about: { "@id": `${SITE_URL}/#organization` },
@@ -176,7 +213,7 @@ export function JsonLd() {
         },
         speakable: {
           "@type": "SpeakableSpecification",
-          cssSelector: ["h1", "h2", "#about", "#catalog"],
+          cssSelector: ["h1", "h2", "#about", "#catalog", "#testimonials", "#faq"],
         },
       },
     ],
