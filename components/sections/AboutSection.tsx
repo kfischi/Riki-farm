@@ -115,11 +115,19 @@ export function AboutSection({ about: aboutProp }: Props) {
         <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
           {/* Text side */}
           <div>
+            {CONFIG.about.story[2] && (
+              <motion.h3
+                {...anim(0.05)}
+                className="text-xl lg:text-2xl font-black text-forest mb-4"
+              >
+                {CONFIG.about.story[2]}
+              </motion.h3>
+            )}
             <motion.p
               {...anim(0.1)}
               className="text-base lg:text-lg text-forest/70 leading-[1.85] mb-10"
             >
-              {CONFIG.about.story[2]}
+              {CONFIG.about.story[3] ?? CONFIG.about.story[2]}
             </motion.p>
 
             {/* Pull quote — standalone */}
