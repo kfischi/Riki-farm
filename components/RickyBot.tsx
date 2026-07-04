@@ -119,8 +119,8 @@ export function RickyBot() {
 
       const nextOrder = { ...currentState.order, ...result.orderPatch };
 
-      // Save complete lead on consent
-      if (result.nextStep === "order_confirm" && result.orderPatch.consent === true) {
+      // Save complete lead when order flow finishes
+      if (result.nextStep === "order_confirm" && nextOrder.phone) {
         saveLead({
           name: nextOrder.name ?? "—",
           company: nextOrder.company ?? "—",
