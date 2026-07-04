@@ -28,7 +28,6 @@ const LYCHEE_QUANTITIES: QuickReply[] = [
 const MAIN_MENU_REPLIES: QuickReply[] = [
   { label: "🍒 הזמנת ליצ'י טרי", value: "lychee" },
   { label: "📦 מארז שי לחברה / ועד עובדים", value: "order" },
-  { label: "💬 שאלה? נדבר ישירות", value: "whatsapp" },
 ];
 
 export function mainMenuMessage(): MessageType {
