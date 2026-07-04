@@ -18,10 +18,8 @@ export const REGIONS: QuickReply[] = [
 ];
 
 const LYCHEE_QUANTITIES: QuickReply[] = [
-  { label: "מארז 1", value: "מארז 1" },
-  { label: "2 מארזים", value: "2 מארזים" },
-  { label: "5 מארזים", value: "5 מארזים" },
-  { label: "10 מארזים", value: "10 מארזים" },
+  { label: "1 ק\"ג — ₪30", value: "1 ק\"ג — ₪30" },
+  { label: "4 ק\"ג — ₪100", value: "4 ק\"ג — ₪100" },
   { label: "כמות אחרת", value: "כמות אחרת" },
 ];
 
@@ -31,7 +29,7 @@ const LEAD_TYPE_REPLIES: QuickReply[] = [
 ];
 
 const MAIN_MENU_REPLIES: QuickReply[] = [
-  { label: "🍒 הזמנת ליצ'י טרי", value: "lychee" },
+  { label: "🍈 הזמנת ליצ'י טרי", value: "lychee" },
   { label: "📦 מארז שי לחברה / ועד עובדים", value: "order" },
 ];
 
@@ -40,7 +38,7 @@ export function mainMenuMessage(): MessageType {
     id: newId(),
     sender: "bot",
     type: "quick-replies",
-    text: "שלום! 🍒 ממשק שוסטרמן במושב לימן.\nאנחנו בעיצומה של עונת הליצ'י — נקטף ישירות מהשדה ומגיע אליכם טרי.\nמה תרצה/י?",
+    text: "שלום! 🍈 ממשק שוסטרמן במושב לימן.\nאנחנו בעיצומה של עונת הליצ'י — נקטף ישירות מהשדה ומגיע אליכם טרי.\nמה תרצה/י?",
     replies: MAIN_MENU_REPLIES,
   };
 }
@@ -153,7 +151,7 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
         orderPatch = { customerType: trimmed === "פרטי" ? "personal" : "business" };
         messages = [{
           id: newId(), sender: "bot", type: "quick-replies",
-          text: "כמה מארזים תרצה/י?",
+          text: "🎉 מבצע: 1 ק\"ג ב-₪30 | 4 ק\"ג ב-₪100\nכמה תרצה/י?",
           replies: LYCHEE_QUANTITIES,
         }];
         nextStep = "lychee_quantity";
@@ -168,9 +166,13 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
     }
 
     case "lychee_quantity": {
-      orderPatch = { lycheeQty: trimmed };
-      messages = [{ id: newId(), sender: "bot", type: "text", text: `${trimmed} — מצוין! 🍈\nמה שמך המלא?` }];
-      nextStep = "lychee_name";
+      if (trimmed === "כמות אחרת") {
+        messages = [{ id: newId(), sender: "bot", type: "text", text: "כמה ק\"ג ליצ'י תרצה/י? (לדוגמה: 2, 6, 10)" }];
+      } else {
+        orderPatch = { lycheeQty: trimmed };
+        messages = [{ id: newId(), sender: "bot", type: "text", text: `מצוין! 🍈\nמה שמך המלא?` }];
+        nextStep = "lychee_name";
+      }
       break;
     }
 
@@ -231,9 +233,14 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
     case "info":
     case "catalog": {
       if (trimmed === "lychee" || trimmed.includes("ליצ'י")) {
-        messages = [{ id: newId(), sender: "bot", type: "quick-replies", text: "כמה ק\"ג ליצ'י תרצה/י?", replies: LYCHEE_QUANTITIES }];
-        nextStep = "lychee_quantity";
-      } else if (trimmed === "order" || trimmed.includes("להזמין")) {
+        messages = [{
+          id: newId(), sender: "bot", type: "quick-replies",
+          text: "מעולה! 🍈 ליצ'י טרי ישירות מהשדה.\nמדובר בהזמנה פרטית או עבור חברה/עסק?",
+          replies: LEAD_TYPE_REPLIES,
+        }];
+        orderPatch = { interest: "lychee" };
+        nextStep = "lead_type";
+      } else if (trimmed === "order" || trimmed.includes("להזמין") || trimmed.includes("מארז")) {
         messages = [{ id: newId(), sender: "bot", type: "text", text: "נהדר! בוא/י נמלא פרטים קצרים.\nמה שמך המלא?" }];
         nextStep = "order_name";
       } else {
