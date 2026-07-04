@@ -6,9 +6,9 @@ import { MessageCircle } from "lucide-react";
 import { CONFIG } from "@/lib/config";
 
 const BRAND_VIDEO_SRC =
-  "https://res.cloudinary.com/dptyfvwyo/video/upload/so_2,eo_4/l_video:mashakshustermanbrand_vxbk4e,so_7,eo_32,fl_splice/f_mp4,q_auto/v1783165404/mashakshustermanbrand_vxbk4e.mp4";
+  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783185123/0704_1_bpnr2e.mp4";
 const BRAND_POSTER =
-  "https://res.cloudinary.com/dptyfvwyo/video/upload/so_2,f_jpg,q_auto/v1783165404/mashakshustermanbrand_vxbk4e.mp4";
+  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_jpg,q_auto,so_0/v1783185123/0704_1_bpnr2e.mp4";
 const LYCHEE_VIDEO_WEBM =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_webm,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
 const LYCHEE_VIDEO_MP4 =
