@@ -40,11 +40,29 @@ export function AboutSection({ about: aboutProp }: Props) {
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-16">
         {/* Section label */}
-        <motion.div {...anim(0)} className="flex items-center gap-3 mb-16">
+        <motion.div {...anim(0)} className="flex items-center gap-3 mb-8">
           <div className="w-8 h-px bg-clay" aria-hidden="true" />
           <span className="text-clay text-sm font-semibold uppercase tracking-[0.2em]">
             הסיפור שמאחורי המשק
           </span>
+        </motion.div>
+
+        {/* ===== Intro block ===== */}
+        <motion.div {...anim(0.05)} className="mb-16 max-w-3xl" dir="rtl">
+          <h2 className="text-2xl lg:text-3xl font-black text-forest mb-5">
+            משק שוסטרמן – חקלאות ישראלית מהלב
+          </h2>
+          <div className="space-y-4">
+            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+              ברוכים הבאים למשק שוסטרמן במושב לימן. המשק שלנו מביא אליכם חקלאות ישראלית שורשית, טרייה ואיכותית כבר למעלה מ-22 שנה.
+            </p>
+            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+              אנו מתמחים בגידול מגוון רחב של פירות וירקות מובחרים, ומציעים שירות ייחודי של מארזים בהתאמה אישית הישר מהשדה. המארזים שלנו משלבים בגאווה את התוצרת המשקית שלנו לצד גידולים מעולים של חקלאי קו העימות, מתוך רוח של ערבות הדדית ותמיכה בצפון.
+            </p>
+            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+              אנו מספקים תוצרת חקלאית ומארזים לוועדי עובדים, חברות, ארגונים ונקודות מכירה, לצד שירות ללקוחות פרטיים.
+            </p>
+          </div>
         </motion.div>
 
         {/* ===== ROW 1: Greenhouse photo + Opening story ===== */}
