@@ -70,7 +70,7 @@ export function ChatPanel({ messages, isTyping, onClose, onSend, onReset, inputR
       <div className="relative flex items-center gap-3 px-4 py-3 flex-shrink-0" style={{ backgroundColor: "#1B4332", color: "white" }}>
         <RickyAvatar size={40} withPresence />
         <div className="flex-1 min-w-0">
-          <p className="font-bold text-sm leading-tight">{CONFIG.brand.ownerName}</p>
+          <p className="font-bold text-sm leading-tight">🍒 {CONFIG.brand.ownerName}</p>
           <p className="text-xs flex items-center gap-1" style={{ color: "rgba(255,255,255,0.7)" }}>
             מחובר/ת עכשיו
           </p>

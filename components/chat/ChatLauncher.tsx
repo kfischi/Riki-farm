@@ -29,7 +29,7 @@ export function ChatLauncher({ isOpen, unread, onOpen }: Props) {
 
       {/* Label above avatar */}
       <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap bg-forest text-wheat text-xs font-bold px-3 py-1 rounded-full shadow-md pointer-events-none" dir="rtl">
-        להזמנות דברו איתי
+        🍒 להזמנות דברו איתי
       </span>
 
       {/* Avatar circle */}
