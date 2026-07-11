@@ -18,7 +18,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const OG_IMAGE = "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
+const OG_IMAGE = "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://meshek-shusterman.co.il"),

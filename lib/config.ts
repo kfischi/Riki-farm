@@ -10,7 +10,7 @@ export const CONFIG = {
 
   seo: {
     siteUrl: "https://meshek-shusterman.co.il",
-    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg",
+    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg",
   },
 
   brand: {
