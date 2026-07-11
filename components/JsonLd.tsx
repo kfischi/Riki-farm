@@ -69,6 +69,7 @@ export function JsonLd() {
         },
         sameAs: [
           `https://wa.me/${CONFIG.whatsappNumber}`,
+          "https://www.facebook.com/share/1BtRYnhYM9/",
         ],
         keywords: "ליצ'י טרי, מארזים חקלאיים, ועד עובדים, נקודות מכירה, גבול הצפון, מושב לימן, חקלאות ישראלית",
         founder: {
@@ -130,12 +131,33 @@ export function JsonLd() {
           name: "ישראל",
         },
         offers: {
-          "@type": "Offer",
+          "@type": "AggregateOffer",
+          priceCurrency: "ILS",
+          lowPrice: "30",
+          highPrice: "100",
+          offerCount: "2",
           availability: "https://schema.org/InStock",
           itemCondition: "https://schema.org/NewCondition",
-          priceCurrency: "ILS",
           seller: { "@id": `${SITE_URL}/#organization` },
           url: SITE_URL,
+          offers: [
+            {
+              "@type": "Offer",
+              name: "1 ק\"ג ליצ'י טרי",
+              price: "30",
+              priceCurrency: "ILS",
+              availability: "https://schema.org/InStock",
+              seller: { "@id": `${SITE_URL}/#organization` },
+            },
+            {
+              "@type": "Offer",
+              name: "4 ק\"ג ליצ'י טרי",
+              price: "100",
+              priceCurrency: "ILS",
+              availability: "https://schema.org/InStock",
+              seller: { "@id": `${SITE_URL}/#organization` },
+            },
+          ],
         },
         additionalProperty: [
           {
@@ -147,6 +169,16 @@ export function JsonLd() {
             "@type": "PropertyValue",
             name: "אופן גידול",
             value: "חקלאות מסורתית ללא חומרי שימור",
+          },
+          {
+            "@type": "PropertyValue",
+            name: "עונת מכירה",
+            value: "יוני–אוגוסט",
+          },
+          {
+            "@type": "PropertyValue",
+            name: "מחיר",
+            value: "₪30 לק\"ג | 4 ק\"ג ב-₪100",
           },
         ],
       },

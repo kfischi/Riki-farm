@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 const OG_IMAGE = "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mashak-shusterman.co.il"),
+  metadataBase: new URL("https://meshek-shusterman.co.il"),
   title: {
     default: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים מגבול הצפון",
     template: "%s | משק שוסטרמן",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     "נקודות מכירה", "חקלאות ישראלית", "חקלאי קו עימות", "תמיכה בצפון",
     "משק שוסטרמן", "ריקי שוסטרמן", "מושב לימן", "גבול הצפון", "גליל מערבי",
   ],
-  authors: [{ name: "ריקי שוסטרמן", url: "https://mashak-shusterman.co.il" }],
+  authors: [{ name: "ריקי שוסטרמן", url: "https://meshek-shusterman.co.il" }],
   creator: "ריקי שוסטרמן",
   publisher: "משק שוסטרמן",
   robots: {
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://mashak-shusterman.co.il",
-    languages: { "he-IL": "https://mashak-shusterman.co.il" },
+    canonical: "https://meshek-shusterman.co.il",
+    languages: { "he-IL": "https://meshek-shusterman.co.il" },
   },
   openGraph: {
     title: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים מגבול הצפון",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     locale: "he_IL",
     type: "website",
     siteName: "משק שוסטרמן",
-    url: "https://mashak-shusterman.co.il",
+    url: "https://meshek-shusterman.co.il",
     images: [
       {
         url: OG_IMAGE,
