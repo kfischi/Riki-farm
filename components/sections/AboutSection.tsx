@@ -71,7 +71,7 @@ export function AboutSection({ about: aboutProp }: Props) {
           <motion.div
             animate={{ boxShadow: ["0 0 0 0px rgba(180,32,64,0.6)", "0 0 0 10px rgba(180,32,64,0)", "0 0 0 0px rgba(180,32,64,0.6)"] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-            className="flex-shrink-0 self-start rounded-2xl w-full lg:w-52"
+            className="flex-shrink-0 self-start rounded-2xl w-full lg:w-[240px]"
           >
             <button
               onClick={() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" })}
@@ -80,11 +80,11 @@ export function AboutSection({ about: aboutProp }: Props) {
             >
               <div className="relative">
                 <Image
-                  src="https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg"
+                  src="https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg"
                   alt="ליצ'י מהמשק"
-                  width={208}
-                  height={156}
-                  className="w-full h-36 object-cover"
+                  width={240}
+                  height={180}
+                  className="w-full h-[166px] object-cover"
                   unoptimized
                 />
                 {/* Gradient */}
