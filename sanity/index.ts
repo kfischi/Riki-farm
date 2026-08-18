@@ -1,13 +1,18 @@
-// Export all schemas for use in Sanity Studio
-export { packageSchema }    from "./schemas/package";
-export { boxTypeSchema }    from "./schemas/boxType";
-export { boxProductSchema } from "./schemas/boxProduct";
-export { videoSchema }      from "./schemas/video";
-export { siteSettingsSchema } from "./schemas/siteSettings";
+// Schema registry for the embedded Sanity Studio (/studio).
+// Import this array in sanity.config.ts — it is the single source of truth
+// for which document types the editor can see.
+import { packageSchema } from "./schemas/package";
+import { boxTypeSchema } from "./schemas/boxType";
+import { boxProductSchema } from "./schemas/boxProduct";
+import { videoSchema } from "./schemas/video";
+import { siteSettingsSchema } from "./schemas/siteSettings";
 
-// All schemas array — use this in your Sanity Studio config:
-// import { schemas } from './sanity'
-// defineConfig({ ..., schema: { types: schemas } })
+export { packageSchema, boxTypeSchema, boxProductSchema, videoSchema, siteSettingsSchema };
+
 export const schemas = [
-  // imported inside Studio project — this file is a reference only
+  siteSettingsSchema,
+  packageSchema,
+  boxTypeSchema,
+  boxProductSchema,
+  videoSchema,
 ];
