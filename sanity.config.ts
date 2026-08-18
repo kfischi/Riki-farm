@@ -1,7 +1,18 @@
-import { defineConfig, buildLegacyTheme } from "sanity";
-import { structureTool } from "sanity/structure";
+import { defineConfig, buildLegacyTheme, type TemplateItem } from "sanity";
+import { structureTool, type StructureBuilder } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemas } from "./sanity";
+
+/**
+ * Document types that exist exactly once. They get a fixed document ID, are
+ * shown as a single entry in the sidebar, and are removed from every
+ * "create new" surface so a second copy can never be made.
+ */
+const SINGLETONS = [
+  { type: "siteSettings", title: "הגדרות האתר" },
+] as const;
+
+const SINGLETON_TYPES = new Set<string>(SINGLETONS.map((s) => s.type));
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -55,7 +66,33 @@ export default defineConfig({
 
   schema: { types: schemas },
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S: StructureBuilder) =>
+        S.list()
+          .title("תוכן")
+          .items([
+            ...SINGLETONS.map(({ type, title }) =>
+              S.listItem()
+                .title(title)
+                .id(type)
+                .child(S.document().schemaType(type).documentId(type).title(title)),
+            ),
+            S.divider(),
+            ...S.documentTypeListItems().filter(
+              (item) => !SINGLETON_TYPES.has(item.getId() ?? ""),
+            ),
+          ]),
+    }),
+    visionTool(),
+  ],
+
+  document: {
+    // Removes singletons from the global "create new" menu and from the
+    // "+" button on any list, so the editor cannot make a second copy.
+    newDocumentOptions: (prev: TemplateItem[]) =>
+      prev.filter((item) => !SINGLETON_TYPES.has(item.templateId)),
+  },
 
   theme,
 });

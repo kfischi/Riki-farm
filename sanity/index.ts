@@ -6,12 +6,14 @@ import { boxTypeSchema } from "./schemas/boxType";
 import { boxProductSchema } from "./schemas/boxProduct";
 import { videoSchema } from "./schemas/video";
 import { siteSettingsSchema } from "./schemas/siteSettings";
+import { mediaBlockSchema } from "./schemas/mediaBlock";
 
-export { packageSchema, boxTypeSchema, boxProductSchema, videoSchema, siteSettingsSchema };
+export { packageSchema, boxTypeSchema, boxProductSchema, videoSchema, siteSettingsSchema, mediaBlockSchema };
 
 export const schemas = [
   siteSettingsSchema,
   packageSchema,
+  mediaBlockSchema,
   boxTypeSchema,
   boxProductSchema,
   videoSchema,
