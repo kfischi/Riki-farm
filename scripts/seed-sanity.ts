@@ -24,6 +24,10 @@ import { CONFIG } from "../lib/config.ts";
 import type { BoxProduct } from "../lib/pricing.ts";
 
 const COMMIT = process.argv.includes("--commit");
+// --json prints the exact document payloads without contacting Sanity.
+// Used when the network cannot reach the API and the documents must be
+// created through another channel.
+const JSON_ONLY = process.argv.includes("--json");
 
 // ---------------------------------------------------------------- env
 
@@ -138,8 +142,10 @@ function clean<T extends Record<string, unknown>>(o: T): T {
 }
 
 const created: string[] = [];
+const payloads: Record<string, unknown>[] = [];
 async function put(doc: Record<string, unknown>) {
   created.push(`${doc._type}  ${doc._id}`);
+  payloads.push(doc);
   if (COMMIT) await client.createIfNotExists(doc as never);
 }
 
@@ -278,6 +284,15 @@ function reportNotMigrated() {
 // ---------------------------------------------------------------- run
 
 async function main() {
+  if (JSON_ONLY) {
+    await seedSiteSettings();
+    await seedPackages();
+    await seedBoxTypes();
+    await seedBoxProducts();
+    await seedMediaBlocks();
+    console.log(JSON.stringify(payloads, null, 0));
+    return;
+  }
   console.log(COMMIT ? "מצב: כתיבה (--commit)" : "מצב: הרצה יבשה — לא נכתב דבר");
   console.log(`יעד: ${projectId} / ${dataset}\n`);
 
