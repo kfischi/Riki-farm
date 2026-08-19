@@ -12,11 +12,14 @@
     "@fontsource/heebo": "^5.2.8",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.10.0",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",
+    "next-sanity": "^13.3.3",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "sanity": "^6.10.0"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.15.11",

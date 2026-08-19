@@ -2,5 +2,17 @@
   command = "npm run build"
   publish = ".next"
 
+# מזהי Sanity. ציבוריים במפורש: הקידומת NEXT_PUBLIC_ גורמת ל-Next להטמיע
+# אותם בחבילת הדפדפן בזמן הבנייה, כי הסטודיו המוטמע ב-/studio רץ בדפדפן
+# וזקוק להם. לכן אין טעם לנהל אותם כסודות, ומקומם כאן ולא בממשק Netlify.
+#
+# הטוקנים והסוד לעולם לא נכנסים לקובץ הזה. הם מוגדרים ידנית בממשק Netlify
+# תחת Environment variables ומסומנים כ-Secret:
+#   SANITY_API_READ_TOKEN     — קריאת תוכן בצד שרת
+#   SANITY_REVALIDATE_SECRET  — הסוד המשותף עם ה-webhook של Sanity
+[build.environment]
+  NEXT_PUBLIC_SANITY_PROJECT_ID = "amums2vy"
+  NEXT_PUBLIC_SANITY_DATASET = "production"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"

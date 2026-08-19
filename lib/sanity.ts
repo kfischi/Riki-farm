@@ -5,16 +5,23 @@ import type { Package, Video } from "./types";
 import { CONFIG } from "./config";
 
 // ===== Client =====
-const projectId = process.env.SANITY_PROJECT_ID;
-const dataset   = process.env.SANITY_DATASET ?? "production";
+// These two names are shared with the embedded Studio, which runs in the
+// browser and therefore needs the NEXT_PUBLIC_ prefix. They are identifiers,
+// not secrets. The token below stays server-only and must never gain that
+// prefix.
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
 export const sanityClient = projectId
   ? createClient({
       projectId,
       dataset,
       apiVersion: "2024-01-01",
-      useCdn: true, // fast reads for build-time
-      token: process.env.SANITY_API_TOKEN, // optional, for private datasets
+      // Caching is handled by ISR + the revalidate webhook. Going through the
+      // CDN as well would add a second, uncontrolled layer of staleness on top
+      // of it, so a publish could take longer than the promised minute.
+      useCdn: false,
+      token: process.env.SANITY_API_READ_TOKEN,
     })
   : null;
 
@@ -69,8 +76,16 @@ export interface SanityVideo {
 
 export interface SanitySettings {
   about?: { headline?: string; body?: string };
-  hero?: { tagline?: string; ctaLabel?: string };
-  banner?: { visible?: boolean; text?: string; color?: string };
+  hero?: { headline?: string; tagline?: string; ctaLabel?: string; ctaHref?: string };
+  contact?: { phone?: string; whatsapp?: string; email?: string };
+  banner?: {
+    visible?: boolean;
+    text?: string;
+    /** Hex value picked from the brand list in the Studio. */
+    color?: string;
+    /** ISO date; after it the banner stops showing. */
+    expiresAt?: string;
+  };
 }
 
 // ===== GROQ Queries =====
@@ -100,25 +115,47 @@ const VIDEOS_QUERY = `
 
 const SITE_SETTINGS_QUERY = `
   *[_type == "siteSettings"][0] {
-    about, hero, banner
+    about, hero, contact, banner
   }
 `;
 
 // ===== Fetch helpers with graceful fallbacks =====
+
+/**
+ * Photos that already ship with the site, keyed by package id.
+ * A package migrated into Sanity without its photo still renders the real
+ * one from here, rather than a placeholder.
+ */
+const STATIC_PACKAGE_IMAGES = new Map(
+  [...CONFIG.packages, ...CONFIG.borderPackages]
+    .filter((p) => p.image)
+    .map((p) => [p.id, p.image] as const),
+);
+
+/** Last-resort image. Brand palette only — no yellow, no amber. */
+function placeholderImage(label: string): string {
+  return `https://placehold.co/400x300/80182c/FFFFFF?text=${encodeURIComponent(label)}`;
+}
 
 export async function fetchPackages(): Promise<Package[]> {
   if (!sanityClient) return CONFIG.packages; // fallback to static config
   try {
     const data: SanityPackage[] = await sanityClient.fetch(PACKAGES_QUERY);
     if (!data?.length) return CONFIG.packages;
-    return data.map((p) => ({
-      id:          p.id?.current ?? p._id,
-      name:        p.name,
-      description: p.description ?? "",
-      price:       p.price,
-      image:       sanityImageUrl(p.image) ?? `https://placehold.co/400x300/E9C46A/1B4332?text=${encodeURIComponent(p.name)}`,
-      tags:        p.tags ?? [],
-    }));
+    return data.map((p) => {
+      const id = p.id?.current ?? p._id;
+      return {
+        id,
+        name:        p.name,
+        description: p.description ?? "",
+        price:       p.price,
+        image:
+          sanityImageUrl(p.image) ??
+          STATIC_PACKAGE_IMAGES.get(id) ??
+          placeholderImage(p.name),
+        tags:        p.tags ?? [],
+      };
+    });
   } catch (err) {
     console.error("[Sanity] fetchPackages failed, using fallback:", err);
     return CONFIG.packages;
@@ -154,7 +191,7 @@ export async function fetchVideos(): Promise<Video[]> {
       id:        v.id?.current ?? v._id,
       title:     v.title,
       url:       v.url,
-      thumbnail: v.thumbnail ?? `https://placehold.co/320x180/1B4332/E9C46A?text=${encodeURIComponent(v.title)}`,
+      thumbnail: v.thumbnail ?? placeholderImage(v.title),
     }));
   } catch (err) {
     console.error("[Sanity] fetchVideos failed, using fallback:", err);

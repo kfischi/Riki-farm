@@ -12,7 +12,9 @@ import { StickyOrderBar } from "@/components/StickyOrderBar";
 import { fetchPackages, fetchSiteSettings } from "@/lib/sanity";
 import { CONFIG } from "@/lib/config";
 
-export const revalidate = 3600;
+// 60s so an edit in the Studio appears within a minute even if the
+// revalidate webhook is not registered. The webhook makes it immediate.
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [packages, settings] = await Promise.all([
