@@ -12,6 +12,19 @@ import { CONFIG } from "./config";
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
+/**
+ * The dataset is public, so reads need no credentials and this stays empty in
+ * normal operation. It exists only for the case where the dataset is later
+ * made private.
+ *
+ * A token that does not belong to this project is worse than no token at all:
+ * Sanity rejects the whole request with "Unauthorized - Session does not match
+ * project host", where an anonymous request would have succeeded. That failure
+ * then hides behind the fallbacks below and looks like an empty CMS. An empty
+ * or whitespace-only value is therefore treated as absent rather than sent.
+ */
+const readToken = process.env.SANITY_API_READ_TOKEN?.trim() || undefined;
+
 export const sanityClient = projectId
   ? createClient({
       projectId,
@@ -21,7 +34,7 @@ export const sanityClient = projectId
       // CDN as well would add a second, uncontrolled layer of staleness on top
       // of it, so a publish could take longer than the promised minute.
       useCdn: false,
-      token: process.env.SANITY_API_READ_TOKEN,
+      token: readToken,
     })
   : null;
 
