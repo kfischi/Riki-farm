@@ -2,6 +2,10 @@
 import type { ReactNode } from "react";
 import { CATEGORY_OPTIONS, LIMITS, type Rule } from "./constants";
 
+// Fields marked `hidden` below are stored on the document but are not rendered
+// by the catalogue card today (lib/types.ts → Package carries id, name,
+// description, price, image and tags only). They stay in the schema so no data
+// is lost; delete the `hidden` line once the front-end shows the field.
 export const packageSchema = {
   name: "package",
   title: "מארז",
@@ -25,6 +29,7 @@ export const packageSchema = {
     },
     {
       name: "fullDescription",
+      hidden: true,
       title: "תיאור מלא",
       type: "text",
       description: "התיאור הארוך, לעמוד המארז. אפשר להשאיר ריק.",
@@ -40,6 +45,7 @@ export const packageSchema = {
     },
     {
       name: "bulkPrice",
+      hidden: true,
       title: "מחיר לכמות גדולה",
       type: "string",
       description: "מחיר ליחידה בהזמנה גדולה. טקסט חופשי, לדוגמה: ₪120 ליחידה מ-50 מארזים",
@@ -47,6 +53,7 @@ export const packageSchema = {
     },
     {
       name: "minOrderQty",
+      hidden: true,
       title: "כמות מינימלית להזמנה",
       type: "number",
       description: "מספר המארזים המינימלי להזמנה. השאירו ריק אם אין מינימום.",
@@ -56,6 +63,8 @@ export const packageSchema = {
       name: "image",
       title: "תמונה ראשית",
       type: "image",
+      description:
+        "השדה ריק? באתר עדיין מוצגת התמונה המקורית של המארז. העלאת תמונה כאן מחליפה אותה.",
       options: { hotspot: true },
       fields: [
         {
@@ -70,6 +79,7 @@ export const packageSchema = {
     },
     {
       name: "gallery",
+      hidden: true,
       title: "גלריית תמונות",
       type: "array",
       description: "תמונות נוספות של המארז",
@@ -91,6 +101,7 @@ export const packageSchema = {
     },
     {
       name: "category",
+      hidden: true,
       title: "עונה / קטגוריה",
       type: "string",
       description: "בחרו מהרשימה",
@@ -98,7 +109,13 @@ export const packageSchema = {
     },
     { name: "tags",        title: "תגיות",          type: "array",  of: [{ type: "string" }], description: "תגיות חופשיות להצגה על הכרטיס" },
     { name: "order",       title: "סדר תצוגה",     type: "number" },
-    { name: "available",   title: "זמין",           type: "boolean", initialValue: true },
+    {
+      name: "available",
+      title: "זמין",
+      type: "boolean",
+      description: "כיבוי מסיר את המארז מהאתר בלי למחוק אותו. אפשר להחזיר בכל רגע.",
+      initialValue: true,
+    },
   ],
   orderings: [{ title: "סדר תצוגה", name: "orderAsc", by: [{ field: "order", direction: "asc" }] }],
   preview: {

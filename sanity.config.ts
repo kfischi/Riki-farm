@@ -1,4 +1,10 @@
-import { defineConfig, buildLegacyTheme, type TemplateItem } from "sanity";
+import {
+  defineConfig,
+  buildLegacyTheme,
+  type TemplateItem,
+  type DocumentActionComponent,
+  type DocumentActionsContext,
+} from "sanity";
 import { structureTool, type StructureBuilder } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemas } from "./sanity";
@@ -13,6 +19,27 @@ const SINGLETONS = [
 ] as const;
 
 const SINGLETON_TYPES = new Set<string>(SINGLETONS.map((s) => s.type));
+
+/**
+ * Types whose documents exist in the dataset but are not rendered anywhere on
+ * the site yet, so the editor is not shown a form whose changes go nowhere:
+ *
+ *   boxType / boxProduct — feed <BoxBuilder>, which is not mounted on a page.
+ *   video / mediaBlock   — no section reads them.
+ *
+ * Nothing is deleted: the documents stay in the dataset, and removing a type
+ * from this list brings its form straight back once the front-end renders it.
+ */
+const UNRENDERED_TYPES = new Set<string>([
+  "boxType",
+  "boxProduct",
+  "video",
+  "mediaBlock",
+]);
+
+/** A type the editor should not be offered at all. */
+const isHiddenType = (type: string) =>
+  SINGLETON_TYPES.has(type) || UNRENDERED_TYPES.has(type);
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -80,7 +107,7 @@ export default defineConfig({
             ),
             S.divider(),
             ...S.documentTypeListItems().filter(
-              (item) => !SINGLETON_TYPES.has(item.getId() ?? ""),
+              (item) => !isHiddenType(item.getId() ?? ""),
             ),
           ]),
     }),
@@ -91,7 +118,25 @@ export default defineConfig({
     // Removes singletons from the global "create new" menu and from the
     // "+" button on any list, so the editor cannot make a second copy.
     newDocumentOptions: (prev: TemplateItem[]) =>
-      prev.filter((item) => !SINGLETON_TYPES.has(item.templateId)),
+      prev.filter((item) => !isHiddenType(item.templateId)),
+
+    /**
+     * Guardrails against mistakes — not a security boundary. An administrator
+     * can still delete through the API or the Manage console; this only keeps
+     * the destructive buttons out of the everyday editing surface.
+     *
+     * Deleting a package is unrecoverable from the Studio, while switching
+     * "זמין" off takes it off the site and is undoable. So delete is hidden
+     * and the toggle is the documented way to retire a package.
+     */
+    actions: (prev: DocumentActionComponent[], { schemaType }: DocumentActionsContext) => {
+      const blocked = SINGLETON_TYPES.has(schemaType)
+        // There is exactly one settings document; removing or copying it
+        // would leave the site without one.
+        ? ["delete", "duplicate", "unpublish"]
+        : ["delete"];
+      return prev.filter((action) => !blocked.includes(action.action ?? ""));
+    },
   },
 
   theme,

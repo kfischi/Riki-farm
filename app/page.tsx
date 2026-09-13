@@ -27,6 +27,20 @@ export default async function HomePage() {
     body: settings.about?.body ?? CONFIG.about.body,
   };
 
+  // The banner shows only when it is switched on, actually holds text, and
+  // has not passed its end date. Without the date check a forgotten banner
+  // would run forever. Resolution is the ISR window, so it disappears within
+  // a minute of expiring.
+  const banner = settings.banner;
+  const bannerText = banner?.text?.trim();
+  const bannerLive =
+    banner?.visible === true &&
+    !!bannerText &&
+    (!banner.expiresAt || new Date(banner.expiresAt) > new Date());
+  // Every colour offered in the Studio is a dark brand shade, so white text
+  // stays readable on all of them. Burgundy is the default.
+  const bannerColor = banner?.color || "#80182c";
+
   return (
     <>
       <a
@@ -36,23 +50,24 @@ export default async function HomePage() {
         דלג לתוכן הראשי
       </a>
       <SiteNav />
-      {settings.banner?.visible && settings.banner.text && (
+      {bannerLive && (
         <div
           role="banner"
-          className="w-full text-center py-2 px-4 text-sm font-semibold text-forest bg-wheat"
+          className="w-full text-center py-2 px-4 text-sm font-semibold text-white"
+          style={{ backgroundColor: bannerColor }}
         >
-          {settings.banner.text}
+          {bannerText}
         </div>
       )}
       <main id="main-content">
-        <HeroSection />
+        <HeroSection hero={settings.hero} whatsappNumber={settings.contact?.whatsapp} />
         <SocialProofStrip />
         <AboutSection about={about} />
         <CatalogSection packages={packages} />
-<TestimonialsSection />
+        <TestimonialsSection />
         <FAQSection />
       </main>
-      <SiteFooter />
+      <SiteFooter contact={settings.contact} />
       <RickyBot />
       <WhatsAppFloat />
       <StickyOrderBar />

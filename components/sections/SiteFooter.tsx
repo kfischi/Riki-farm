@@ -18,9 +18,27 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-export function SiteFooter() {
+/**
+ * Contact details as the Studio stores them. Every field is optional: an
+ * empty one falls back to the value shipped in CONFIG, so the footer keeps
+ * working even before Sanity is reachable.
+ */
+export interface FooterContact {
+  phone?: string;
+  whatsapp?: string;
+  email?: string;
+}
+
+export function SiteFooter({ contact }: { contact?: FooterContact }) {
   const year = new Date().getFullYear();
   const reviewUrl = `https://search.google.com/local/writereview?placeid=${CONFIG.googlePlaceId}`;
+
+  // A field the editor cleared is blank, not missing — treat both as absent.
+  const phone    = contact?.phone?.trim()    || CONFIG.legal.contactPhone;
+  const email    = contact?.email?.trim()    || CONFIG.legal.contactEmail;
+  const whatsapp = contact?.whatsapp?.trim() || CONFIG.whatsappNumber;
+  // tel: wants digits; the displayed number keeps its dashes.
+  const phoneHref = phone.replace(/[^\d+]/g, "");
 
   return (
     <footer className="py-16 px-6" style={{ backgroundColor: "#1B4332", color: "white" }}>
@@ -37,7 +55,7 @@ export function SiteFooter() {
             </div>
             <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{CONFIG.brand.tagline}</p>
             <a
-              href={`https://wa.me/${CONFIG.whatsappNumber}`}
+              href={`https://wa.me/${whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-5 px-4 py-2.5 rounded-xl text-white font-semibold text-sm transition-colors"
@@ -61,7 +79,7 @@ export function SiteFooter() {
                 <FacebookIcon className="w-4 h-4" />
               </a>
               <a
-                href={`https://wa.me/${CONFIG.whatsappNumber}`}
+                href={`https://wa.me/${whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="וואטסאפ"
@@ -120,14 +138,14 @@ export function SiteFooter() {
               </li>
               <li className="flex items-center gap-2 text-sm" style={{ color: "rgba(255,255,255,0.75)" }}>
                 <Phone className="w-4 h-4 flex-shrink-0" style={{ color: "#E9C46A" }} />
-                <a href={`tel:${CONFIG.legal.contactPhone}`} className="hover:text-white transition-colors">
-                  {CONFIG.legal.contactPhone}
+                <a href={`tel:${phoneHref}`} className="hover:text-white transition-colors">
+                  {phone}
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm" style={{ color: "rgba(255,255,255,0.75)" }}>
                 <Mail className="w-4 h-4 flex-shrink-0" style={{ color: "#E9C46A" }} />
-                <a href={`mailto:${CONFIG.legal.contactEmail}`} className="hover:text-white transition-colors">
-                  {CONFIG.legal.contactEmail}
+                <a href={`mailto:${email}`} className="hover:text-white transition-colors">
+                  {email}
                 </a>
               </li>
             </ul>
