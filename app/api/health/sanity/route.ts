@@ -26,8 +26,11 @@ export async function GET() {
   const env = {
     projectId,
     dataset,
-    // Presence only — the value itself is never returned.
+    // Presence only — the value itself is never returned. The read token is
+    // reported because it is easy to assume it matters; readTokenUsed says
+    // plainly that it does not, so a stale variable is not misdiagnosed again.
     readTokenPresent: Boolean(process.env.SANITY_API_READ_TOKEN),
+    readTokenUsed: false,
     revalidateSecretPresent: Boolean(process.env.SANITY_REVALIDATE_SECRET),
   };
 
@@ -37,7 +40,7 @@ export async function GET() {
         ok: false,
         reason: "client-not-configured",
         detail:
-          "NEXT_PUBLIC_SANITY_PROJECT_ID is missing at runtime, so no client was created and every fetch falls back to CONFIG. Note that netlify.toml [build.environment] applies to the build only — runtime needs the variable set in the Netlify UI.",
+          "NEXT_PUBLIC_SANITY_PROJECT_ID is missing at runtime, so no client was created and every fetch falls back to CONFIG. Check netlify.toml [build.environment] and the Netlify UI variables.",
         env,
       },
       { status: 503 },

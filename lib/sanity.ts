@@ -7,23 +7,24 @@ import { CONFIG } from "./config";
 // ===== Client =====
 // These two names are shared with the embedded Studio, which runs in the
 // browser and therefore needs the NEXT_PUBLIC_ prefix. They are identifiers,
-// not secrets. The token below stays server-only and must never gain that
-// prefix.
+// not secrets.
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
 /**
- * The dataset is public, so reads need no credentials and this stays empty in
- * normal operation. It exists only for the case where the dataset is later
- * made private.
+ * No token is sent, deliberately.
  *
- * A token that does not belong to this project is worse than no token at all:
- * Sanity rejects the whole request with "Unauthorized - Session does not match
- * project host", where an anonymous request would have succeeded. That failure
- * then hides behind the fallbacks below and looks like an empty CMS. An empty
- * or whitespace-only value is therefore treated as absent rather than sent.
+ * The dataset is public (aclMode: public), so every read this site performs
+ * succeeds anonymously. A token adds nothing — and a token belonging to some
+ * other project turns a request that would have worked into a hard failure:
+ * Sanity answers "Unauthorized - Session does not match project host", the
+ * fallbacks below absorb it, and the site silently shows its hardcoded copy as
+ * if the CMS were empty. That is exactly what happened in production.
+ *
+ * Reading SANITY_API_READ_TOKEN here would make the site depend on a variable
+ * nobody needs to set correctly, for a case that does not exist yet. If the
+ * dataset is ever made private, add the token back together with that change.
  */
-const readToken = process.env.SANITY_API_READ_TOKEN?.trim() || undefined;
 
 export const sanityClient = projectId
   ? createClient({
@@ -34,7 +35,6 @@ export const sanityClient = projectId
       // CDN as well would add a second, uncontrolled layer of staleness on top
       // of it, so a publish could take longer than the promised minute.
       useCdn: false,
-      token: readToken,
     })
   : null;
 
