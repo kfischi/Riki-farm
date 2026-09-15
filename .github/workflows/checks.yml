@@ -5,10 +5,17 @@
 # the site — that failure renders perfectly. These checks cover that gap.
 name: checks
 
+# A pull request already covers work in progress, so the push trigger is limited
+# to the branches that get merged into. Without that, a branch with an open PR
+# runs the whole job twice for the same commit.
 on:
   push:
-    branches: ["**"]
+    branches: [main, "claude/**"]
   pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:
