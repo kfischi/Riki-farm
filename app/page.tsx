@@ -10,7 +10,6 @@ import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { RickyBot } from "@/components/RickyBot";
 import { StickyOrderBar } from "@/components/StickyOrderBar";
 import { fetchPackages, fetchSiteSettings } from "@/lib/sanity";
-import { CONFIG } from "@/lib/config";
 
 // 60s so an edit in the Studio appears within a minute even if the
 // revalidate webhook is not registered. The webhook makes it immediate.
@@ -22,10 +21,9 @@ export default async function HomePage() {
     fetchSiteSettings(),
   ]);
 
-  const about = {
-    headline: settings.about?.headline ?? CONFIG.about.headline,
-    body: settings.about?.body ?? CONFIG.about.body,
-  };
+  // Passed through as-is. Each section falls back field by field, so one blank
+  // field in the Studio does not drag a whole section back to the shipped copy.
+  const about = settings.about;
 
   // The banner shows only when it is switched on, actually holds text, and
   // has not passed its end date. Without the date check a forgotten banner
@@ -68,7 +66,7 @@ export default async function HomePage() {
         <FAQSection />
       </main>
       <SiteFooter contact={settings.contact} />
-      <RickyBot />
+      <RickyBot content={{ packages, about }} />
       <WhatsAppFloat />
       <StickyOrderBar />
     </>

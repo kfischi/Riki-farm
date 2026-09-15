@@ -88,7 +88,15 @@ export interface SanityVideo {
 }
 
 export interface SanitySettings {
-  about?: { headline?: string; body?: string };
+  about?: {
+    headline?: string;
+    intro?: string;
+    quote?: string;
+    subheading?: string;
+    story?: string;
+    closingQuote?: string;
+    body?: string;
+  };
   hero?: { headline?: string; tagline?: string; ctaLabel?: string; ctaHref?: string };
   contact?: { phone?: string; whatsapp?: string; email?: string };
   banner?: {

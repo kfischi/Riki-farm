@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { ChatPanel } from "./chat/ChatPanel";
 import { ChatLauncher } from "./chat/ChatLauncher";
 import type { BotAction, BotState, MessageType, Step } from "@/lib/types";
-import { getBotResponse, getWelcomeMessages } from "@/lib/botEngine";
+import { getBotResponse, getWelcomeMessages, type BotContent } from "@/lib/botEngine";
 import { saveLead } from "@/lib/saveLead";
 
 const initialState: BotState = {
@@ -35,7 +35,11 @@ function botReducer(state: BotState, action: BotAction): BotState {
   }
 }
 
-export function RickyBot() {
+/**
+ * `content` carries the CMS copy the bot answers with. Omitting it leaves the
+ * bot on the copy the site ships with, so it still works on its own.
+ */
+export function RickyBot({ content }: { content?: BotContent }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [unread, setUnread] = useState(true);
@@ -111,7 +115,7 @@ export function RickyBot() {
       };
       dispatch({ type: "ADD_MESSAGES", payload: [userMsg] });
 
-      const result = getBotResponse(currentState, input);
+      const result = getBotResponse(currentState, input, content);
       dispatch({ type: "SET_STEP", payload: result.nextStep as Step });
       if (Object.keys(result.orderPatch).length > 0) {
         dispatch({ type: "PATCH_ORDER", payload: result.orderPatch });
@@ -139,7 +143,7 @@ export function RickyBot() {
       pendingMessages.current.push(...result.messages);
       processNextMessage();
     },
-    [processNextMessage]
+    [processNextMessage, content]
   );
 
   const handleReset = useCallback(() => {

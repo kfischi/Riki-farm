@@ -7,11 +7,38 @@ import { CONFIG } from "@/lib/config";
 import { withFaceCrop } from "@/lib/cloudinary";
 import { ShareButton } from "@/components/ShareButton";
 
+/** Brand accent. Burgundy — no amber, per the brand constraint. */
+const ACCENT = "#80182c";
+
+/**
+ * One key per slot in the layout below. A field left blank in the Studio falls
+ * back to the copy the site shipped with, so the page is never half-empty.
+ */
+export interface AboutContent {
+  headline?: string;
+  intro?: string;
+  quote?: string;
+  subheading?: string;
+  story?: string;
+  closingQuote?: string;
+  /** Answered by the chatbot, not rendered here. */
+  body?: string;
+}
+
 interface Props {
-  about?: { headline: string; body: string };
+  about?: AboutContent;
 }
 
 export function AboutSection({ about: aboutProp }: Props) {
+  const headline     = aboutProp?.headline?.trim()     || CONFIG.about.headline;
+  const intro        = aboutProp?.intro?.trim()        || CONFIG.about.story[0];
+  // The shipped copy carries its own quotation marks; the layout adds styling
+  // instead, so they are stripped either way.
+  const quote        = (aboutProp?.quote?.trim() || CONFIG.about.story[1] || "").replace(/^"|"$/g, "");
+  const subheading   = aboutProp?.subheading?.trim()   || CONFIG.about.story[2];
+  const story        = aboutProp?.story?.trim()        || CONFIG.about.story[3];
+  const closingQuote = aboutProp?.closingQuote?.trim() || CONFIG.about.pullQuotes[1];
+
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReduced = useReducedMotion();
@@ -143,36 +170,29 @@ export function AboutSection({ about: aboutProp }: Props) {
               id="about-heading"
               className="text-4xl lg:text-6xl font-black text-forest leading-[1.05] tracking-tight mb-8"
             >
-              {aboutProp?.headline ?? CONFIG.about.headline}
+              {headline}
             </motion.h2>
 
             <div className="space-y-5">
-              {CONFIG.about.story.slice(0, 2).map((para, i) => {
-                // Second paragraph is the pull-quote
-                if (para.startsWith('"')) {
-                  return (
-                    <motion.blockquote
-                      key={i}
-                      {...anim(0.25 + i * 0.08)}
-                      className="relative pr-5 py-1"
-                      style={{ borderRight: "3px solid #BC6C25" }}
-                    >
-                      <p className="text-lg lg:text-xl text-forest font-semibold leading-relaxed italic">
-                        {para.replace(/^"|"$/g, "")}
-                      </p>
-                    </motion.blockquote>
-                  );
-                }
-                return (
-                  <motion.p
-                    key={i}
-                    {...anim(0.25 + i * 0.08)}
-                    className="text-base lg:text-lg text-forest/70 leading-[1.85]"
-                  >
-                    {para}
-                  </motion.p>
-                );
-              })}
+              {intro && (
+                <motion.p
+                  {...anim(0.25)}
+                  className="text-base lg:text-lg text-forest/70 leading-[1.85]"
+                >
+                  {intro}
+                </motion.p>
+              )}
+              {quote && (
+                <motion.blockquote
+                  {...anim(0.33)}
+                  className="relative pr-5 py-1"
+                  style={{ borderRight: `3px solid ${ACCENT}` }}
+                >
+                  <p className="text-lg lg:text-xl text-forest font-semibold leading-relaxed italic">
+                    {quote}
+                  </p>
+                </motion.blockquote>
+              )}
             </div>
           </div>
         </div>
@@ -182,31 +202,33 @@ export function AboutSection({ about: aboutProp }: Props) {
         <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
           {/* Text side */}
           <div>
-            {CONFIG.about.story[2] && (
+            {subheading && (
               <motion.h3
                 {...anim(0.05)}
                 className="text-xl lg:text-2xl font-black text-forest mb-4"
               >
-                {CONFIG.about.story[2]}
+                {subheading}
               </motion.h3>
             )}
-            <motion.p
-              {...anim(0.1)}
-              className="text-base lg:text-lg text-forest/70 leading-[1.85] mb-10"
-            >
-              {CONFIG.about.story[3] ?? CONFIG.about.story[2]}
-            </motion.p>
+            {story && (
+              <motion.p
+                {...anim(0.1)}
+                className="text-base lg:text-lg text-forest/70 leading-[1.85] mb-10"
+              >
+                {story}
+              </motion.p>
+            )}
 
             {/* Pull quote — standalone */}
             <motion.div {...anim(0.2)} className="bg-forest rounded-2xl px-8 py-7">
               <p className="text-xl lg:text-2xl font-bold text-white leading-relaxed">
-                &ldquo;{CONFIG.about.pullQuotes[1]}&rdquo;
+                &ldquo;{closingQuote}&rdquo;
               </p>
               <p className="text-white/50 text-sm mt-4 font-medium">— {CONFIG.brand.ownerName}</p>
             </motion.div>
             <motion.div {...anim(0.3)} className="mt-6">
               <ShareButton
-                title={`${CONFIG.brand.name} — ${CONFIG.about.headline}`}
+                title={`${CONFIG.brand.name} — ${headline}`}
                 text={`"${CONFIG.about.pullQuotes[0]}" | ${CONFIG.brand.name}`}
               />
             </motion.div>
