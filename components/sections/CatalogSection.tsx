@@ -4,7 +4,7 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
-import { MessageCircle, Sprout, type LucideIcon } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import type { Package } from "@/lib/types";
 import { PackageGrid } from "./PackageGrid";
 
@@ -23,15 +23,6 @@ const PACKAGES_COLLAGE = [
   { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg", span: 2 },
   { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg",       span: 2 },
 ];
-
-function PremiumPlaceholder({ icon: Icon = Sprout }: { icon?: LucideIcon }) {
-  return (
-    <div className="w-full h-full bg-gradient-to-br from-forest via-forest-mid to-forest relative overflow-hidden flex items-center justify-center">
-      <div className="absolute inset-0 grain-overlay" />
-      <Icon className="w-16 h-16 text-wheat/20 relative z-10" strokeWidth={0.75} />
-    </div>
-  );
-}
 
 interface Props {
   packages?: Package[];

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:cms": "node scripts/check-cms-coverage.mjs",
+    "check:lint": "node scripts/check-lint-baseline.mjs",
+    "check": "tsc --noEmit && npm run check:cms && npm run check:lint"
   },
   "dependencies": {
     "@fontsource/heebo": "^5.2.8",

@@ -8,38 +8,8 @@ import {
 import { structureTool, type StructureBuilder } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemas } from "./sanity";
+import { SINGLETONS, SINGLETON_TYPES, isHiddenType } from "./sanity/studio-policy";
 
-/**
- * Document types that exist exactly once. They get a fixed document ID, are
- * shown as a single entry in the sidebar, and are removed from every
- * "create new" surface so a second copy can never be made.
- */
-const SINGLETONS = [
-  { type: "siteSettings", title: "הגדרות האתר" },
-] as const;
-
-const SINGLETON_TYPES = new Set<string>(SINGLETONS.map((s) => s.type));
-
-/**
- * Types whose documents exist in the dataset but are not rendered anywhere on
- * the site yet, so the editor is not shown a form whose changes go nowhere:
- *
- *   boxType / boxProduct — feed <BoxBuilder>, which is not mounted on a page.
- *   video / mediaBlock   — no section reads them.
- *
- * Nothing is deleted: the documents stay in the dataset, and removing a type
- * from this list brings its form straight back once the front-end renders it.
- */
-const UNRENDERED_TYPES = new Set<string>([
-  "boxType",
-  "boxProduct",
-  "video",
-  "mediaBlock",
-]);
-
-/** A type the editor should not be offered at all. */
-const isHiddenType = (type: string) =>
-  SINGLETON_TYPES.has(type) || UNRENDERED_TYPES.has(type);
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";

@@ -59,3 +59,26 @@ export const LIMITS = {
   internalTitle: 60,
   priceLabel: 40,
 };
+
+/**
+ * Validation for the alt text that sits on an image field.
+ *
+ * Required, but only once an image has actually been uploaded: an empty image
+ * field must never block the editor from saving the rest of the document.
+ * Returned as two rules so the requirement is an error while the length cap
+ * stays a warning, per the convention above.
+ *
+ * Only worth applying to an image whose alt text the site actually renders.
+ * Demanding it for a field that reaches no page is a form that changes nothing.
+ */
+export const imageAltValidation = (R: Rule) => [
+  R.custom((alt: unknown, context) => {
+    // `parent` is the image object; Sanity types it as unknown.
+    const image = context?.parent as { asset?: unknown } | undefined;
+    if (!image?.asset) return true; // no image uploaded — nothing to describe
+    return String(alt ?? "").trim()
+      ? true
+      : "צריך למלא תיאור לתמונה. בלעדיו התמונה אינה נגישה לקוראי מסך ואינה מזוהה בגוגל.";
+  }),
+  R.max(LIMITS.altText).warning(`מומלץ עד ${LIMITS.altText} תווים`),
+];

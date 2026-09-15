@@ -31,7 +31,6 @@ export interface FooterContact {
 
 export function SiteFooter({ contact }: { contact?: FooterContact }) {
   const year = new Date().getFullYear();
-  const reviewUrl = `https://search.google.com/local/writereview?placeid=${CONFIG.googlePlaceId}`;
 
   // A field the editor cleared is blank, not missing — treat both as absent.
   const phone    = contact?.phone?.trim()    || CONFIG.legal.contactPhone;

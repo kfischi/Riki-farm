@@ -1,6 +1,6 @@
 // Sanity Studio schema — מארז (gift package)
 import type { ReactNode } from "react";
-import { CATEGORY_OPTIONS, LIMITS, type Rule } from "./constants";
+import { CATEGORY_OPTIONS, LIMITS, imageAltValidation, type Rule } from "./constants";
 
 // Fields marked `hidden` below are stored on the document but are not rendered
 // by the catalogue card today (lib/types.ts → Package carries id, name,
@@ -71,9 +71,8 @@ export const packageSchema = {
           name: "alt",
           title: "תיאור התמונה (נגישות)",
           type: "string",
-          description: "מה רואים בתמונה. נדרש לנגישות ולגוגל.",
-          validation: (R: Rule) =>
-            R.max(LIMITS.altText).warning(`מומלץ עד ${LIMITS.altText} תווים`),
+          description: "מה רואים בתמונה. חובה — נדרש לנגישות ולגוגל.",
+          validation: imageAltValidation,
         },
       ],
     },
