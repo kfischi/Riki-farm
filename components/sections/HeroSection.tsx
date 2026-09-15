@@ -24,6 +24,10 @@ const CAPTIONS = [
   "מספקים תוצרת חקלאית ומארזים לוועדי עובדים, חברות, ארגונים ונקודות מכירה",
 ];
 
+/** The copy the site shipped with — used whenever the Studio field is empty. */
+const DEFAULT_HEADLINE = "ליצ'י מובחר, מתוק ועסיסי";
+const DEFAULT_CTA_LABEL = "להזמנות — לחצו כאן";
+
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -33,14 +37,40 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-export function HeroSection() {
+/**
+ * Hero copy as the Studio stores it. Every field is optional; an empty one
+ * keeps the text the site already shipped with, so clearing a field in the
+ * Studio never leaves a blank hero.
+ */
+export interface HeroContent {
+  headline?: string;
+  tagline?: string;
+  ctaLabel?: string;
+  /** When set, the primary button becomes a link instead of opening the chat. */
+  ctaHref?: string;
+}
+
+export function HeroSection({
+  hero,
+  whatsappNumber,
+}: {
+  hero?: HeroContent;
+  whatsappNumber?: string;
+}) {
   const prefersReduced = useReducedMotion();
+
+  // A cleared field arrives as an empty string, not as undefined.
+  const headline = hero?.headline?.trim() || DEFAULT_HEADLINE;
+  const tagline  = hero?.tagline?.trim()  || "";
+  const ctaLabel = hero?.ctaLabel?.trim() || DEFAULT_CTA_LABEL;
+  const ctaHref  = hero?.ctaHref?.trim()  || "";
+  const waNumber = whatsappNumber?.trim() || CONFIG.whatsappNumber;
   const [isLychee, setIsLychee] = useState(false);
   const [captionIndex, setCaptionIndex] = useState(0);
   const brandRef = useRef<HTMLVideoElement>(null);
   const lycheeRef = useRef<HTMLVideoElement>(null);
 
-  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(
     "שלום, אני רוצה להזמין ליצ'י 🌿"
   )}`;
 
@@ -169,14 +199,27 @@ export function HeroSection() {
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
                 aria-hidden="true"
               />
-              <button
-                onClick={openChat}
-                className="relative btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white text-forest font-black text-sm md:text-base hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_24px_rgba(255,255,255,0.35)]"
-                aria-label="לשאלות והזמנות — פתח צ'אט"
-              >
-                <MessageCircle className="w-5 h-5" />
-                להזמנות — לחצו כאן
-              </button>
+              {ctaHref ? (
+                <a
+                  href={ctaHref}
+                  {...(ctaHref.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="relative btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white text-forest font-black text-sm md:text-base hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_24px_rgba(255,255,255,0.35)]"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  {ctaLabel}
+                </a>
+              ) : (
+                <button
+                  onClick={openChat}
+                  className="relative btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white text-forest font-black text-sm md:text-base hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_24px_rgba(255,255,255,0.35)]"
+                  aria-label="לשאלות והזמנות — פתח צ'אט"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  {ctaLabel}
+                </button>
+              )}
             </div>
           </motion.div>
         )}
@@ -200,9 +243,21 @@ export function HeroSection() {
             </div>
 
             {/* Headline */}
-            <p className="text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight mb-6 text-balance" aria-hidden="true">
-              ליצ&#39;י מובחר, מתוק ועסיסי
+            <p
+              className={`text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight text-balance ${
+                tagline ? "mb-3" : "mb-6"
+              }`}
+              aria-hidden="true"
+            >
+              {headline}
             </p>
+
+            {/* Sub-headline — only rendered when the Studio field holds text */}
+            {tagline && (
+              <p className="text-base md:text-lg text-white/85 leading-snug mb-6 text-balance">
+                {tagline}
+              </p>
+            )}
 
             {/* WhatsApp CTA */}
             <a
