@@ -166,6 +166,9 @@ export async function fetchPackages(): Promise<Package[]> {
           sanityImageUrl(p.image) ??
           STATIC_PACKAGE_IMAGES.get(id) ??
           placeholderImage(p.name),
+        // Only meaningful alongside a Sanity image: the static and placeholder
+        // fallbacks are not the picture the editor described.
+        imageAlt:    sanityImageUrl(p.image) ? p.image?.alt?.trim() || undefined : undefined,
         tags:        p.tags ?? [],
       };
     });

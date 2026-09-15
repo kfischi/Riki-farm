@@ -6,6 +6,7 @@ import Image from "next/image";
 import { CONFIG } from "@/lib/config";
 import { MessageCircle, Sprout, type LucideIcon } from "lucide-react";
 import type { Package } from "@/lib/types";
+import { PackageGrid } from "./PackageGrid";
 
 const LYCHEE_VIDEO_WEBM =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_webm,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
@@ -37,6 +38,8 @@ interface Props {
 }
 
 export function CatalogSection({ packages: packagesProp }: Props) {
+  // Sanity is the source of truth; CONFIG is what ships when it is unreachable.
+  const packages = packagesProp?.length ? packagesProp : CONFIG.packages;
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReduced = useReducedMotion();
@@ -143,6 +146,10 @@ export function CatalogSection({ packages: packagesProp }: Props) {
                 />
               </div>
             ))}
+          </div>
+
+          <div className="mb-10">
+            <PackageGrid packages={packages} onOrder={openChatWithPkg} />
           </div>
 
           <div className="text-center">

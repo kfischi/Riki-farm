@@ -11,6 +11,8 @@ export interface Package {
   description: string;
   price?: string;
   image: string;
+  /** Accessibility description for `image`, as entered in the Studio. */
+  imageAlt?: string;
   tags?: string[];
 }
 
