@@ -48,9 +48,18 @@ export function RickyBot({ content }: { content?: BotContent }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingMessages = useRef<MessageType[]>([]);
   const isProcessing = useRef(false);
-  // Track latest state for use in callbacks without stale closure
+  /**
+   * Latest state for the callbacks, without a stale closure.
+   *
+   * Assigned in an effect rather than during render: mutating a ref while
+   * rendering breaks React's guarantees under concurrent rendering, and the
+   * compiler rules flag it. Safe here because the only reader is
+   * handleUserInput, which runs from a user event — long after effects flush.
+   */
   const stateRef = useRef(state);
-  stateRef.current = state;
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   useEffect(() => {
     dispatch({ type: "ADD_MESSAGES", payload: getWelcomeMessages() });

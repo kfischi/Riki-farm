@@ -1,15 +1,10 @@
 /**
  * Fails when the number of ESLint errors grows.
  *
- * The repo carries errors that predate this work — mostly `any` in the schema
- * files, plus three React findings whose fixes carry behavioural risk. Demanding
- * zero today would mean either rushing those fixes or turning the gate off, and
- * a gate that is off is how the catalogue prop went thirteen packages' worth of
+ * The rule is not "no errors", it is "no more errors than we already agreed to
+ * live with". A gate that demands the impossible gets switched off, and a gate
+ * that is off is how a catalogue prop holding thirteen CMS packages went
  * unnoticed for weeks.
- *
- * So the rule is not "no errors", it is "no more errors than we already agreed
- * to live with". New code gets held to a clean standard; the backlog is visible
- * and shrinkable rather than silently permanent.
  *
  * When you fix some, lower BASELINE. The check tells you to.
  *
@@ -19,15 +14,29 @@
 import { ESLint } from "eslint";
 
 /**
- * Accepted pre-existing errors, 2026-09-15. Breakdown at that point:
- *   13  @typescript-eslint/no-explicit-any        (schema files, lib/sanity.ts)
- *    3  react/no-unescaped-entities
- *    2  react-hooks/set-state-in-effect
- *    1  react-hooks/refs                          (ref read during render)
- *    1  @typescript-eslint/ban-ts-comment
- *    1  @typescript-eslint/no-empty-object-type
+ * Accepted errors, 2026-09-17. Both are the same finding:
+ *
+ *   react-hooks/set-state-in-effect  components/CookieBanner.tsx:12
+ *   react-hooks/set-state-in-effect  components/AccessibilityWidget.tsx:42
+ *
+ * Each reads localStorage in an effect and then sets state. That is the correct
+ * shape for this problem, not an oversight: localStorage does not exist during
+ * server rendering, so the value cannot be read in a lazy useState initialiser
+ * without the server and the client disagreeing on the first paint. The rule is
+ * right that it costs a second render; here that is the price of not shipping a
+ * hydration mismatch.
+ *
+ * Left visible in this number rather than silenced with an eslint-disable, so
+ * the trade-off stays in view. Removing them properly means useSyncExternalStore
+ * with a server snapshot — worth doing when either component grows, and not
+ * worth the risk for a cookie banner that renders once.
+ *
+ * The other nineteen errors this file used to carry were fixed on 2026-09-17:
+ * thirteen `any` replaced with real types, three JSX entities escaped, a
+ * @ts-ignore that turned out to be unnecessary, an empty interface, and a ref
+ * assigned during render that is now assigned in an effect.
  */
-const BASELINE = 21;
+const BASELINE = 2;
 
 const eslint = new ESLint();
 const results = await eslint.lintFiles(["."]);

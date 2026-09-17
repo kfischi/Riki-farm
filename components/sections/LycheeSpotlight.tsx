@@ -83,7 +83,7 @@ export function LycheeSpotlight() {
           {...anim(0.08)}
           className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.05] mb-3"
         >
-          ליצ'י עסיסי,{" "}
+          ליצ&apos;י עסיסי,{" "}
           <span className="text-gradient-wheat">מתוק וטרי.</span>
         </motion.h2>
 

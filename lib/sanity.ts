@@ -1,5 +1,4 @@
 import { createClient } from "@sanity/client";
-// @ts-ignore
 import imageUrlBuilder from "@sanity/image-url";
 import type { Package, Video } from "./types";
 import { CONFIG } from "./config";
@@ -39,9 +38,20 @@ export const sanityClient = projectId
   : null;
 
 // ===== Image URL builder =====
+/**
+ * An image field as Sanity stores it: a reference to the uploaded asset, plus
+ * the optional crop the editor set and the alt text entered beside it.
+ */
+export interface SanityImage {
+  asset?: { _ref?: string; _type?: string };
+  hotspot?: { x: number; y: number; height: number; width: number };
+  crop?: { top: number; bottom: number; left: number; right: number };
+  alt?: string;
+}
+
 const builder = sanityClient ? imageUrlBuilder(sanityClient) : null;
 
-export function sanityImageUrl(source: any): string | null {
+export function sanityImageUrl(source?: SanityImage | null): string | null {
   if (!builder || !source) return null;
   return builder.image(source).auto("format").fit("max").url();
 }
@@ -53,7 +63,7 @@ export interface SanityPackage {
   name: string;
   description?: string;
   price?: string;
-  image?: any; // Sanity image asset
+  image?: SanityImage;
   tags?: string[];
   order?: number;
   available?: boolean;
@@ -64,7 +74,7 @@ export interface SanityBoxType {
   id: { current: string };
   name: string;
   basePrice: number;
-  image?: any;
+  image?: SanityImage;
   order?: number;
 }
 
@@ -73,7 +83,7 @@ export interface SanityBoxProduct {
   id: { current: string };
   name: string;
   unitPrice: number;
-  image?: any;
+  image?: SanityImage;
   available?: boolean;
   order?: number;
 }

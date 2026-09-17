@@ -71,7 +71,7 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             id="catalog-heading"
             className="text-4xl lg:text-5xl font-black text-forest leading-tight"
           >
-            ליצ'י טרי ומארזים מהמשק
+            ליצ&apos;י טרי ומארזים מהמשק
           </motion.h2>
         </div>
 

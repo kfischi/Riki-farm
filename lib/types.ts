@@ -120,4 +120,4 @@ export interface Lead {
   totalPrice?: string;
 }
 
-export interface LeadPayload extends Omit<Lead, "createdAt"> {}
+export type LeadPayload = Omit<Lead, "createdAt">;
