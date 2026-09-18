@@ -1,0 +1,47 @@
+# Gates that run on every push and pull request.
+#
+# Netlify already builds a deploy preview, which tells you the site compiles.
+# It does not tell you whether the content management interface still controls
+# the site — that failure renders perfectly. These checks cover that gap.
+name: checks
+
+# A pull request already covers work in progress, so the push trigger is limited
+# to the branches that get merged into. Without that, a branch with an open PR
+# runs the whole job twice for the same commit.
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Types
+        run: npx tsc --noEmit
+
+      # Every field an editor can fill is fetched by a query, or declared
+      # unreachable on purpose in sanity/studio-policy.ts.
+      - name: CMS coverage
+        run: npm run check:cms
+
+      # No new lint errors. Catches the value computed and then dropped, which
+      # is how CMS data has gone missing in this repo three times.
+      - name: Lint baseline
+        run: npm run check:lint
+
+      - name: Build
+        run: npm run build

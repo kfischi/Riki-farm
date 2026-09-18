@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { ChatPanel } from "./chat/ChatPanel";
 import { ChatLauncher } from "./chat/ChatLauncher";
 import type { BotAction, BotState, MessageType, Step } from "@/lib/types";
-import { getBotResponse, getWelcomeMessages } from "@/lib/botEngine";
+import { getBotResponse, getWelcomeMessages, type BotContent } from "@/lib/botEngine";
 import { saveLead } from "@/lib/saveLead";
 
 const initialState: BotState = {
@@ -35,7 +35,11 @@ function botReducer(state: BotState, action: BotAction): BotState {
   }
 }
 
-export function RickyBot() {
+/**
+ * `content` carries the CMS copy the bot answers with. Omitting it leaves the
+ * bot on the copy the site ships with, so it still works on its own.
+ */
+export function RickyBot({ content }: { content?: BotContent }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [unread, setUnread] = useState(true);
@@ -44,9 +48,18 @@ export function RickyBot() {
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingMessages = useRef<MessageType[]>([]);
   const isProcessing = useRef(false);
-  // Track latest state for use in callbacks without stale closure
+  /**
+   * Latest state for the callbacks, without a stale closure.
+   *
+   * Assigned in an effect rather than during render: mutating a ref while
+   * rendering breaks React's guarantees under concurrent rendering, and the
+   * compiler rules flag it. Safe here because the only reader is
+   * handleUserInput, which runs from a user event — long after effects flush.
+   */
   const stateRef = useRef(state);
-  stateRef.current = state;
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   useEffect(() => {
     dispatch({ type: "ADD_MESSAGES", payload: getWelcomeMessages() });
@@ -111,7 +124,7 @@ export function RickyBot() {
       };
       dispatch({ type: "ADD_MESSAGES", payload: [userMsg] });
 
-      const result = getBotResponse(currentState, input);
+      const result = getBotResponse(currentState, input, content);
       dispatch({ type: "SET_STEP", payload: result.nextStep as Step });
       if (Object.keys(result.orderPatch).length > 0) {
         dispatch({ type: "PATCH_ORDER", payload: result.orderPatch });
@@ -139,7 +152,7 @@ export function RickyBot() {
       pendingMessages.current.push(...result.messages);
       processNextMessage();
     },
-    [processNextMessage]
+    [processNextMessage, content]
   );
 
   const handleReset = useCallback(() => {

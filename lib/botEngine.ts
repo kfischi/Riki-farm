@@ -1,5 +1,5 @@
 import { CONFIG } from "./config";
-import type { BotState, MessageType, Order, QuickReply, Step } from "./types";
+import type { BotState, MessageType, Order, Package, QuickReply, Step } from "./types";
 
 let _counter = 0;
 export function newId(): string {
@@ -90,7 +90,23 @@ export interface BotResponseResult {
   orderPatch: Partial<Order>;
 }
 
-export function getBotResponse(state: BotState, input: string): BotResponseResult {
+/**
+ * Content the bot answers with. Every key is optional and falls back to the
+ * copy the site ships with, so the bot keeps working when the CMS is silent.
+ */
+export interface BotContent {
+  packages?: Package[];
+  about?: { headline?: string; body?: string };
+}
+
+export function getBotResponse(
+  state: BotState,
+  input: string,
+  content: BotContent = {},
+): BotResponseResult {
+  const packages = content.packages?.length ? content.packages : CONFIG.packages;
+  const aboutHeadline = content.about?.headline?.trim() || CONFIG.about.headline;
+  const aboutBody = content.about?.body?.trim() || CONFIG.about.body;
   const trimmed = input.trim();
   let messages: MessageType[] = [];
   let nextStep: Step = state.step;
@@ -119,7 +135,7 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
         nextStep = "order_name";
       } else if (trimmed === "info" || trimmed.includes("מידע") || trimmed.includes("אודות")) {
         messages = [
-          { id: newId(), sender: "bot", type: "text", text: `*${CONFIG.about.headline}*\n\n${CONFIG.about.body}` },
+          { id: newId(), sender: "bot", type: "text", text: `*${aboutHeadline}*\n\n${aboutBody}` },
           { id: newId(), sender: "bot", type: "quick-replies", text: "מעניין? הנה מה שאפשר לעשות:", replies: MAIN_MENU_REPLIES },
         ];
         nextStep = "info";
@@ -131,7 +147,7 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
         nextStep = "videos";
       } else if (trimmed === "catalog" || trimmed.includes("קטלוג")) {
         messages = [
-          { id: newId(), sender: "bot", type: "catalog-cards", packages: CONFIG.packages },
+          { id: newId(), sender: "bot", type: "catalog-cards", packages },
           { id: newId(), sender: "bot", type: "quick-replies", text: "מצא/ה משהו שאהבת?", replies: MAIN_MENU_REPLIES },
         ];
         nextStep = "catalog";
@@ -309,7 +325,7 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
       } else {
         const cleanPhone = trimmed.replace(/[\s\-]/g, "");
         orderPatch = { phone: cleanPhone };
-        const packageReplies: QuickReply[] = CONFIG.packages.map((p) => ({ label: p.name, value: p.id }));
+        const packageReplies: QuickReply[] = packages.map((p) => ({ label: p.name, value: p.id }));
         messages = [{ id: newId(), sender: "bot", type: "quick-replies", text: `תענוג! 🎁 איזה מארז מעניין אותך?`, replies: packageReplies }];
         nextStep = "order_package";
       }
@@ -317,9 +333,9 @@ export function getBotResponse(state: BotState, input: string): BotResponseResul
     }
 
     case "order_package": {
-      const found = CONFIG.packages.find((p) => p.id === trimmed || p.name === trimmed);
+      const found = packages.find((p) => p.id === trimmed || p.name === trimmed);
       if (!found) {
-        const packageReplies: QuickReply[] = CONFIG.packages.map((p) => ({ label: p.name, value: p.id }));
+        const packageReplies: QuickReply[] = packages.map((p) => ({ label: p.name, value: p.id }));
         messages = [{ id: newId(), sender: "bot", type: "quick-replies", text: "אנא בחר/י אחד מהמארזים:", replies: packageReplies }];
       } else {
         orderPatch = { pkg: found.name };

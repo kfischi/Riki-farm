@@ -31,7 +31,7 @@ export function StickyOrderBar() {
         aria-label="הזמינו ליצ'י עכשיו בוואטסאפ"
         tabIndex={visible ? 0 : -1}
       >
-        🛒 הזמינו ליצ'י עכשיו
+        🛒 הזמינו ליצ&apos;י עכשיו
       </a>
     </div>
   );
