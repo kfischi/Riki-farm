@@ -1,0 +1,95 @@
+{
+  "name": "המשק של ריקי — לידים → Trello + מייל",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ricky-lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "fd5bd197-6c9a-46d4-a63a-a07ca95b04d5",
+      "name": "קבלת ליד (Webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "fd5bd197-6c9a-46d4-a63a-a07ca95b04d5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "f47c063c-23fd-4abc-9ed5-f1ef13556a4b", "name": "name",      "value": "={{ $json.body.name      || 'ללא שם' }}", "type": "string" },
+            { "id": "ff6b6e10-43bc-4b76-93dd-f850b8d81dbc", "name": "company",   "value": "={{ $json.body.company   || '—' }}",     "type": "string" },
+            { "id": "b5b4476e-160b-4a3d-b895-01f533cad6e3", "name": "region",    "value": "={{ $json.body.region    || '—' }}",     "type": "string" },
+            { "id": "138bc4ce-2cf2-4d84-9f5c-8fa0e2468643", "name": "address",   "value": "={{ $json.body.address   || '—' }}",     "type": "string" },
+            { "id": "a5433f52-d170-4c20-b3c8-b4e36ad96da6", "name": "email",     "value": "={{ $json.body.email     || '—' }}",     "type": "string" },
+            { "id": "1347ac11-a26f-4246-9597-b3e428a3faba", "name": "phone",     "value": "={{ $json.body.phone     || '—' }}",     "type": "string" },
+            { "id": "99f34bef-e598-4826-9247-c138138bc7a9", "name": "pkg",       "value": "={{ $json.body.pkg       || '—' }}",     "type": "string" },
+            { "id": "52f356b1-93e1-459b-b31e-218816c02ef8", "name": "quantity",  "value": "={{ $json.body.quantity  || '—' }}",     "type": "string" },
+            { "id": "9ed4253d-fd36-43d9-b319-83952f20bd1b", "name": "status",    "value": "={{ $json.body.status    || 'חדש' }}",   "type": "string" },
+            { "id": "41d6f290-ddef-4406-acbc-9d5b383d3480", "name": "createdAt", "value": "={{ $json.body.createdAt || $now.toISO() }}", "type": "string" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c09b12c4-f9fa-430f-9624-669d956319f1",
+      "name": "סידור פרטי הליד",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "listId": "PASTE_YOUR_LIST_ID_HERE",
+        "name": "={{ $json.name }} — {{ $json.company }} ({{ $json.pkg }})",
+        "additionalFields": {
+          "description": "=שם: {{ $json.name }}\nחברה/עסק: {{ $json.company }}\nאזור: {{ $json.region }}\nכתובת: {{ $json.address }}\nאימייל: {{ $json.email }}\nטלפון: {{ $json.phone }}\nמארז: {{ $json.pkg }}\nכמות: {{ $json.quantity }}\nסטטוס: {{ $json.status }}\nנוצר: {{ $json.createdAt }}"
+        }
+      },
+      "id": "81031b46-5e10-4deb-a878-cfe6f5c60f66",
+      "name": "יצירת כרטיס Trello",
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [680, 220],
+      "credentials": { "trelloApi": { "id": "REPLACE", "name": "Trello account" } }
+    },
+    {
+      "parameters": {
+        "sendTo": "PASTE_CLIENT_EMAIL_HERE",
+        "subject": "=🌿 ליד חדש מהאתר: {{ $json.name }} ({{ $json.company }})",
+        "emailType": "text",
+        "message": "=התקבל ליד חדש מהצ'אטבוט באתר:\n\nשם: {{ $json.name }}\nחברה/עסק: {{ $json.company }}\nאזור: {{ $json.region }}\nכתובת: {{ $json.address }}\nאימייל: {{ $json.email }}\nטלפון: {{ $json.phone }}\nמארז: {{ $json.pkg }}\nכמות: {{ $json.quantity }}\nסטטוס: {{ $json.status }}\nנוצר: {{ $json.createdAt }}\n\n— נשלח אוטומטית ממערכת הלידים",
+        "options": {}
+      },
+      "id": "ea4658dd-4ae9-44f8-b2c2-2fccebd93db7",
+      "name": "התראת מייל ללקוחה",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [680, 400],
+      "credentials": { "gmailOAuth2": { "id": "REPLACE", "name": "Gmail account" } }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"ok\": true }",
+        "options": {}
+      },
+      "id": "7d4eaa93-5400-4ddb-95f4-b11d91823f13",
+      "name": "תשובה לאתר",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "קבלת ליד (Webhook)": { "main": [[{ "node": "סידור פרטי הליד",    "type": "main", "index": 0 }]] },
+    "סידור פרטי הליד":    { "main": [[{ "node": "יצירת כרטיס Trello", "type": "main", "index": 0 }, { "node": "התראת מייל ללקוחה", "type": "main", "index": 0 }]] },
+    "יצירת כרטיס Trello": { "main": [[{ "node": "תשובה לאתר",          "type": "main", "index": 0 }]] },
+    "התראת מייל ללקוחה":  { "main": [[{ "node": "תשובה לאתר",          "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "pinData": {},
+  "meta": { "templatecredsSetupCompleted": false }
+}
