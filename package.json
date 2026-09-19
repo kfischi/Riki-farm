@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "check:cms": "node scripts/check-cms-coverage.mjs",
+    "check:studio": "node scripts/check-studio-structure.mjs",
     "check:lint": "node scripts/check-lint-baseline.mjs",
-    "check": "tsc --noEmit && npm run check:cms && npm run check:lint"
+    "check": "tsc --noEmit && npm run check:cms && npm run check:studio && npm run check:lint"
   },
   "dependencies": {
     "@fontsource/heebo": "^5.2.8",

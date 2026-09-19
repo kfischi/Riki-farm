@@ -38,6 +38,12 @@ jobs:
       - name: CMS coverage
         run: npm run check:cms
 
+      # The Studio's navigation serializes. A Hebrew title with no explicit
+      # id derives an empty one, and the whole editing interface fails to
+      # render — with tsc, ESLint and the build all green.
+      - name: Studio structure
+        run: npm run check:studio
+
       # No new lint errors. Catches the value computed and then dropped, which
       # is how CMS data has gone missing in this repo three times.
       - name: Lint baseline

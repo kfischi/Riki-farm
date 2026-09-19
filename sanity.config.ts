@@ -5,10 +5,11 @@ import {
   type DocumentActionComponent,
   type DocumentActionsContext,
 } from "sanity";
-import { structureTool, type StructureBuilder } from "sanity/structure";
+import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemas } from "./sanity";
-import { SINGLETONS, SINGLETON_TYPES, isHiddenType } from "./sanity/studio-policy";
+import { structure } from "./sanity/structure";
+import { SINGLETON_TYPES, isHiddenType } from "./sanity/studio-policy";
 
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
@@ -64,23 +65,9 @@ export default defineConfig({
   schema: { types: schemas },
 
   plugins: [
-    structureTool({
-      structure: (S: StructureBuilder) =>
-        S.list()
-          .title("תוכן")
-          .items([
-            ...SINGLETONS.map(({ type, title }) =>
-              S.listItem()
-                .title(title)
-                .id(type)
-                .child(S.document().schemaType(type).documentId(type).title(title)),
-            ),
-            S.divider(),
-            ...S.documentTypeListItems().filter(
-              (item) => !isHiddenType(item.getId() ?? ""),
-            ),
-          ]),
-    }),
+    // See sanity/structure.ts — every node needs an explicit id, or a Hebrew
+    // title silently derives an empty one and the Studio refuses to render.
+    structureTool({ structure }),
     visionTool(),
   ],
 
