@@ -8,13 +8,6 @@ import { MessageCircle } from "lucide-react";
 import type { Package } from "@/lib/types";
 import { PackageGrid } from "./PackageGrid";
 
-const LYCHEE_VIDEO_WEBM =
-  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_webm,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
-const LYCHEE_VIDEO_MP4 =
-  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
-const LYCHEE_POSTER =
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
-
 // Row 1: farm shot (span 2) + Riki & Ron wider shot (span 4); Row 2: three equal images (span 2 each)
 const PACKAGES_COLLAGE = [
   { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/5_pzixdg.jpg",        span: 2 },
@@ -71,49 +64,9 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             id="catalog-heading"
             className="text-4xl lg:text-5xl font-black text-forest leading-tight"
           >
-            ליצ&apos;י טרי ומארזים מהמשק
+            מארזים מהמשק
           </motion.h2>
         </div>
-
-        {/* ===== Lychee video block ===== */}
-        <motion.div {...anim(0.18)} className="mb-10">
-          <div className="relative rounded-3xl overflow-hidden shadow-[0_4px_32px_rgba(27,67,50,0.2)]">
-            {/* Video */}
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={LYCHEE_POSTER}
-              className="w-full h-[50vh] md:h-[62vh] object-cover"
-              aria-hidden="true"
-            >
-              <source src={LYCHEE_VIDEO_WEBM} type="video/webm" />
-              <source src={LYCHEE_VIDEO_MP4} type="video/mp4" />
-            </video>
-
-            {/* Gradient overlay */}
-            <div
-              className="absolute inset-0 bg-gradient-to-t from-forest/80 via-forest/10 to-transparent pointer-events-none"
-              aria-hidden="true"
-            />
-
-            {/* Caption + CTA */}
-            <div className="absolute bottom-0 inset-x-0 p-6 md:p-10 text-center" dir="rtl">
-              <p className="text-white text-lg md:text-2xl font-bold mb-5 drop-shadow-md">
-                עונת הליצ&apos;י בעיצומה. נקטף אצלינו ומגיע עד אליכם — טרי, עסיסי וטעים בטירוף
-              </p>
-              <button
-                onClick={() => openChatWithPkg("lychee-fresh")}
-                className="btn-sheen inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-white text-forest font-black text-sm md:text-base hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_24px_rgba(255,255,255,0.3)]"
-                aria-label="הזמן ליצ'י טרי"
-              >
-                <MessageCircle className="w-5 h-5" />
-                הזמן ליצ&apos;י טרי
-              </button>
-            </div>
-          </div>
-        </motion.div>
 
         {/* ===== Packages collage ===== */}
         <motion.div {...anim(0.28)}>

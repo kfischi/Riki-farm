@@ -9,7 +9,6 @@ export type Rule = SanityRule;
  * To add a season, add one line here — nothing else needs to change.
  */
 export const CATEGORY_OPTIONS = [
-  { title: "ליצ'י", value: "lychee" },
   { title: "עונתי", value: "seasonal" },
   { title: "לחברות וארגונים", value: "business" },
   { title: "מקו הגבול", value: "border" },

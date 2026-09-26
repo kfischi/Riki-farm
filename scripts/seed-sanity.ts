@@ -277,7 +277,6 @@ function reportNotMigrated() {
   note(skipped, "CONFIG.seo.siteUrl / ogImage — אין שדה בסכמה");
   note(skipped, "CONFIG.rickyAvatar — אין שדה בסכמה");
   note(skipped, "CONFIG.borderCategoryLabel — אין שדה בסכמה");
-  note(skipped, "מחירי הליצ'י ב-lib/botEngine.ts — אין סכמה למחירון הצ'אטבוט");
   note(skipped, "CAPTIONS ב-HeroSection.tsx (5 כותרות מתחלפות) — אין שדה בסכמה");
 }
 

@@ -64,14 +64,9 @@ export type MessageType =
 
 export type Step =
   | "idle"
-  | "lead_type"
   | "videos"
   | "info"
   | "catalog"
-  | "lychee_quantity"
-  | "lychee_name"
-  | "lychee_company"
-  | "lychee_phone"
   | "order_name"
   | "order_company"
   | "order_region"
@@ -91,9 +86,6 @@ export interface Order {
   phone?: string;
   pkg?: string;
   quantity?: number;
-  lycheeQty?: string;
-  customerType?: "personal" | "business";
-  interest?: string;
 }
 
 export interface BotState {
