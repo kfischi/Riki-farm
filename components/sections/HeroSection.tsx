@@ -117,11 +117,35 @@ export function HeroSection({
         aria-hidden="true"
       />
 
-      {/* Headline + rotating captions + both CTAs */}
+      {/* Rotating eyebrow + headline + tagline + both CTAs.
+          Three weights, deliberately: the eyebrow rotates and is the lightest,
+          the headline is the anchor, the tagline sits between them. Stacking
+          the eyebrow under the headline instead would give two sub-lines of
+          near-identical weight and no hierarchy at all. */}
       <div className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center">
+        {/* Rotating eyebrow — skipped entirely for reduced motion */}
+        {!prefersReduced && (
+          <div className="min-h-[2.5rem] flex items-end justify-center mb-3">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={captionIndex}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.5 }}
+                className="text-white/70 text-xs sm:text-sm font-semibold tracking-[0.08em] leading-snug text-balance"
+              >
+                {CAPTIONS[captionIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+        )}
+
         {/* Headline — mirrors the sr-only H1, so it is aria-hidden */}
         <p
-          className="text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight text-balance mb-2"
+          className={`text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight text-balance ${
+            tagline ? "mb-3" : "mb-6"
+          }`}
           aria-hidden="true"
         >
           {headline}
@@ -129,27 +153,9 @@ export function HeroSection({
 
         {/* Sub-headline — only rendered when the Studio field holds text */}
         {tagline && (
-          <p className="text-base md:text-lg text-white/85 leading-snug text-balance mb-2">
+          <p className="text-base md:text-lg text-white/85 leading-snug text-balance mb-6">
             {tagline}
           </p>
-        )}
-
-        {/* Rotating caption — skipped entirely for reduced motion */}
-        {!prefersReduced && (
-          <div className="min-h-[3rem] flex items-end justify-center mb-5">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={captionIndex}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.5 }}
-                className="text-white/75 text-sm sm:text-base font-semibold leading-snug text-balance"
-              >
-                {CAPTIONS[captionIndex]}
-              </motion.p>
-            </AnimatePresence>
-          </div>
         )}
 
         <div className="flex flex-col sm:flex-row sm:justify-center items-stretch sm:items-center gap-3">
