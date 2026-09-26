@@ -4,6 +4,7 @@ import { motion, useInView, useReducedMotion, AnimatePresence } from "framer-mot
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
+import type { TestimonialScreenshot } from "@/lib/types";
 
 const WA_SCREENSHOTS = [
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087728/Screenshot_20260703_170526_WhatsAppBusiness_tger62.jpg",
@@ -14,13 +15,29 @@ const WA_SCREENSHOTS = [
   "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087720/Screenshot_20260703_170239_WhatsAppBusiness_hrjyla.jpg",
 ];
 
-export function TestimonialsSection() {
+export interface TestimonialsSectionProps {
+  /** Omit to fall back to the screenshots that ship with the site. */
+  testimonials?: TestimonialScreenshot[];
+}
+
+/** The screenshots that ship with the site, in the shape the grid renders. */
+const FALLBACK: TestimonialScreenshot[] = WA_SCREENSHOTS.map((src, i) => ({
+  id: src,
+  image: src,
+  alt: `ביקורת לקוח ${i + 1}`,
+}));
+
+export function TestimonialsSection({ testimonials }: TestimonialsSectionProps = {}) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReduced = useReducedMotion();
   const [lightbox, setLightbox] = useState<string | null>(null);
 
   const closeLightbox = useCallback(() => setLightbox(null), []);
+
+  // Sanity is the source of truth; the shipped screenshots are what shows when
+  // it is empty or unreachable.
+  const items = testimonials?.length ? testimonials : FALLBACK;
 
   useEffect(() => {
     if (!lightbox) return;
@@ -74,17 +91,17 @@ export function TestimonialsSection() {
 
           {/* Screenshot grid */}
           <div className="columns-2 md:columns-3 gap-4 space-y-4">
-            {WA_SCREENSHOTS.map((src, i) => (
+            {items.map((item, i) => (
               <motion.button
-                key={src}
+                key={item.id}
                 {...anim(0.1 + i * 0.07)}
-                onClick={() => setLightbox(src)}
+                onClick={() => setLightbox(item.image)}
                 className="break-inside-avoid w-full rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.4)] border border-white/8 cursor-zoom-in hover:border-white/20 hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-300 block"
-                aria-label={`הגדל ביקורת לקוח ${i + 1}`}
+                aria-label={`הגדל ${item.alt?.trim() || `ביקורת לקוח ${i + 1}`}`}
               >
                 <Image
-                  src={src}
-                  alt={`ביקורת לקוח ${i + 1}`}
+                  src={item.image}
+                  alt={item.alt?.trim() || `ביקורת לקוח ${i + 1}`}
                   width={400}
                   height={600}
                   className="w-full h-auto object-cover"

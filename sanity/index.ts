@@ -7,12 +7,19 @@ import { boxProductSchema } from "./schemas/boxProduct";
 import { videoSchema } from "./schemas/video";
 import { siteSettingsSchema } from "./schemas/siteSettings";
 import { mediaBlockSchema } from "./schemas/mediaBlock";
+import { testimonialSchema } from "./schemas/testimonial";
+import { faqItemSchema } from "./schemas/faqItem";
 
-export { packageSchema, boxTypeSchema, boxProductSchema, videoSchema, siteSettingsSchema, mediaBlockSchema };
+export {
+  packageSchema, boxTypeSchema, boxProductSchema, videoSchema,
+  siteSettingsSchema, mediaBlockSchema, testimonialSchema, faqItemSchema,
+};
 
 export const schemas = [
   siteSettingsSchema,
   packageSchema,
+  testimonialSchema,
+  faqItemSchema,
   mediaBlockSchema,
   boxTypeSchema,
   boxProductSchema,

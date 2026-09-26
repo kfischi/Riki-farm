@@ -30,6 +30,19 @@ export interface FAQItem {
   answer: string;
 }
 
+/**
+ * A customer-feedback screenshot in the "מה אומרים עלינו" section.
+ *
+ * Separate from `Testimonial` above, which is a typed-out quote: that section
+ * renders images, so this is the shape the page actually consumes.
+ */
+export interface TestimonialScreenshot {
+  id: string;
+  /** Ready-to-use URL — the fallback chain in lib/sanity resolves it. */
+  image: string;
+  alt?: string;
+}
+
 export interface USP {
   icon: string;
   title: string;

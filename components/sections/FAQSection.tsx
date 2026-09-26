@@ -4,12 +4,24 @@ import { motion, useInView, useReducedMotion, AnimatePresence } from "framer-mot
 import { useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { CONFIG } from "@/lib/config";
+import type { FAQItem } from "@/lib/types";
 
-export function FAQSection() {
+export interface FAQSectionProps {
+  /** Omit to fall back to the questions that ship with the site. */
+  faq?: FAQItem[];
+}
+
+export function FAQSection({ faq: faqProp }: FAQSectionProps = {}) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReduced = useReducedMotion();
-  const [openId, setOpenId] = useState<string | null>(CONFIG.faq[0]?.id ?? null);
+
+  // Sanity is the source of truth; CONFIG is what ships when it is unreachable.
+  const faq = faqProp?.length ? faqProp : CONFIG.faq;
+
+  // The first question opens by default. Keyed off the list actually rendered,
+  // so an editor reordering the questions changes which one is open.
+  const [openId, setOpenId] = useState<string | null>(faq[0]?.id ?? null);
 
   const anim = (delay = 0) =>
     prefersReduced
@@ -39,7 +51,7 @@ export function FAQSection() {
         </motion.h2>
 
         <div className="space-y-3">
-          {CONFIG.faq.map((item, i) => {
+          {faq.map((item, i) => {
             const isOpen = openId === item.id;
             return (
               <motion.div

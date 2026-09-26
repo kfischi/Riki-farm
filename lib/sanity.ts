@@ -1,6 +1,6 @@
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
-import type { Package, Video } from "./types";
+import type { Package, Video, FAQItem, TestimonialScreenshot } from "./types";
 import { CONFIG } from "./config";
 
 // ===== Client =====
@@ -97,6 +97,19 @@ export interface SanityVideo {
   order?: number;
 }
 
+export interface SanityTestimonial {
+  _id: string;
+  image?: SanityImage;
+  order?: number;
+}
+
+export interface SanityFaqItem {
+  _id: string;
+  question?: string;
+  answer?: string;
+  order?: number;
+}
+
 export interface SanitySettings {
   about?: {
     headline?: string;
@@ -141,6 +154,18 @@ const BOX_PRODUCTS_QUERY = `
 const VIDEOS_QUERY = `
   *[_type == "video"] | order(order asc) {
     _id, id, title, url, thumbnail, order
+  }
+`;
+
+const TESTIMONIALS_QUERY = `
+  *[_type == "testimonial" && available != false] | order(order asc) {
+    _id, image, order, available
+  }
+`;
+
+const FAQ_QUERY = `
+  *[_type == "faqItem" && available != false] | order(order asc) {
+    _id, question, answer, order, available
   }
 `;
 
@@ -240,5 +265,45 @@ export async function fetchSiteSettings(): Promise<SanitySettings> {
   } catch (err) {
     console.error("[Sanity] fetchSiteSettings failed:", err);
     return {};
+  }
+}
+
+/**
+ * Customer-feedback screenshots for the "מה אומרים עלינו" section.
+ *
+ * Falls back to the screenshots that ship with the site, so an empty dataset
+ * — or an unreachable one — leaves the section exactly as it is today rather
+ * than blanking it.
+ */
+export async function fetchTestimonials(): Promise<TestimonialScreenshot[]> {
+  if (!sanityClient) return [];
+  try {
+    const data: SanityTestimonial[] = await sanityClient.fetch(TESTIMONIALS_QUERY);
+    if (!data?.length) return [];
+    const shots: TestimonialScreenshot[] = [];
+    for (const t of data) {
+      const image = sanityImageUrl(t.image);
+      // A testimonial is its picture; without one there is nothing to show.
+      if (image) shots.push({ id: t._id, image, alt: t.image?.alt?.trim() || undefined });
+    }
+    return shots;
+  } catch (err) {
+    console.error("[Sanity] fetchTestimonials failed, using fallback:", err);
+    return [];
+  }
+}
+
+/** FAQ entries. An empty result keeps the questions that ship with the site. */
+export async function fetchFaq(): Promise<FAQItem[]> {
+  if (!sanityClient) return CONFIG.faq;
+  try {
+    const data: SanityFaqItem[] = await sanityClient.fetch(FAQ_QUERY);
+    if (!data?.length) return CONFIG.faq;
+    return data
+      .filter((f) => f.question?.trim() && f.answer?.trim())
+      .map((f) => ({ id: f._id, question: f.question!.trim(), answer: f.answer!.trim() }));
+  } catch (err) {
+    console.error("[Sanity] fetchFaq failed, using fallback:", err);
+    return CONFIG.faq;
   }
 }
