@@ -42,6 +42,12 @@ function loadSchemaModules() {
       [
         "tsc", "sanity/index.ts", "sanity/studio-policy.ts",
         "--outDir", out,
+        // Pinned, not inferred. tsc derives the output root from the common
+        // ancestor of every file it pulls in, so the moment a schema imports
+        // from lib/ the emitted tree shifts under an extra directory and the
+        // requires below miss. Fixing the root keeps the paths stable whatever
+        // the schemas import.
+        "--rootDir", ROOT,
         "--module", "commonjs",
         "--moduleResolution", "node",
         "--target", "es2022",
@@ -54,7 +60,11 @@ function loadSchemaModules() {
     const detail = [err.stdout, err.stderr].filter(Boolean).join("\n").trim();
     throw new Error(`the schemas did not compile:\n${detail || err.message}`);
   }
-  return { dir: out, indexPath: join(out, "index.js"), policyPath: join(out, "studio-policy.js") };
+  return {
+    dir: out,
+    indexPath: join(out, "sanity", "index.js"),
+    policyPath: join(out, "sanity", "studio-policy.js"),
+  };
 }
 
 /**

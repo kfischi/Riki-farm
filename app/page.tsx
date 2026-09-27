@@ -9,18 +9,19 @@ import { SiteNav } from "@/components/SiteNav";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { RickyBot } from "@/components/RickyBot";
 import { StickyOrderBar } from "@/components/StickyOrderBar";
-import { fetchPackages, fetchSiteSettings, fetchTestimonials, fetchFaq } from "@/lib/sanity";
+import { fetchPackages, fetchSiteSettings, fetchTestimonials, fetchFaq, fetchSiteMedia } from "@/lib/sanity";
 
 // 60s so an edit in the Studio appears within a minute even if the
 // revalidate webhook is not registered. The webhook makes it immediate.
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [packages, settings, testimonials, faq] = await Promise.all([
+  const [packages, settings, testimonials, faq, media] = await Promise.all([
     fetchPackages(),
     fetchSiteSettings(),
     fetchTestimonials(),
     fetchFaq(),
+    fetchSiteMedia(),
   ]);
 
   // Passed through as-is. Each section falls back field by field, so one blank
@@ -62,8 +63,8 @@ export default async function HomePage() {
       <main id="main-content">
         <HeroSection hero={settings.hero} whatsappNumber={settings.contact?.whatsapp} />
         <SocialProofStrip />
-        <AboutSection about={about} />
-        <CatalogSection packages={packages} />
+        <AboutSection about={about} media={media} />
+        <CatalogSection packages={packages} media={media} />
         <TestimonialsSection testimonials={testimonials} />
         <FAQSection faq={faq} />
       </main>

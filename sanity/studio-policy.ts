@@ -19,7 +19,7 @@ export const SINGLETON_TYPES: ReadonlySet<string> = new Set(
  * Types whose documents exist in the dataset but reach no page:
  *
  *   boxType / boxProduct — feed <BoxBuilder>, which is not mounted on a page.
- *   video / mediaBlock   — no section reads them.
+ *   video                — no section reads it.
  *
  * Listing a type here is a statement that its absence from the site is
  * intended. Nothing is deleted: the documents stay in the dataset, and removing
@@ -29,7 +29,6 @@ export const UNRENDERED_TYPES: ReadonlySet<string> = new Set([
   "boxType",
   "boxProduct",
   "video",
-  "mediaBlock",
 ]);
 
 /** A type the editor should not be offered at all. */

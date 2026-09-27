@@ -40,6 +40,11 @@ function compile() {
       [
         "tsc", "sanity/index.ts", "sanity/structure.ts",
         "--outDir", out,
+        // Pinned, not inferred. tsc derives the output root from the common
+        // ancestor of every file it pulls in, so a schema importing from lib/
+        // shifts the emitted tree under an extra directory and the imports
+        // below miss. Fixing the root keeps the paths stable.
+        "--rootDir", ROOT,
         // Matches the project's own tsconfig. "bundler" resolution is what
         // lets the type-only import of "sanity/structure" find its exports
         // map; "node" resolution cannot see it.
@@ -151,8 +156,8 @@ function walk(node, path, seen, report) {
 const out = compile();
 let structure, schemas;
 try {
-  ({ structure } = await import(pathToFileURL(join(out, "structure.js")).href));
-  ({ schemas } = await import(pathToFileURL(join(out, "index.js")).href));
+  ({ structure } = await import(pathToFileURL(join(out, "sanity", "structure.js")).href));
+  ({ schemas } = await import(pathToFileURL(join(out, "sanity", "index.js")).href));
 } finally {
   rmSync(out, { recursive: true, force: true });
 }

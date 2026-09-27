@@ -6,22 +6,28 @@ import Image from "next/image";
 import { CONFIG } from "@/lib/config";
 import { MessageCircle } from "lucide-react";
 import type { Package } from "@/lib/types";
+import { COLLAGE_SLOTS, type SiteMedia } from "@/lib/mediaSlots";
 import { PackageGrid } from "./PackageGrid";
 
-// Row 1: farm shot (span 2) + Riki & Ron wider shot (span 4); Row 2: three equal images (span 2 each)
-const PACKAGES_COLLAGE = [
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/5_pzixdg.jpg",        span: 2 },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg", span: 4, objectPosition: "center 30%" },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg",        span: 2 },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg", span: 2 },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg",       span: 2 },
+// The photo each collage cell ships with, in the grid's own order. The cell's
+// width and crop come from COLLAGE_SLOTS, so a cell cannot be resized here and
+// keep asking Sanity for the old shape.
+// Row 1: farm shot + Riki & Ron wider shot; Row 2: three equal images.
+const SHIPPED_COLLAGE = [
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/5_pzixdg.jpg" },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg", objectPosition: "center 30%" },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg" },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg" },
+  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg" },
 ];
 
 interface Props {
   packages?: Package[];
+  /** Photos placed from the Studio. Each cell falls back on its own. */
+  media?: SiteMedia;
 }
 
-export function CatalogSection({ packages: packagesProp }: Props) {
+export function CatalogSection({ packages: packagesProp, media }: Props) {
   // Sanity is the source of truth; CONFIG is what ships when it is unreachable.
   const packages = packagesProp?.length ? packagesProp : CONFIG.packages;
   const ref = useRef<HTMLElement>(null);
@@ -77,19 +83,26 @@ export function CatalogSection({ packages: packagesProp }: Props) {
             className="grid gap-2 rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(27,67,50,0.12)] h-[45vh] md:h-[55vh] mb-6"
             style={{ gridTemplateColumns: "repeat(6, 1fr)", gridTemplateRows: "1fr 1fr" }}
           >
-            {PACKAGES_COLLAGE.map(({ src, span, objectPosition }, i) => (
-              <div key={src} className="relative overflow-hidden" style={{ gridColumn: `span ${span}` }}>
-                <Image
-                  src={src}
-                  alt={`מארז תוצרת חקלאית ממשק שוסטרמן ${i + 1}`}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-500"
-                  style={objectPosition ? { objectPosition } : undefined}
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  unoptimized
-                />
-              </div>
-            ))}
+            {COLLAGE_SLOTS.map(({ slot, span }, i) => {
+              const placed = media?.[slot];
+              const shipped = SHIPPED_COLLAGE[i];
+              // Sanity already returned this cell's crop, so the shipped photo's
+              // manual framing must not be applied on top of it.
+              const objectPosition = placed ? undefined : shipped.objectPosition;
+              return (
+                <div key={slot} className="relative overflow-hidden" style={{ gridColumn: `span ${span}` }}>
+                  <Image
+                    src={placed?.url ?? shipped.src}
+                    alt={placed?.alt ?? `מארז תוצרת חקלאית ממשק שוסטרמן ${i + 1}`}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    style={objectPosition ? { objectPosition } : undefined}
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    unoptimized
+                  />
+                </div>
+              );
+            })}
           </div>
 
           <div className="mb-10">

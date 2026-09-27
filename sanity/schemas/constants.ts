@@ -31,15 +31,6 @@ export const BANNER_COLOR_OPTIONS = [
   { title: "שחור", value: "#12100f" },
 ];
 
-/** Where a media block appears on the site. */
-export const PLACEMENT_OPTIONS = [
-  { title: "ראש העמוד (הירו)", value: "hero" },
-  { title: "אזור אודות", value: "about" },
-  { title: "אזור הקטלוג", value: "catalog" },
-  { title: "באנר עליון", value: "top-banner" },
-  { title: "תחתית העמוד", value: "footer" },
-];
-
 /**
  * Max lengths, tuned to what the layout can hold before it breaks.
  * Applied as warnings, not errors, so a long value is flagged but never

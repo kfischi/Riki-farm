@@ -1,6 +1,7 @@
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { Package, Video, FAQItem, TestimonialScreenshot } from "./types";
+import { MEDIA_SLOT_SPECS, type MediaSlot, type SiteMedia } from "./mediaSlots";
 import { CONFIG } from "./config";
 
 // ===== Client =====
@@ -56,6 +57,21 @@ export function sanityImageUrl(source?: SanityImage | null): string | null {
   return builder.image(source).auto("format").fit("max").url();
 }
 
+/**
+ * A crop of a fixed shape, which is what makes the Studio's hotspot mean
+ * something: `fit: crop` keeps the point the editor marked inside the frame.
+ * Asking for no size returns the whole image and lets CSS centre-crop it, and
+ * the hotspot control silently stops mattering.
+ */
+export function sanityImageCrop(
+  source: SanityImage | null | undefined,
+  width: number,
+  height: number,
+): string | null {
+  if (!builder || !source) return null;
+  return builder.image(source).width(width).height(height).fit("crop").auto("format").url();
+}
+
 // ===== TypeScript types matching Sanity schemas =====
 export interface SanityPackage {
   _id: string;
@@ -101,6 +117,13 @@ export interface SanityTestimonial {
   _id: string;
   image?: SanityImage;
   order?: number;
+}
+
+export interface SanityMediaBlock {
+  _id: string;
+  slot?: string;
+  image?: SanityImage;
+  active?: boolean;
 }
 
 export interface SanityFaqItem {
@@ -169,6 +192,14 @@ const FAQ_QUERY = `
   }
 `;
 
+// Ordered oldest-first so a later edit to the same slot wins the reduce below,
+// which is what the Studio field promises.
+const MEDIA_QUERY = `
+  *[_type == "mediaBlock" && active != false] | order(_updatedAt asc) {
+    _id, slot, image, active
+  }
+`;
+
 const SITE_SETTINGS_QUERY = `
   *[_type == "siteSettings"][0] {
     about, hero, contact, banner
@@ -218,6 +249,37 @@ export async function fetchPackages(): Promise<Package[]> {
   } catch (err) {
     console.error("[Sanity] fetchPackages failed, using fallback:", err);
     return CONFIG.packages;
+  }
+}
+
+/**
+ * The photos an editor has placed, keyed by slot.
+ *
+ * Returns only the slots that are actually filled. Each section falls back
+ * slot by slot, so one uploaded photo replaces exactly one photo — unlike the
+ * all-or-nothing lists, where an empty dataset means "use the shipped copy".
+ * There is nothing to migrate here and no trap in leaving it empty.
+ *
+ * A row whose slot is not in MEDIA_SLOTS is dropped: that is a slot removed
+ * from the layout with its document left behind, and rendering it would put a
+ * photo somewhere the grid no longer has a cell for.
+ */
+export async function fetchSiteMedia(): Promise<SiteMedia> {
+  if (!sanityClient) return {};
+  try {
+    const data: SanityMediaBlock[] = await sanityClient.fetch(MEDIA_QUERY);
+    const media: SiteMedia = {};
+    for (const row of data ?? []) {
+      const spec = MEDIA_SLOT_SPECS.get(row.slot as MediaSlot);
+      if (!spec) continue;
+      const url = sanityImageCrop(row.image, spec.aspect.width, spec.aspect.height);
+      if (!url) continue;
+      media[spec.slot] = { url, alt: row.image?.alt?.trim() || undefined };
+    }
+    return media;
+  } catch (err) {
+    console.error("[Sanity] fetchSiteMedia failed, using the shipped photos:", err);
+    return {};
   }
 }
 

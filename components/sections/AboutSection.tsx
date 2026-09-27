@@ -5,6 +5,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
 import { withFaceCrop } from "@/lib/cloudinary";
+import type { SiteMedia } from "@/lib/mediaSlots";
 import { ShareButton } from "@/components/ShareButton";
 
 /** Brand accent. Burgundy — no amber, per the brand constraint. */
@@ -27,9 +28,11 @@ export interface AboutContent {
 
 interface Props {
   about?: AboutContent;
+  /** Photos placed from the Studio. Each slot falls back on its own. */
+  media?: SiteMedia;
 }
 
-export function AboutSection({ about: aboutProp }: Props) {
+export function AboutSection({ about: aboutProp, media }: Props) {
   const headline     = aboutProp?.headline?.trim()     || CONFIG.about.headline;
   const intro        = aboutProp?.intro?.trim()        || CONFIG.about.story[0];
   // The shipped copy carries its own quotation marks; the layout adds styling
@@ -38,6 +41,11 @@ export function AboutSection({ about: aboutProp }: Props) {
   const subheading   = aboutProp?.subheading?.trim()   || CONFIG.about.story[2];
   const story        = aboutProp?.story?.trim()        || CONFIG.about.story[3];
   const closingQuote = aboutProp?.closingQuote?.trim() || CONFIG.about.pullQuotes[1];
+
+  // A photo uploaded in the Studio replaces exactly the one slot it was placed
+  // in; every other photo on the page is untouched.
+  const primaryPhoto = media?.["about-primary"];
+  const northPhoto   = media?.["about-north"];
 
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -98,8 +106,8 @@ export function AboutSection({ about: aboutProp }: Props) {
           <motion.div {...anim(0.1)} className="relative card-lift">
             <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.18)] hover:shadow-[0_16px_56px_rgba(27,67,50,0.26)] transition-shadow duration-400">
               <Image
-                src={withFaceCrop(CONFIG.images.aboutPrimary, "3:4")}
-                alt="ריקי שוסטרמן בחממה — חקלאית מגבול הצפון"
+                src={primaryPhoto?.url ?? withFaceCrop(CONFIG.images.aboutPrimary, "3:4")}
+                alt={primaryPhoto?.alt ?? "ריקי שוסטרמן בחממה — חקלאית מגבול הצפון"}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 90vw, 35vw"
@@ -189,8 +197,8 @@ export function AboutSection({ about: aboutProp }: Props) {
           <motion.div {...anim(0.15)} className="relative card-lift">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.15)] hover:shadow-[0_16px_56px_rgba(27,67,50,0.22)] transition-shadow duration-400">
               <Image
-                src={withFaceCrop(CONFIG.images.aboutNorth, "4:3")}
-                alt="נוף גבול הצפון — מושב לימן, שדות המשק"
+                src={northPhoto?.url ?? withFaceCrop(CONFIG.images.aboutNorth, "4:3")}
+                alt={northPhoto?.alt ?? "נוף גבול הצפון — מושב לימן, שדות המשק"}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 90vw, 30vw"
