@@ -34,6 +34,11 @@ export const CONFIG = {
     aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
     // Catalog — packages feature shot
     catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
+    // Stand-in on a package card with no photo of its own. A real photo of a
+    // real box, so a card without its own picture still looks like the shop
+    // rather than like a fault. Replaceable from the Studio — see the
+    // "package-fallback" slot in lib/mediaSlots.ts.
+    packageFallback: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
   },
 
   videos: [

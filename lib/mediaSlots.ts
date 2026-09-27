@@ -27,7 +27,8 @@ export type MediaSlot =
   | "collage-2"
   | "collage-3"
   | "collage-4"
-  | "collage-5";
+  | "collage-5"
+  | "package-fallback";
 
 export interface MediaSlotSpec {
   slot: MediaSlot;
@@ -44,6 +45,7 @@ const WIDE = { width: 1800, height: 600 };   // 3:1 — the double-width cell
 const CELL = { width: 900, height: 600 };    // 3:2 — a normal collage cell
 const TALL = { width: 900, height: 1200 };   // 3:4 — the portrait in "about"
 const LAND = { width: 1200, height: 900 };   // 4:3 — the landscape in "about"
+const CARD = { width: 1200, height: 900 };   // 4:3 — a package card
 
 export const MEDIA_SLOTS: readonly MediaSlotSpec[] = [
   { slot: "about-primary", title: "אזור אודות — התמונה לאורך (למעלה)", aspect: TALL },
@@ -53,6 +55,9 @@ export const MEDIA_SLOTS: readonly MediaSlotSpec[] = [
   { slot: "collage-3",     title: "קולאז' הקטלוג — תמונה 3",           aspect: CELL, span: 2 },
   { slot: "collage-4",     title: "קולאז' הקטלוג — תמונה 4",           aspect: CELL, span: 2 },
   { slot: "collage-5",     title: "קולאז' הקטלוג — תמונה 5",           aspect: CELL, span: 2 },
+  // Not a position on the page but a stand-in: it shows on every package card
+  // whose own photo is still missing. See lib/sanity.ts.
+  { slot: "package-fallback", title: "תמונת ברירת מחדל למארז ללא תמונה", aspect: CARD },
 ] as const;
 
 /** The dropdown, in the shape Sanity's `options.list` wants. */
@@ -67,6 +72,9 @@ export const MEDIA_SLOT_SPECS: ReadonlyMap<MediaSlot, MediaSlotSpec> = new Map(
 
 /** The five collage cells, in the order the grid lays them out. */
 export const COLLAGE_SLOTS = MEDIA_SLOTS.filter((s) => s.span !== undefined);
+
+/** The stand-in shown on a package card that has no photo of its own. */
+export const PACKAGE_FALLBACK_SLOT = "package-fallback" as const;
 
 /** One filled slot, resolved down to what an `<Image>` needs. */
 export interface ResolvedMedia {

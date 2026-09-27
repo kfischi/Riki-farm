@@ -2,7 +2,12 @@ import { cache } from "react";
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { Package, Video, FAQItem, TestimonialScreenshot } from "./types";
-import { MEDIA_SLOT_SPECS, type MediaSlot, type SiteMedia } from "./mediaSlots";
+import {
+  MEDIA_SLOT_SPECS,
+  PACKAGE_FALLBACK_SLOT,
+  type MediaSlot,
+  type SiteMedia,
+} from "./mediaSlots";
 import { resolveWhatsapp } from "./contact";
 import { CONFIG } from "./config";
 
@@ -222,10 +227,25 @@ const STATIC_PACKAGE_IMAGES = new Map(
     .map((p) => [p.id, p.image] as const),
 );
 
-/** Last-resort image. Brand palette only — no yellow, no amber. */
-function placeholderImage(label: string): string {
-  return `https://placehold.co/400x300/80182c/FFFFFF?text=${encodeURIComponent(label)}`;
-}
+/**
+ * What a package shows before anyone has given it a photo or a description.
+ *
+ * It used to be a burgundy placehold.co panel with the product name printed on
+ * it, which reads as a broken page rather than a shop. A card standing in with
+ * a real photo of a real box says "picture not chosen yet"; a grey rectangle
+ * says "this site is unfinished". Nine of the ten live packages are in exactly
+ * that state.
+ *
+ * Both are stand-ins, never overrides: a package that has its own photo or its
+ * own text keeps them. The editor's two ways out are to fill the card in, or
+ * to switch the package off with "זמין".
+ *
+ * The description makes no claim about what is inside the box — the one thing
+ * nobody can know for a package nobody has described yet.
+ */
+const FALLBACK_DESCRIPTION = "לפרטים על המארז — דברו עם ריקי בוואטסאפ.";
+/** Announced instead of the package name: the stand-in is not a photo of it. */
+const FALLBACK_IMAGE_ALT = "מארז ממשק שוסטרמן";
 
 /**
  * Where a package's order button goes.
@@ -245,8 +265,12 @@ function packageOrderHref(orderUrl: string | undefined, name: string, whatsapp: 
 }
 
 export async function fetchPackages(): Promise<Package[]> {
-  // Shares the page's settings query — fetchSiteSettings is cached per request.
-  const whatsapp = resolveWhatsapp((await fetchSiteSettings()).contact?.whatsapp);
+  // Both are cached per request, so this shares the page's queries.
+  const [settings, media] = await Promise.all([fetchSiteSettings(), fetchSiteMedia()]);
+  const whatsapp = resolveWhatsapp(settings.contact?.whatsapp);
+  const standIn = media[PACKAGE_FALLBACK_SLOT]?.url ?? CONFIG.images.packageFallback;
+  const standInAlt = media[PACKAGE_FALLBACK_SLOT]?.alt ?? FALLBACK_IMAGE_ALT;
+
   const shipped = (): Package[] =>
     CONFIG.packages.map((p) => ({
       ...p,
@@ -259,18 +283,19 @@ export async function fetchPackages(): Promise<Package[]> {
     if (!data?.length) return shipped();
     return data.map((p) => {
       const id = p.id?.current ?? p._id;
+      const ownPhoto = sanityImageUrl(p.image) ?? STATIC_PACKAGE_IMAGES.get(id);
       return {
         id,
         name:        p.name,
-        description: p.description ?? "",
+        description: p.description?.trim() || FALLBACK_DESCRIPTION,
         price:       p.price,
-        image:
-          sanityImageUrl(p.image) ??
-          STATIC_PACKAGE_IMAGES.get(id) ??
-          placeholderImage(p.name),
-        // Only meaningful alongside a Sanity image: the static and placeholder
-        // fallbacks are not the picture the editor described.
-        imageAlt:    sanityImageUrl(p.image) ? p.image?.alt?.trim() || undefined : undefined,
+        image: ownPhoto ?? standIn,
+        // Only the editor's own photo carries the editor's own description.
+        // The stand-in is not a picture of this package, so announcing it by
+        // the package name would tell a screen reader something untrue.
+        imageAlt: ownPhoto
+          ? (sanityImageUrl(p.image) ? p.image?.alt?.trim() || undefined : undefined)
+          : standInAlt,
         tags:        p.tags ?? [],
         orderHref:   packageOrderHref(p.orderUrl, p.name, whatsapp),
       };
@@ -293,7 +318,7 @@ export async function fetchPackages(): Promise<Package[]> {
  * from the layout with its document left behind, and rendering it would put a
  * photo somewhere the grid no longer has a cell for.
  */
-export async function fetchSiteMedia(): Promise<SiteMedia> {
+export const fetchSiteMedia = cache(async function fetchSiteMedia(): Promise<SiteMedia> {
   if (!sanityClient) return {};
   try {
     const data: SanityMediaBlock[] = await sanityClient.fetch(MEDIA_QUERY);
@@ -310,7 +335,7 @@ export async function fetchSiteMedia(): Promise<SiteMedia> {
     console.error("[Sanity] fetchSiteMedia failed, using the shipped photos:", err);
     return {};
   }
-}
+});
 
 export async function fetchBoxTypes(): Promise<SanityBoxType[]> {
   if (!sanityClient) return [];
@@ -330,6 +355,19 @@ export async function fetchBoxProducts(): Promise<SanityBoxProduct[]> {
     console.error("[Sanity] fetchBoxProducts failed:", err);
     return [];
   }
+}
+
+/**
+ * A video with no thumbnail. Still a generated panel rather than a photo,
+ * because the alternative — a still from a video nobody has supplied — does
+ * not exist. Brand palette only: no yellow, no amber.
+ *
+ * Its only caller is fetchVideos below, which nothing calls: the `video` type
+ * is declared unrendered in sanity/studio-policy.ts. Package cards no longer
+ * use a panel like this; see the stand-ins near the top of this file.
+ */
+function placeholderImage(label: string): string {
+  return `https://placehold.co/400x300/80182c/FFFFFF?text=${encodeURIComponent(label)}`;
 }
 
 export async function fetchVideos(): Promise<Video[]> {
