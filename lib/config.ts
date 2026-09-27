@@ -34,11 +34,18 @@ export const CONFIG = {
     aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
     // Catalog — packages feature shot
     catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
-    // Stand-in on a package card with no photo of its own. A real photo of a
-    // real box, so a card without its own picture still looks like the shop
-    // rather than like a fault. Replaceable from the Studio — see the
-    // "package-fallback" slot in lib/mediaSlots.ts.
-    packageFallback: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
+    // Stand-in on a package card with no photo of its own.
+    //
+    // A drawing, not a photograph, and that is the whole point: every photo in
+    // this project comes from the same shoots as the lychee pictures, and the
+    // build environment cannot open any of them to check. Picking one blind
+    // put lychee back on nine cards after it had been removed from the site.
+    // A drawn parcel cannot be wrong about what it shows.
+    //
+    // Replaceable without a developer: the "package-fallback" slot in
+    // lib/mediaSlots.ts takes a real photo from the Studio whenever there is
+    // one worth using.
+    packageFallback: "/package-no-photo.svg",
   },
 
   videos: [
@@ -61,7 +68,10 @@ export const CONFIG = {
       id: "fresh-box-custom",
       name: "מארז תוצרת בהתאמה אישית",
       description: "מארז תוצרת טרייה בהרכב מותאם — ירקות, פירות ועוד, לפי מה שמתאים לכם ולעונה. ריקי בונה יחד איתכם.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
+      // Emptied: the photo that shipped here is from the 1 July lychee shoot
+      // and shows lychee. The card falls to the drawn stand-in until a real
+      // photo of this box is uploaded in the Studio.
+      image: "",
       tags: ["מותאם אישית", "טרי"],
     },
   ] as Package[],

@@ -271,9 +271,14 @@ export async function fetchPackages(): Promise<Package[]> {
   const standIn = media[PACKAGE_FALLBACK_SLOT]?.url ?? CONFIG.images.packageFallback;
   const standInAlt = media[PACKAGE_FALLBACK_SLOT]?.alt ?? FALLBACK_IMAGE_ALT;
 
+  // The shipped list carries empty images too, so it needs the same stand-in:
+  // an empty src renders a broken image, which is the one outcome worse than
+  // a placeholder.
   const shipped = (): Package[] =>
     CONFIG.packages.map((p) => ({
       ...p,
+      image: p.image || standIn,
+      imageAlt: p.image ? p.imageAlt : standInAlt,
       orderHref: packageOrderHref(undefined, p.name, whatsapp),
     }));
 
