@@ -2,13 +2,19 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
+import { resolveContact } from "@/lib/contact";
+import { fetchSiteSettings } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "תקנון ותנאי שימוש — משק שוסטרמן",
   description: "תנאי השימוש של אתר משק שוסטרמן",
 };
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  // The address here is the one the Studio holds: a legal page that
+  // keeps an old mailbox is a notice nobody can answer.
+  const { email } = resolveContact((await fetchSiteSettings()).contact);
+
   return (
     <LegalLayout title="תקנון ותנאי שימוש" lastUpdated={CONFIG.legal.lastUpdated}>
       <p className="mb-4">
@@ -49,7 +55,7 @@ export default function TermsPage() {
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>6. יצירת קשר</h2>
       <p className="mb-4">
         לכל שאלה הנוגעת לתנאים אלה:{" "}
-        <a href={`mailto:${CONFIG.legal.contactEmail}`} className="underline" style={{ color: "#1B4332" }}>{CONFIG.legal.contactEmail}</a>
+        <a href={`mailto:${email}`} className="underline" style={{ color: "#1B4332" }}>{email}</a>
       </p>
 
       <p className="mb-4">עדכון אחרון: {CONFIG.legal.lastUpdated}</p>

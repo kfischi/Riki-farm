@@ -2,13 +2,19 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
+import { resolveContact } from "@/lib/contact";
+import { fetchSiteSettings } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "מדיניות פרטיות — משק שוסטרמן",
   description: "מדיניות הפרטיות של משק שוסטרמן — כיצד אנו אוספים, משתמשים ומגנים על המידע שלך",
 };
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  // The address here is the one the Studio holds: a legal page that
+  // keeps an old mailbox is a notice nobody can answer.
+  const { email } = resolveContact((await fetchSiteSettings()).contact);
+
   return (
     <LegalLayout title="מדיניות פרטיות" lastUpdated={CONFIG.legal.lastUpdated}>
       <p className="mb-4">
@@ -57,7 +63,7 @@ export default function PrivacyPage() {
         <li><strong>התנגדות:</strong> להתנגד לשימוש במידע לצרכי שיווק ישיר</li>
       </ul>
       <p className="mb-4">
-        לממש זכויות אלו, פנה/י אל: <a href={`mailto:${CONFIG.legal.contactEmail}`} className="underline" style={{ color: "#1B4332" }}>{CONFIG.legal.contactEmail}</a>
+        לממש זכויות אלו, פנה/י אל: <a href={`mailto:${email}`} className="underline" style={{ color: "#1B4332" }}>{email}</a>
       </p>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>אבטחת מידע</h2>
@@ -77,7 +83,7 @@ export default function PrivacyPage() {
         בעל/ת מאגר המידע: <strong>{CONFIG.legal.privacyOwnerName}</strong><br />
         {CONFIG.legal.companyLegalName}<br />
         {CONFIG.legal.address}<br />
-        דוא&quot;ל: <a href={`mailto:${CONFIG.legal.contactEmail}`} className="underline" style={{ color: "#1B4332" }}>{CONFIG.legal.contactEmail}</a>
+        דוא&quot;ל: <a href={`mailto:${email}`} className="underline" style={{ color: "#1B4332" }}>{email}</a>
       </p>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>הסכמה</h2>

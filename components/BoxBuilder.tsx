@@ -16,6 +16,7 @@ import {
   type BoxType,
 } from "@/lib/pricing";
 import { CONFIG } from "@/lib/config";
+import { resolveWhatsapp } from "@/lib/contact";
 import { saveLead } from "@/lib/saveLead";
 import { isValidIsraeliPhone, REGIONS } from "@/lib/botEngine";
 
@@ -132,7 +133,12 @@ function builderReducer(state: BuilderState, action: BuilderAction): BuilderStat
 }
 
 // ===== Component =====
-export function BoxBuilder() {
+/**
+ * Not mounted on any page yet. The WhatsApp number still comes in as a prop
+ * rather than from the config, so it is not born with the defect decision 41
+ * describes the day someone renders it.
+ */
+export function BoxBuilder({ whatsapp }: { whatsapp?: string }) {
   const [state, dispatch] = useReducer(builderReducer, initialBuilderState);
 
   const filledItems = state.items.filter((i) => i.qty > 0);
@@ -158,7 +164,7 @@ export function BoxBuilder() {
       state.contact
     );
     const waText = `שלום ריקי! 👋 אשמח לקבל הצעת מחיר על מארז מותאם:\n\n${summaryText}`;
-    const href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(waText)}`;
+    const href = `https://wa.me/${resolveWhatsapp(whatsapp)}?text=${encodeURIComponent(waText)}`;
 
     saveLead({
       name: state.contact.name, company: "—", region: state.contact.region,
@@ -176,7 +182,7 @@ export function BoxBuilder() {
     });
 
     window.open(href, "_blank", "noopener,noreferrer");
-  }, [state, filledItems, unitPrice, total, isContactValid]);
+  }, [state, filledItems, unitPrice, total, isContactValid, whatsapp]);
 
   const steps = [
     { id: "choose_box",      label: "סוג קופסה" },
