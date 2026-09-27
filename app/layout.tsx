@@ -4,6 +4,7 @@ import "./globals.css";
 import { AccessibilityWidget } from "@/components/AccessibilityWidget";
 import { CookieBanner } from "@/components/CookieBanner";
 import { JsonLd } from "@/components/JsonLd";
+import { fetchSiteSettings } from "@/lib/sanity";
 
 const heebo = Heebo({
   subsets: ["hebrew", "latin"],
@@ -83,15 +84,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Shares the page's query: fetchSiteSettings is cached per request.
+  const settings = await fetchSiteSettings();
+
   return (
     <html lang="he" dir="rtl" className={heebo.variable}>
       <body className="antialiased">
-        <JsonLd />
+        <JsonLd contact={settings.contact} />
         {children}
         <AccessibilityWidget />
         <CookieBanner />

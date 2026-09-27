@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
-import { CONFIG } from "@/lib/config";
+import { resolveWhatsapp } from "@/lib/contact";
 
 const BRAND_VIDEO_SRC =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783185123/0704_1_bpnr2e.mp4";
@@ -58,7 +58,7 @@ export function HeroSection({
   const tagline  = hero?.tagline?.trim()  || "";
   const ctaLabel = hero?.ctaLabel?.trim() || DEFAULT_CTA_LABEL;
   const ctaHref  = hero?.ctaHref?.trim()  || "";
-  const waNumber = whatsappNumber?.trim() || CONFIG.whatsappNumber;
+  const waNumber = resolveWhatsapp(whatsappNumber);
   const [captionIndex, setCaptionIndex] = useState(0);
 
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(

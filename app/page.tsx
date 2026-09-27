@@ -27,6 +27,7 @@ export default async function HomePage() {
   // Passed through as-is. Each section falls back field by field, so one blank
   // field in the Studio does not drag a whole section back to the shipped copy.
   const about = settings.about;
+  const contact = settings.contact;
 
   // The banner shows only when it is switched on, actually holds text, and
   // has not passed its end date. Without the date check a forgotten banner
@@ -50,7 +51,7 @@ export default async function HomePage() {
       >
         דלג לתוכן הראשי
       </a>
-      <SiteNav />
+      <SiteNav whatsapp={contact?.whatsapp} />
       {bannerLive && (
         <div
           role="banner"
@@ -68,10 +69,10 @@ export default async function HomePage() {
         <TestimonialsSection testimonials={testimonials} />
         <FAQSection faq={faq} />
       </main>
-      <SiteFooter contact={settings.contact} />
-      <RickyBot content={{ packages, about }} />
-      <WhatsAppFloat />
-      <StickyOrderBar />
+      <SiteFooter contact={contact} />
+      <RickyBot content={{ packages, about, whatsapp: contact?.whatsapp }} />
+      <WhatsAppFloat whatsapp={contact?.whatsapp} />
+      <StickyOrderBar whatsapp={contact?.whatsapp} />
     </>
   );
 }

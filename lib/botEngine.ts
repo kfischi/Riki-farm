@@ -1,4 +1,5 @@
 import { CONFIG } from "./config";
+import { resolveWhatsapp } from "./contact";
 import type { BotState, MessageType, Order, Package, QuickReply, Step } from "./types";
 
 let _counter = 0;
@@ -32,7 +33,7 @@ export function mainMenuMessage(): MessageType {
   };
 }
 
-function buildWhatsappUrl(order: Order): string {
+function buildWhatsappUrl(order: Order, whatsapp: string): string {
   const lines = [
     "שלום ריקי! 👋 אשמח להזמין:",
     `שם: ${order.name ?? "—"}`,
@@ -44,7 +45,7 @@ function buildWhatsappUrl(order: Order): string {
     `מארז: ${order.pkg ?? "—"}`,
     `כמות: ${order.quantity ?? "—"}`,
   ].join("\n");
-  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(lines)}`;
+  return `https://wa.me/${whatsapp}?text=${encodeURIComponent(lines)}`;
 }
 
 // ===== Validators (pure, unit-testable) =====
@@ -75,6 +76,9 @@ export interface BotResponseResult {
 export interface BotContent {
   packages?: Package[];
   about?: { headline?: string; body?: string };
+  /** The Studio's WhatsApp number. The bot hands the order off over WhatsApp,
+   *  so a stale number here loses the order at the last step. */
+  whatsapp?: string;
 }
 
 export function getBotResponse(
@@ -85,6 +89,7 @@ export function getBotResponse(
   const packages = content.packages?.length ? content.packages : CONFIG.packages;
   const aboutHeadline = content.about?.headline?.trim() || CONFIG.about.headline;
   const aboutBody = content.about?.body?.trim() || CONFIG.about.body;
+  const waNumber = resolveWhatsapp(content.whatsapp);
   const trimmed = input.trim();
   let messages: MessageType[] = [];
   let nextStep: Step = state.step;
@@ -122,7 +127,7 @@ export function getBotResponse(
         ];
         nextStep = "catalog";
       } else if (trimmed === "whatsapp") {
-        const href = `https://wa.me/${CONFIG.whatsappNumber}`;
+        const href = `https://wa.me/${waNumber}`;
         messages = [{ id: newId(), sender: "bot", type: "whatsapp-cta", href, summaryText: "לחצו לפתיחת שיחה עם ריקי ישירות בוואטסאפ 💬" }];
         nextStep = "idle";
       } else {
@@ -231,7 +236,7 @@ export function getBotResponse(
         const qty = parseInt(trimmed, 10);
         orderPatch = { quantity: qty };
         const newOrder = { ...state.order, ...orderPatch };
-        const href = buildWhatsappUrl(newOrder);
+        const href = buildWhatsappUrl(newOrder, waNumber);
         const summaryText = [
           "📋 סיכום ההזמנה:",
           "",

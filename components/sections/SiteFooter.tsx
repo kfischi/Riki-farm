@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CONFIG } from "@/lib/config";
+import { resolveContact } from "@/lib/contact";
 import { Leaf, MapPin, Phone, Mail } from "lucide-react";
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -32,10 +33,9 @@ export interface FooterContact {
 export function SiteFooter({ contact }: { contact?: FooterContact }) {
   const year = new Date().getFullYear();
 
-  // A field the editor cleared is blank, not missing — treat both as absent.
-  const phone    = contact?.phone?.trim()    || CONFIG.legal.contactPhone;
-  const email    = contact?.email?.trim()    || CONFIG.legal.contactEmail;
-  const whatsapp = contact?.whatsapp?.trim() || CONFIG.whatsappNumber;
+  // A field the editor cleared is blank, not missing — resolveContact treats
+  // both as absent. The rule lives in one place; see lib/contact.ts.
+  const { phone, email, whatsapp } = resolveContact(contact);
   // tel: wants digits; the displayed number keeps its dashes.
   const phoneHref = phone.replace(/[^\d+]/g, "");
 

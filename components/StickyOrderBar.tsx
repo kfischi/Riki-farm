@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CONFIG } from "@/lib/config";
+import { resolveWhatsapp } from "@/lib/contact";
 
-export function StickyOrderBar() {
+export function StickyOrderBar({ whatsapp }: { whatsapp?: string }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export function StickyOrderBar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent("שלום ריקי! אני רוצה להזמין מארז מהמשק 🌿")}`;
+  const waUrl = `https://wa.me/${resolveWhatsapp(whatsapp)}?text=${encodeURIComponent("שלום ריקי! אני רוצה להזמין מארז מהמשק 🌿")}`;
 
   return (
     <div

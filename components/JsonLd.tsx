@@ -1,8 +1,17 @@
 import { CONFIG } from "@/lib/config";
+import { resolveContact, type SiteContact } from "@/lib/contact";
 
 const SITE_URL = CONFIG.seo.siteUrl;
 
-export function JsonLd() {
+/**
+ * Structured data for search engines.
+ *
+ * Takes the contact details rather than reading the config: all three were
+ * hardcoded here, so an owner who changed her number in the Studio kept
+ * handing Google the old one — the listing outlives the edit.
+ */
+export function JsonLd({ contact }: { contact?: SiteContact }) {
+  const { phone, email, whatsapp } = resolveContact(contact);
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -47,8 +56,8 @@ export function JsonLd() {
           longitude: 35.136,
         },
         hasMap: `https://maps.google.com/?q=מושב+לימן`,
-        telephone: CONFIG.legal.contactPhone,
-        email: CONFIG.legal.contactEmail,
+        telephone: phone,
+        email,
         priceRange: "₪₪",
         currenciesAccepted: "ILS",
         paymentAccepted: "העברה בנקאית",
@@ -67,7 +76,7 @@ export function JsonLd() {
           ],
         },
         sameAs: [
-          `https://wa.me/${CONFIG.whatsappNumber}`,
+          `https://wa.me/${whatsapp}`,
           "https://www.facebook.com/share/1BtRYnhYM9/",
         ],
         keywords: "מארזים חקלאיים, ועד עובדים, נקודות מכירה, גבול הצפון, מושב לימן, חקלאות ישראלית",

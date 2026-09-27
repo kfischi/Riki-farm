@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { Package, Video, FAQItem, TestimonialScreenshot } from "./types";
@@ -320,7 +321,15 @@ export async function fetchVideos(): Promise<Video[]> {
   }
 }
 
-export async function fetchSiteSettings(): Promise<SanitySettings> {
+/**
+ * Wrapped in React's `cache` because two server components now ask for it in
+ * the same render: the page, for the section copy, and the root layout, for
+ * the contact details the structured data carries. `cache` collapses that to
+ * one query per request. Without it the layout would issue a second identical
+ * round trip on every render — @sanity/client does its own fetching, so
+ * nothing else dedupes it.
+ */
+export const fetchSiteSettings = cache(async function fetchSiteSettings(): Promise<SanitySettings> {
   if (!sanityClient) return {};
   try {
     return await sanityClient.fetch(SITE_SETTINGS_QUERY) ?? {};
@@ -328,7 +337,7 @@ export async function fetchSiteSettings(): Promise<SanitySettings> {
     console.error("[Sanity] fetchSiteSettings failed:", err);
     return {};
   }
-}
+});
 
 /**
  * Customer-feedback screenshots for the "מה אומרים עלינו" section.

@@ -1,6 +1,6 @@
 "use client";
 
-import { CONFIG } from "@/lib/config";
+import { resolveWhatsapp } from "@/lib/contact";
 
 /* Official WhatsApp SVG mark */
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -18,10 +18,10 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-export function WhatsAppFloat() {
+export function WhatsAppFloat({ whatsapp }: { whatsapp?: string }) {
   return (
     <a
-      href={`https://wa.me/${CONFIG.whatsappNumber}`}
+      href={`https://wa.me/${resolveWhatsapp(whatsapp)}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="שלח הודעה בוואטסאפ"
