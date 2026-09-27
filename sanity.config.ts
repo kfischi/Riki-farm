@@ -6,7 +6,6 @@ import {
   type DocumentActionsContext,
 } from "sanity";
 import { structureTool } from "sanity/structure";
-import { visionTool } from "@sanity/vision";
 import { schemas } from "./sanity";
 import { structure } from "./sanity/structure";
 import { SINGLETON_TYPES, isHiddenType } from "./sanity/studio-policy";
@@ -68,8 +67,33 @@ export default defineConfig({
     // See sanity/structure.ts — every node needs an explicit id, or a Hebrew
     // title silently derives an empty one and the Studio refuses to render.
     structureTool({ structure }),
-    visionTool(),
+    // Vision, the GROQ console, is deliberately absent. It is a developer
+    // tool, and in the Studio the owner opens it is a query playground in the
+    // top bar that she has to learn to ignore.
+    //
+    // It was first gated behind NODE_ENV instead. That hid the tab but still
+    // shipped the plugin — @sanity/vision declares no `sideEffects: false`, so
+    // the bundler would not drop the import, and ~115 KB rode along to a
+    // Studio that is opened on a phone. The package is still in the
+    // dependencies: put `visionTool()` back on this line to develop with it.
   ],
+
+  /**
+   * Studio features switched off.
+   *
+   * Each one costs a control in the top bar or a popup over the content, and
+   * none of them does anything this site needs: there is one editor, no
+   * approval chain and no release calendar. Everything removed here is a
+   * Sanity feature, not a feature of this project — turning it off takes
+   * nothing away from the site.
+   */
+  // Scheduled content releases, and the perspective dropdown they put beside
+  // the logo. Publish is immediate here; the site picks it up within a minute.
+  releases: { enabled: false },
+  // "Publish later" on individual documents. Same reasoning.
+  scheduledDrafts: { enabled: false },
+  // Sanity's own product announcements, which open over the content.
+  announcements: { enabled: false },
 
   document: {
     // Removes singletons from the global "create new" menu and from the
