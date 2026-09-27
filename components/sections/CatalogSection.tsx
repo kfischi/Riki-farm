@@ -106,7 +106,7 @@ export function CatalogSection({ packages: packagesProp, media }: Props) {
           </div>
 
           <div className="mb-10">
-            <PackageGrid packages={packages} onOrder={openChatWithPkg} />
+            <PackageGrid packages={packages} />
           </div>
 
           <div className="text-center">

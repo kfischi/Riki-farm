@@ -14,6 +14,16 @@ export interface Package {
   /** Accessibility description for `image`, as entered in the Studio. */
   imageAlt?: string;
   tags?: string[];
+  /**
+   * Where this package's order button goes, already resolved: the Studio's
+   * link when one is set, otherwise a WhatsApp message carrying the package
+   * name. Built in lib/sanity, like `image`, so nothing downstream has to know
+   * the fallback rule or the WhatsApp number.
+   *
+   * Optional only because the shipped CONFIG list is typed as Package too and
+   * has no link of its own; everything fetchPackages returns carries one.
+   */
+  orderHref?: string;
 }
 
 export interface Testimonial {

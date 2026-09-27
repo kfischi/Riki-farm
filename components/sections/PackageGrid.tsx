@@ -11,8 +11,8 @@ import type { Package } from "@/lib/types";
  * lives in its own dataset.
  *
  * Callers pass data that has already been through the fallback chain in
- * lib/sanity, so `image` is always a usable URL and only `price`, `tags` and
- * `imageAlt` can be absent.
+ * lib/sanity, so `image` and `orderHref` are always usable URLs and only
+ * `price`, `tags` and `imageAlt` can be absent.
  */
 
 /** Brand accent. Burgundy — no yellow or amber anywhere in this component. */
@@ -20,9 +20,7 @@ const ACCENT = "#80182c";
 
 export interface PackageGridProps {
   packages: Package[];
-  /** Omit to render cards without an action button. */
-  onOrder?: (packageId: string) => void;
-  /** Label for the action button. */
+  /** Label for the action link. */
   orderLabel?: string;
   /** Shown instead of the grid when there is nothing to display. */
   emptyLabel?: string;
@@ -30,7 +28,6 @@ export interface PackageGridProps {
 
 export function PackageGrid({
   packages,
-  onOrder,
   orderLabel = "להזמנה",
   emptyLabel,
 }: PackageGridProps) {
@@ -101,16 +98,20 @@ export function PackageGrid({
                   <span aria-hidden="true" />
                 )}
 
-                {onOrder && (
-                  <button
-                    type="button"
-                    onClick={() => onOrder(pkg.id)}
+                {/* A link, not a button: every package carries its own
+                    destination, so the card does not need to know what
+                    ordering means on this site. */}
+                {pkg.orderHref && (
+                  <a
+                    href={pkg.orderHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={`${orderLabel} — ${pkg.name}`}
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-forest text-white text-sm font-bold hover:bg-forest-mid active:scale-[0.98] transition-all duration-200"
                   >
                     <MessageCircle className="w-4 h-4" aria-hidden="true" />
                     {orderLabel}
-                  </button>
+                  </a>
                 )}
               </div>
             </div>

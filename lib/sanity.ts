@@ -3,6 +3,7 @@ import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import type { Package, Video, FAQItem, TestimonialScreenshot } from "./types";
 import { MEDIA_SLOT_SPECS, type MediaSlot, type SiteMedia } from "./mediaSlots";
+import { resolveWhatsapp } from "./contact";
 import { CONFIG } from "./config";
 
 // ===== Client =====
@@ -84,6 +85,7 @@ export interface SanityPackage {
   tags?: string[];
   order?: number;
   available?: boolean;
+  orderUrl?: string;
 }
 
 export interface SanityBoxType {
@@ -159,7 +161,7 @@ export interface SanitySettings {
 // ===== GROQ Queries =====
 const PACKAGES_QUERY = `
   *[_type == "package" && available != false] | order(order asc) {
-    _id, id, name, description, price, image, tags, order, available
+    _id, id, name, description, price, image, tags, order, available, orderUrl
   }
 `;
 
@@ -225,11 +227,36 @@ function placeholderImage(label: string): string {
   return `https://placehold.co/400x300/80182c/FFFFFF?text=${encodeURIComponent(label)}`;
 }
 
+/**
+ * Where a package's order button goes.
+ *
+ * The Studio's link wins. With none, the button opens WhatsApp with the
+ * package already named in the message — so a package nobody has given a link
+ * still gets a button that says which package it is, and Ricky can tell the
+ * orders apart without asking.
+ *
+ * The greeting is the one lib/botEngine.ts already sends when it hands an
+ * order over, so the two routes read the same on her phone.
+ */
+function packageOrderHref(orderUrl: string | undefined, name: string, whatsapp: string): string {
+  const explicit = orderUrl?.trim();
+  if (explicit) return explicit;
+  return `https://wa.me/${whatsapp}?text=${encodeURIComponent(`שלום ריקי! 👋 אשמח להזמין: ${name}`)}`;
+}
+
 export async function fetchPackages(): Promise<Package[]> {
-  if (!sanityClient) return CONFIG.packages; // fallback to static config
+  // Shares the page's settings query — fetchSiteSettings is cached per request.
+  const whatsapp = resolveWhatsapp((await fetchSiteSettings()).contact?.whatsapp);
+  const shipped = (): Package[] =>
+    CONFIG.packages.map((p) => ({
+      ...p,
+      orderHref: packageOrderHref(undefined, p.name, whatsapp),
+    }));
+
+  if (!sanityClient) return shipped();
   try {
     const data: SanityPackage[] = await sanityClient.fetch(PACKAGES_QUERY);
-    if (!data?.length) return CONFIG.packages;
+    if (!data?.length) return shipped();
     return data.map((p) => {
       const id = p.id?.current ?? p._id;
       return {
@@ -245,11 +272,12 @@ export async function fetchPackages(): Promise<Package[]> {
         // fallbacks are not the picture the editor described.
         imageAlt:    sanityImageUrl(p.image) ? p.image?.alt?.trim() || undefined : undefined,
         tags:        p.tags ?? [],
+        orderHref:   packageOrderHref(p.orderUrl, p.name, whatsapp),
       };
     });
   } catch (err) {
     console.error("[Sanity] fetchPackages failed, using fallback:", err);
-    return CONFIG.packages;
+    return shipped();
   }
 }
 

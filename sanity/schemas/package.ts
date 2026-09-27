@@ -44,6 +44,14 @@ export const packageSchema = {
       validation: (R: Rule) => R.max(LIMITS.priceLabel).warning("מחיר ארוך מדי — מומלץ ניסוח קצר"),
     },
     {
+      name: "orderUrl",
+      title: "קישור להזמנה",
+      type: "url",
+      description:
+        "לאן כפתור ההזמנה של המארז הזה מוביל. אפשר להשאיר ריק — אז הכפתור פותח וואטסאפ עם שם המארז כבר כתוב בהודעה.",
+      validation: (R: Rule) => R.uri({ scheme: ["http", "https"] }),
+    },
+    {
       name: "bulkPrice",
       hidden: true,
       title: "מחיר לכמות גדולה",
