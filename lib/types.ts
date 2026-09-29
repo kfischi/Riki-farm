@@ -1,0 +1,138 @@
+export interface Video {
+  id: string;
+  title: string;
+  thumbnail: string;
+  url: string;
+}
+
+export interface Package {
+  id: string;
+  name: string;
+  description: string;
+  price?: string;
+  image: string;
+  /** Accessibility description for `image`, as entered in the Studio. */
+  imageAlt?: string;
+  tags?: string[];
+  /**
+   * Where this package's order button goes, already resolved: the Studio's
+   * link when one is set, otherwise a WhatsApp message carrying the package
+   * name. Built in lib/sanity, like `image`, so nothing downstream has to know
+   * the fallback rule or the WhatsApp number.
+   *
+   * Optional only because the shipped CONFIG list is typed as Package too and
+   * has no link of its own; everything fetchPackages returns carries one.
+   */
+  orderHref?: string;
+}
+
+export interface Testimonial {
+  id: string;
+  quote: string;
+  author: string;
+  role: string;
+  company?: string;
+}
+
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+/**
+ * A customer-feedback screenshot in the "מה אומרים עלינו" section.
+ *
+ * Separate from `Testimonial` above, which is a typed-out quote: that section
+ * renders images, so this is the shape the page actually consumes.
+ */
+export interface TestimonialScreenshot {
+  id: string;
+  /** Ready-to-use URL — the fallback chain in lib/sanity resolves it. */
+  image: string;
+  alt?: string;
+}
+
+export interface USP {
+  icon: string;
+  title: string;
+  text: string;
+}
+
+export interface QuickReply {
+  label: string;
+  value: string;
+  icon?: string;
+}
+
+export type MessageType =
+  | { id: string; sender: "bot" | "user"; type: "text"; text: string }
+  | { id: string; sender: "bot"; type: "video-link"; videos: Video[] }
+  | { id: string; sender: "bot"; type: "catalog-cards"; packages: Package[] }
+  | { id: string; sender: "bot"; type: "quick-replies"; text?: string; replies: QuickReply[] }
+  | { id: string; sender: "bot"; type: "whatsapp-cta"; href: string; summaryText: string };
+
+export type Step =
+  | "idle"
+  | "videos"
+  | "info"
+  | "catalog"
+  | "order_name"
+  | "order_company"
+  | "order_region"
+  | "order_address"
+  | "order_email"
+  | "order_phone"
+  | "order_package"
+  | "order_quantity"
+  | "order_confirm";
+
+export interface Order {
+  name?: string;
+  company?: string;
+  region?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
+  pkg?: string;
+  quantity?: number;
+}
+
+export interface BotState {
+  step: Step;
+  messages: MessageType[];
+  isTyping: boolean;
+  order: Order;
+  savedPartial: boolean;
+}
+
+export type BotAction =
+  | { type: "ADD_MESSAGES"; payload: MessageType[] }
+  | { type: "SET_TYPING"; payload: boolean }
+  | { type: "SET_STEP"; payload: Step }
+  | { type: "PATCH_ORDER"; payload: Partial<Order> }
+  | { type: "SET_SAVED_PARTIAL"; payload: boolean }
+  | { type: "RESET" };
+
+export interface Lead {
+  name: string;
+  company: string;
+  region: string;
+  address: string;
+  email: string;
+  phone: string;
+  pkg: string;
+  quantity: string;
+  consent: boolean;
+  source: "ricky-chatbot";
+  status: "partial" | "complete";
+  createdAt: string; // ISO, server-generated
+  // Box builder fields (optional)
+  boxType?: string;
+  boxItems?: string;
+  unitPrice?: string;
+  orderQty?: string;
+  totalPrice?: string;
+}
+
+export type LeadPayload = Omit<Lead, "createdAt">;
