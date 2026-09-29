@@ -1,8 +1,40 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { X, Plus, Contrast, Underline, Type, Pause, RotateCcw, Accessibility } from "lucide-react";
+import { X, Plus, Contrast, Underline, Type, Pause, RotateCcw } from "lucide-react";
 import Link from "next/link";
+
+/**
+ * The International Symbol of Access, drawn rather than imported.
+ *
+ * lucide's Accessibility glyph was here before: a thin-stroke figure in the
+ * brand green. It is a fine icon and the wrong one for this button. People do
+ * not read this control, they recognise it — a solid blue disc with a white
+ * figure, arms out — and anything that merely gestures at the idea costs the
+ * recognition that is the button's whole job.
+ *
+ * The blue is a deliberate exception to the brand palette, for the same
+ * reason: a brand-coloured accessibility button is a button nobody finds. It
+ * is also the one colour the brand constraint does not rule out.
+ *
+ * Inline rather than <img src="/accessibility-icon.svg"> so it needs no second
+ * request and no next/image exception, and so the mark cannot drift out of
+ * sync with the component that uses it.
+ */
+function AccessibilityMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden="true" focusable="false">
+      <circle cx="50" cy="50" r="50" fill="#1E3A6E" />
+      <circle cx="50" cy="50" r="44" fill="none" stroke="#FFFFFF" strokeWidth="5" />
+      {/* Head, torso, outstretched arms and parted legs — the standard figure. */}
+      <circle cx="50" cy="24" r="8" fill="#FFFFFF" />
+      <rect x="46.5" y="33" width="7" height="17" rx="3.5" fill="#FFFFFF" />
+      <rect x="21" y="37" width="58" height="7" rx="3.5" fill="#FFFFFF" />
+      <rect x="43" y="48" width="7" height="22" rx="3.5" fill="#FFFFFF" transform="rotate(-13 46.5 48)" />
+      <rect x="50" y="48" width="7" height="22" rx="3.5" fill="#FFFFFF" transform="rotate(13 53.5 48)" />
+    </svg>
+  );
+}
 
 type Prefs = {
   largerFont: boolean;
@@ -144,9 +176,10 @@ export function AccessibilityWidget() {
         aria-label="פתח/י תפריט נגישות"
         aria-expanded={open}
         className="w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-        style={{ backgroundColor: "#1B4332", color: "white", boxShadow: "0 4px 16px rgba(27,67,50,0.4)" }}
+        style={{ boxShadow: "0 4px 16px rgba(30,58,110,0.45)" }}
       >
-        <Accessibility className="w-8 h-8" aria-hidden="true" strokeWidth={2} />
+        {/* The mark carries its own disc, so the button adds no background. */}
+        <AccessibilityMark className="w-14 h-14" />
       </button>
     </div>
   );
