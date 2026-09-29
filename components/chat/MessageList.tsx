@@ -27,14 +27,14 @@ export function MessageList({ messages, isTyping, onSend }: Props) {
       className="h-full overflow-y-auto chat-scroll px-3 py-4 flex flex-col gap-2"
     >
       <AnimatePresence initial={false}>
-        {messages.map((msg) => (
+        {messages.map((msg, i) => (
           <motion.div
             key={msg.id}
             initial={{ opacity: 0, y: 10, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
           >
-            <MessageBubble message={msg} onSend={onSend} />
+            <MessageBubble message={msg} onSend={onSend} live={i === messages.length - 1} />
           </motion.div>
         ))}
       </AnimatePresence>

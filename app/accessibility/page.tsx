@@ -4,7 +4,8 @@ import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "הצהרת נגישות — משק שוסטרמן",
+  // The brand is appended by the title template in app/layout.tsx.
+  title: "הצהרת נגישות",
   description: "הצהרת הנגישות של משק שוסטרמן בהתאם לתקן ישראלי ת\"י 5568 ו-WCAG 2.0 AA",
 };
 

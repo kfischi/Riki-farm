@@ -6,7 +6,8 @@ import { resolveContact } from "@/lib/contact";
 import { fetchSiteSettings } from "@/lib/sanity";
 
 export const metadata: Metadata = {
-  title: "תקנון ותנאי שימוש — משק שוסטרמן",
+  // The brand is appended by the title template in app/layout.tsx.
+  title: "תקנון ותנאי שימוש",
   description: "תנאי השימוש של אתר משק שוסטרמן",
 };
 

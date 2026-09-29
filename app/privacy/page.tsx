@@ -6,7 +6,8 @@ import { resolveContact } from "@/lib/contact";
 import { fetchSiteSettings } from "@/lib/sanity";
 
 export const metadata: Metadata = {
-  title: "מדיניות פרטיות — משק שוסטרמן",
+  // The brand is appended by the title template in app/layout.tsx.
+  title: "מדיניות פרטיות",
   description: "מדיניות הפרטיות של משק שוסטרמן — כיצד אנו אוספים, משתמשים ומגנים על המידע שלך",
 };
 

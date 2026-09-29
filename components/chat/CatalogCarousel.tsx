@@ -6,9 +6,12 @@ import type { Package } from "@/lib/types";
 interface Props {
   packages: Package[];
   onOrder: (input: string) => void;
+  /** See QuickReplies: a card from an earlier turn answers the current
+   *  question if it is still clickable. */
+  stale?: boolean;
 }
 
-export function CatalogCarousel({ packages, onOrder }: Props) {
+export function CatalogCarousel({ packages, onOrder, stale = false }: Props) {
   return (
     <div
       className="catalog-carousel flex gap-3 pb-2"
@@ -55,10 +58,11 @@ export function CatalogCarousel({ packages, onOrder }: Props) {
             )}
             <button
               onClick={() => onOrder(pkg.id)}
-              className="mt-2 w-full text-xs py-1.5 rounded-lg text-white font-semibold transition-all active:scale-95"
+              disabled={stale}
+              className={`mt-2 w-full text-xs py-1.5 rounded-lg text-white font-semibold transition-all ${stale ? "cursor-default opacity-45" : "active:scale-95"}`}
               style={{ backgroundColor: "#1B4332" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#2D6A4F")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1B4332")}
+              onMouseEnter={(e) => { if (!stale) e.currentTarget.style.backgroundColor = "#2D6A4F"; }}
+              onMouseLeave={(e) => { if (!stale) e.currentTarget.style.backgroundColor = "#1B4332"; }}
             >
               בחר/י מארז זה
             </button>

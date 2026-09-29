@@ -23,5 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    {
+      url: `${BASE}/cookies`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    // /accessibility is deliberately absent: robots.ts disallows it, and
+    // listing a page in the sitemap that crawlers are told not to fetch is a
+    // contradiction Search Console reports as an error.
   ];
 }

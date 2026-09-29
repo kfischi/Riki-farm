@@ -10,9 +10,12 @@ import { RickyAvatar } from "./RickyAvatar";
 interface Props {
   message: MessageType;
   onSend: (input: string) => void;
+  /** False for every message the conversation has already moved past. Only
+   *  the newest message may still be answered. */
+  live?: boolean;
 }
 
-export function MessageBubble({ message, onSend }: Props) {
+export function MessageBubble({ message, onSend, live = true }: Props) {
   if (message.sender === "user") {
     return (
       <div className="flex justify-start">
@@ -53,7 +56,7 @@ export function MessageBubble({ message, onSend }: Props) {
               </p>
             </div>
           )}
-          <QuickReplies replies={message.replies} onSelect={onSend} />
+          <QuickReplies replies={message.replies} onSelect={onSend} stale={!live} />
         </div>
       );
 
@@ -69,7 +72,7 @@ export function MessageBubble({ message, onSend }: Props) {
     case "catalog-cards":
       return withAvatar(
         <div className="w-full">
-          <CatalogCarousel packages={message.packages} onOrder={onSend} />
+          <CatalogCarousel packages={message.packages} onOrder={onSend} stale={!live} />
         </div>
       );
 

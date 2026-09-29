@@ -95,7 +95,11 @@ export function SiteFooter({ contact }: { contact?: FooterContact }) {
             <h2 className="font-bold text-sm mb-4 uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.4)" }}>ניווט</h2>
             <ul className="space-y-2.5">
               {[
-                { href: "#", label: "עמוד הבית" },
+                // "#" is not a destination — it scrolls to the top and leaves a
+                // bare "#" in the address bar. The footer only renders on the
+                // home page, so the top of the content is what "home" means
+                // here, and #main-content is already the skip-link's target.
+                { href: "#main-content", label: "עמוד הבית" },
                 { href: "#about", label: "אודות המשק" },
                 { href: "#catalog", label: "הקטלוג" },
               ].map((l) => (
