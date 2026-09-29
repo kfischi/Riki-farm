@@ -25,18 +25,33 @@ export default async function PrivacyPage() {
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>מידע שאנו אוספים</h2>
       <p className="mb-4">
-        במהלך שיחה עם RickyBot לצורך בקשת הצעת מחיר, אנו עשויים לאסוף את פרטי המידע הבאים:
+        במהלך שיחה עם RickyBot לצורך בקשת הצעת מחיר, נאספים הפרטים הבאים — אלה שמסרת בשיחה:
       </p>
       <ul className="mb-4 list-disc pr-5 space-y-1.5">
-        <li>שמך הפרטי</li>
-        <li>שם החברה שבה אתה/את עובד/ת</li>
-        <li>מספר טלפון לחזרה</li>
-        <li>פרטי הזמנה: סוג מארז, כמות</li>
+        <li>שם מלא</li>
+        <li>שם החברה או העסק</li>
+        <li>מספר טלפון</li>
+        <li>כתובת דואר אלקטרוני</li>
+        <li>אזור וכתובת למשלוח</li>
+        <li>פרטי הבקשה: המארז המבוקש והכמות</li>
+        <li>מועד הפנייה, ואם סימנת הסכמה לפנייה חוזרת</li>
       </ul>
+
+      <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>לאן המידע מגיע</h2>
       <p className="mb-4">
-        <strong>שים/י לב:</strong> המידע שנמסר דרך הצ&apos;אט נשלח לבעלת המשק ישירות דרך WhatsApp ואינו נשמר בשרתי האתר.
-        האתר אינו שומר מסדי נתונים של לקוחות.
+        הפרטים עוברים בשני מסלולים, ושניהם מתרחשים באותו רגע — כשאתה/את מגיע/ה למסך הסיכום בצ&apos;אט:
       </p>
+      <ul className="mb-4 list-disc pr-5 space-y-1.5">
+        <li>
+          <strong>וואטסאפ.</strong> נפתחת הודעה מוכנה עם סיכום הפנייה. ההודעה נשלחת רק אם את/ה
+          בוחר/ת לשלוח אותה, ומגיעה לבעלת המשק דרך שירות WhatsApp.
+        </li>
+        <li>
+          <strong>שרת האתר.</strong> במקביל נשלחים אותם פרטים גם לשרת האתר.
+          <strong> השרת אינו שומר אותם ואין באתר מסד נתונים של לקוחות</strong> — הם מועברים הלאה
+          לכתובת שאליה מוגדר שיעברו, ואם לא הוגדרה כתובת כזו, הם נזרקים מיד ואינם נשמרים בשום מקום.
+        </li>
+      </ul>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>מטרות האיסוף</h2>
       <ul className="mb-4 list-disc pr-5 space-y-1.5">
@@ -47,11 +62,20 @@ export default async function PrivacyPage() {
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>שיתוף מידע עם צדדים שלישיים</h2>
       <p className="mb-4">
-        אנחנו לא מוכרים, מחכירים, או משתפים מידע אישי עם צדדים שלישיים, למעט:
+        אנחנו לא מוכרים ולא מחכירים מידע אישי. המידע עובר דרך הגורמים הבאים בלבד:
       </p>
       <ul className="mb-4 list-disc pr-5 space-y-1.5">
+        <li>
+          <strong>WhatsApp (Meta Platforms)</strong> — כחלק מתהליך שליחת ההודעה, בכפוף למדיניות
+          הפרטיות של WhatsApp
+        </li>
+        <li>
+          <strong>Netlify</strong> — ספקית האירוח שדרכה עוברת הפנייה אל שרת האתר
+        </li>
+        <li>
+          <strong>כתובת ההעברה</strong> — ככל שהוגדרה כזו, כמתואר למעלה
+        </li>
         <li>כנדרש על-פי חוק, פסיקה, או צו שיפוטי</li>
-        <li>מסירת המידע לשירות WhatsApp (Meta Platforms) כחלק מתהליך שליחת ההודעה — בכפוף למדיניות הפרטיות של WhatsApp</li>
       </ul>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>זכויות הנושא (תיקון 13 לחוק הגנת הפרטיות)</h2>
@@ -75,7 +99,9 @@ export default async function PrivacyPage() {
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>שמירת מידע</h2>
       <p className="mb-4">
         מידע שנמסר דרך WhatsApp יישמר בהתאם למדיניות WhatsApp ולצרכי הטיפול בהזמנה בלבד.
-        פרטי העדפות נגישות נשמרים ב-localStorage במכשיר שלך בלבד ואינם מועברים לשרת.
+        בשרת האתר עצמו לא נשמר דבר. העדפות הנגישות והסכמת העוגיות נשמרות במכשיר שלך בלבד
+        ואינן מועברות לשרת — הפירוט המלא נמצא ב
+        <a href="/cookies" className="underline" style={{ color: "#1B4332" }}>מדיניות העוגיות</a>.
       </p>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>בעל מאגר המידע</h2>

@@ -27,6 +27,12 @@ export default async function CookiesPage() {
         עוגיות הן קבצי טקסט קטנים הנשמרים במכשיר שלך על-ידי הדפדפן. localStorage ו-sessionStorage
         הם מנגנוני אחסון מקומי דומים — המידע נשמר אצלך בדפדפן בלבד ואינו נשלח לשרת שלנו.
       </p>
+      <p className="mb-4">
+        <strong>זה נכון לגבי שלושת הפריטים המפורטים כאן בלבד.</strong> פרטים שאת/ה מוסר/ת ביוזמתך
+        בשיחה עם הצ&apos;אט — שם, טלפון, אימייל וכתובת — אינם אחסון מקומי, והם כן נשלחים החוצה.
+        המסלול שלהם מתואר ב
+        <a href="/privacy" className="underline" style={{ color: "#1B4332" }}>מדיניות הפרטיות</a>.
+      </p>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>אחסון מקומי שאנו משתמשים בו</h2>
 
