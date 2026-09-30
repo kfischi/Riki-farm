@@ -215,9 +215,12 @@ export const CONFIG = {
     contactEmail: "meshek.shusterman@gmail.com",
     contactPhone: "052-524-2155",
     accessibilityCoordinator: {
-      name: "שם רכז/ת הנגישות", // 🔴
-      phone: "0XX-XXXXXXX", // 🔴
-      email: "accessibility@example.co.il", // 🔴
+      // Ricky is the coordinator. Only the name lives here: the phone and the
+      // e-mail come from the same resolver every other contact point on the
+      // site uses, so changing them in the Studio changes them here too.
+      // A second copy of a phone number is a legal notice that goes stale
+      // without anyone noticing — see docs/decisions.md 38.
+      name: "ריקי שוסטרמן",
     },
     lastUpdated: "2026-05-22",
     privacyOwnerName: "ריקי שוסטרמן", // 🔴 confirm legal name

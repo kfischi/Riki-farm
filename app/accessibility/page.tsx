@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
+import { resolveContact } from "@/lib/contact";
+import { fetchSiteSettings } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   // The brand is appended by the title template in app/layout.tsx.
@@ -9,8 +11,16 @@ export const metadata: Metadata = {
   description: "הצהרת הנגישות של משק שוסטרמן בהתאם לתקן ישראלי ת\"י 5568 ו-WCAG 2.0 AA",
 };
 
-export default function AccessibilityPage() {
+// A statement the regulations require people to act on is worth nothing if
+// the number on it is the one Ricky stopped answering. An hour is far more
+// often than this page changes, and it means a contact detail edited in the
+// Studio reaches the legal pages the same day instead of at the next deploy.
+export const revalidate = 3600;
+
+export default async function AccessibilityPage() {
   const coord = CONFIG.legal.accessibilityCoordinator;
+  // The same phone and e-mail the rest of the site shows, from one resolver.
+  const { phone, email } = resolveContact((await fetchSiteSettings()).contact);
   return (
     <LegalLayout title="הצהרת נגישות" lastUpdated={CONFIG.legal.lastUpdated}>
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>מחויבות לנגישות</h2>
@@ -52,8 +62,8 @@ export default function AccessibilityPage() {
       </p>
       <ul className="mb-4 list-disc pr-5 space-y-1.5">
         <li>שם: {coord.name}</li>
-        <li>טלפון: {coord.phone}</li>
-        <li>דוא&quot;ל: <a href={`mailto:${coord.email}`} className="underline" style={{ color: "#1B4332" }}>{coord.email}</a></li>
+        <li>טלפון: <a href={`tel:${phone.replace(/[^\d+]/g, "")}`} className="underline" style={{ color: "#1B4332" }}>{phone}</a></li>
+        <li>דוא&quot;ל: <a href={`mailto:${email}`} className="underline" style={{ color: "#1B4332" }}>{email}</a></li>
       </ul>
 
       <p className="mb-4">

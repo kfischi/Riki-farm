@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   description: "מדיניות הפרטיות של משק שוסטרמן — כיצד אנו אוספים, משתמשים ומגנים על המידע שלך",
 };
 
+// Same reason as /accessibility: these pages publish a contact address,
+// and a legal notice nobody can answer is worse than none. Without this
+// they keep whatever the Studio held at build time.
+export const revalidate = 3600;
+
 export default async function PrivacyPage() {
   // The address here is the one the Studio holds: a legal page that
   // keeps an old mailbox is a notice nobody can answer.
