@@ -32,6 +32,8 @@ export const revalidate = 3600;
 
 export default async function AccessibilityPage() {
   const coord = CONFIG.legal.accessibilityCoordinator;
+  // null until Ricky confirms the turnover — see lib/config.ts.
+  const exempt = CONFIG.legal.accessibilityExemption;
   // The same phone and e-mail the rest of the site shows, from one resolver.
   const { phone, email } = resolveContact((await fetchSiteSettings()).contact);
 
@@ -42,7 +44,23 @@ export default async function AccessibilityPage() {
         מה עוד לא נבדק, ואל מי לפנות אם משהו לא עובד.
       </p>
 
-      <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>מה יש באתר</h2>
+      {exempt === true && (
+        <>
+          <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>מעמד העסק לעניין נגישות</h2>
+          <p className="mb-4">
+            {CONFIG.brand.name} הוא עסק קטן שמחזור המכירות השנתי שלו אינו עולה על הסכום הקבוע
+            בתקנות, ולכן הוא <strong>פטור מחובת ביצוע התאמות הנגישות</strong> באתר.
+          </p>
+          <p className="mb-4">
+            למרות הפטור, בחרנו לבצע את ההתאמות המפורטות למטה, כי אנחנו רוצים שהאתר יהיה שמיש
+            לכמה שיותר אנשים. אם משהו עדיין לא עובד עבורך — נשמח שתספר/י לנו, והפרטים למטה.
+          </p>
+        </>
+      )}
+
+      <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>
+        {exempt === true ? "מה בכל זאת נעשה באתר" : "מה יש באתר"}
+      </h2>
       <ul className="mb-4 list-disc pr-5 space-y-1.5">
         <li>
           <strong>תפריט נגישות</strong> בפינה התחתונה: הגדלת גופן, ניגוד גבוה, הדגשת קישורים,

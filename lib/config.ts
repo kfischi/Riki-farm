@@ -230,6 +230,28 @@ export const CONFIG = {
     address: "מושב לימן, גבול הצפון",
     contactEmail: "meshek.shusterman@gmail.com",
     contactPhone: "052-524-2155",
+    /**
+     * Whether the small-business accessibility exemption applies — the one
+     * for a business whose annual turnover is under roughly ₪300,000. It
+     * exempts a business from MAKING the adaptations, never from publishing
+     * a statement; an exempt business still has to publish one that sets out
+     * the exemption and how to reach it.
+     *
+     *   null  — nobody has confirmed either way. The statement claims neither
+     *           exemption nor compliance and lists what was built. This is
+     *           the safe state and the current one.
+     *   true  — confirmed exempt. The statement says so, and the adaptations
+     *           below it read as voluntary. This is the strongest honest
+     *           position available: no compliance claim to defend.
+     *   false — confirmed not exempt. Then full adaptations are required and
+     *           only an audit by a certified surveyor can support a claim of
+     *           ת"י 5568 AA; the statement must not assert it before that.
+     *
+     * Kfir's estimate is "below", which is not the same as Ricky's figure, so
+     * it stays null. Flipping it is one word once she confirms.
+     */
+    accessibilityExemption: null as boolean | null,
+
     accessibilityCoordinator: {
       // Ricky is the coordinator. Only the name lives here: the phone and the
       // e-mail come from the same resolver every other contact point on the
