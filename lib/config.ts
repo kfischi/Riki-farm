@@ -209,9 +209,25 @@ export const CONFIG = {
   ],
 
   legal: {
-    companyLegalName: "משק שוסטרמן בע\"מ",
-    companyId: "ח.פ XXXXXXXXX", // 🔴
-    address: "מושב לימן, גבול הצפון", // 🔴 כתובת מלאה
+    // The trading name, not a registered-company name. It said
+    // "משק שוסטרמן בע\"מ" while the company number beside it was a
+    // placeholder — and it is printed in the footer of every page. Naming
+    // yourself a company you may not be registered as is a claim; the
+    // trading name is true either way. If the business IS a registered
+    // company, the registered name and number belong here, and then the
+    // legal pages should say so.
+    companyLegalName: "משק שוסטרמן",
+    // The number that identifies the business — ח.פ for a company, מספר עוסק
+    // for a sole trader. Both the privacy notice and the terms are supposed to
+    // identify who is behind the site, and this is the one fact nobody here
+    // knows yet; Ricky does.
+    //
+    // It is EMPTY rather than a placeholder on purpose: every page that shows
+    // it checks first and omits the line entirely when it is blank. A missing
+    // line is a gap. "ח.פ XXXXXXXXX" published on a live site is a false
+    // statement — which is what used to sit here, in dead config nothing read.
+    businessId: "",
+    address: "מושב לימן, גבול הצפון",
     contactEmail: "meshek.shusterman@gmail.com",
     contactPhone: "052-524-2155",
     accessibilityCoordinator: {
@@ -222,7 +238,10 @@ export const CONFIG = {
       // without anyone noticing — see docs/decisions.md 38.
       name: "ריקי שוסטרמן",
     },
-    lastUpdated: "2026-05-22",
-    privacyOwnerName: "ריקי שוסטרמן", // 🔴 confirm legal name
+    lastUpdated: "2026-10-01",
+    // Who answers for the details the site collects. Not "בעל מאגר מידע" —
+    // that is a term out of the Privacy Protection Law and implies a
+    // registered database; the pages now say plainly who to write to.
+    dataContactName: "ריקי שוסטרמן",
   },
 };

@@ -165,7 +165,7 @@ export function AccessibilityWidget() {
               className="text-xs text-center mt-2 underline underline-offset-2"
               style={{ color: "rgba(27,67,50,0.5)" }}
             >
-              הצהרת נגישות
+              נגישות האתר
             </Link>
           </div>
         </div>

@@ -144,7 +144,21 @@ export function RickyBot({ content }: { content?: BotContent }) {
           phone: nextOrder.phone ?? "—",
           pkg: nextOrder.pkg ?? "—",
           quantity: String(nextOrder.quantity ?? "—"),
-          consent: true,
+          // false, because nobody was asked. This field used to be hardcoded
+          // true, so every completed chat was recorded — and forwarded — as
+          // though the person had agreed to marketing. Nothing in the flow
+          // ever put that question to them.
+          //
+          // Pre-ticked consent is exactly what the anti-spam rules forbid, and
+          // consent to marketing has to be given separately from sending an
+          // enquiry: completing this form is not agreement to be advertised
+          // to. Recording a "yes" nobody said is also simply false data, and
+          // if a webhook is configured it leaves the site carrying that claim.
+          //
+          // Wiring up real consent means adding a step to the conversation
+          // that asks, with the default unticked. Until that exists, false is
+          // the only honest value.
+          consent: false,
           source: "ricky-chatbot",
           status: "complete",
         });

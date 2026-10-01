@@ -8,6 +8,29 @@ interface Props {
   children: React.ReactNode;
 }
 
+/**
+ * The four documents share this frame.
+ *
+ * Two things it used to get wrong, both visible to visitors:
+ *
+ * 1. It printed a banner on every one of them — "מסמך זה הוא תבנית בלבד
+ *    וטעון בדיקה משפטית לפני פרסום". A site telling its own visitors that its
+ *    privacy notice is an untested template is worse than any placeholder
+ *    inside it. The documents now say what is and is not verified in their own
+ *    words, where it belongs, so the banner is gone.
+ *
+ * 2. Nothing here linked to the other three. The accessibility statement has
+ *    to be reachable from every page, and SiteFooter renders on the home page
+ *    only — so from /privacy there was no way to reach it. Hence the row of
+ *    links at the foot of every one of these pages.
+ */
+const DOCUMENTS = [
+  { href: "/accessibility", label: "נגישות האתר" },
+  { href: "/privacy", label: "מה קורה עם הפרטים שלך" },
+  { href: "/cookies", label: "מה נשמר אצלך בדפדפן" },
+  { href: "/terms", label: "על האתר הזה" },
+] as const;
+
 export function LegalLayout({ title, lastUpdated, children }: Props) {
   return (
     <div className="min-h-screen py-16 px-6" style={{ backgroundColor: "#FAF9F6" }}>
@@ -29,11 +52,6 @@ export function LegalLayout({ title, lastUpdated, children }: Props) {
               עודכן לאחרונה: {lastUpdated}
             </p>
           )}
-          <div className="mt-4 p-3 rounded-xl border" style={{ backgroundColor: "rgba(233,196,106,0.2)", borderColor: "rgba(233,196,106,0.4)" }}>
-            <p className="text-xs leading-relaxed" style={{ color: "rgba(27,67,50,0.7)" }}>
-              <strong>הערה:</strong> מסמך זה הוא תבנית בלבד וטעון בדיקה משפטית לפני פרסום.{" "}
-            </p>
-          </div>
         </header>
 
         <div
@@ -42,6 +60,22 @@ export function LegalLayout({ title, lastUpdated, children }: Props) {
         >
           {children}
         </div>
+
+        <nav
+          aria-label="מסמכי האתר"
+          className="mt-16 pt-8 border-t"
+          style={{ borderColor: "rgba(27,67,50,0.12)" }}
+        >
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {DOCUMENTS.filter((d) => d.label !== title).map((d) => (
+              <li key={d.href}>
+                <Link href={d.href} className="text-sm underline" style={{ color: "rgba(27,67,50,0.6)" }}>
+                  {d.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </div>
   );
