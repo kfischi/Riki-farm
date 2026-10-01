@@ -10,7 +10,7 @@ export const CONFIG = {
 
   seo: {
     siteUrl: "https://meshek-shusterman.co.il",
-    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg",
+    ogImage: "https://cdn.sanity.io/images/amums2vy/production/38b02339732380a61c98f4d7800d0bb7099314f0-1080x1920.jpg",
   },
 
   brand: {
@@ -20,20 +20,19 @@ export const CONFIG = {
     ownerTitle: "חקלאית, מושב לימן, גבול הצפון",
   },
 
-  rickyAvatar: "https://res.cloudinary.com/dptyfvwyo/image/upload/c_thumb,g_face,w_400,h_400,r_max,f_auto,q_auto/v1780033949/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C_c4mdpc.png",
+  rickyAvatar: "https://cdn.sanity.io/images/amums2vy/production/c9449fa0019c64eda4c4c284fe3e12d38522327e-400x400.png",
 
   // ===== REAL PHOTOS (Cloudinary CDN) =====
   // ⚠️ Verify the tractor photo (aboutNorth) is not AI-processed before go-live.
   images: {
     // Hero — golden-hour, dynamic (nuts falling). Use SPLIT layout on desktop.
-    hero: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651767/16_sipmwd.jpg",
     // About — greenhouse, authentic working-farmer feel
-    aboutPrimary: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/2_cypuwa.jpg",
+    aboutPrimary: "https://cdn.sanity.io/images/amums2vy/production/eb5f2c249c6ed84a8b677c194da6bfc7734fa69d-1600x2133.jpg",
     // About — tractor + northern hills (ties to the גבול הצפון story)
     // ⚠️ VERIFY: may be AI-processed — see README
-    aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
+    aboutNorth: "https://cdn.sanity.io/images/amums2vy/production/e8fa7d6316df06b56d37768a3730bee757334306-1600x1200.jpg",
     // Catalog — packages feature shot
-    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
+    catalogFeature: "https://cdn.sanity.io/images/amums2vy/production/ae3e374e943beae363aab21f95e1627dbd8764bd-1024x1536.jpg",
     // Stand-in on a package card with no photo of its own.
     //
     // A drawing, not a photograph, and that is the whole point: every photo in
@@ -209,17 +208,61 @@ export const CONFIG = {
   ],
 
   legal: {
-    companyLegalName: "משק שוסטרמן בע\"מ",
-    companyId: "ח.פ XXXXXXXXX", // 🔴
-    address: "מושב לימן, גבול הצפון", // 🔴 כתובת מלאה
+    // The trading name, not a registered-company name. It said
+    // "משק שוסטרמן בע\"מ" while the company number beside it was a
+    // placeholder — and it is printed in the footer of every page. Naming
+    // yourself a company you may not be registered as is a claim; the
+    // trading name is true either way. If the business IS a registered
+    // company, the registered name and number belong here, and then the
+    // legal pages should say so.
+    companyLegalName: "משק שוסטרמן",
+    // The number that identifies the business — ח.פ for a company, מספר עוסק
+    // for a sole trader. Both the privacy notice and the terms are supposed to
+    // identify who is behind the site, and this is the one fact nobody here
+    // knows yet; Ricky does.
+    //
+    // It is EMPTY rather than a placeholder on purpose: every page that shows
+    // it checks first and omits the line entirely when it is blank. A missing
+    // line is a gap. "ח.פ XXXXXXXXX" published on a live site is a false
+    // statement — which is what used to sit here, in dead config nothing read.
+    businessId: "",
+    address: "מושב לימן, גבול הצפון",
     contactEmail: "meshek.shusterman@gmail.com",
     contactPhone: "052-524-2155",
+    /**
+     * Whether the small-business accessibility exemption applies — the one
+     * for a business whose annual turnover is under roughly ₪300,000. It
+     * exempts a business from MAKING the adaptations, never from publishing
+     * a statement; an exempt business still has to publish one that sets out
+     * the exemption and how to reach it.
+     *
+     *   null  — nobody has confirmed either way. The statement claims neither
+     *           exemption nor compliance and lists what was built. This is
+     *           the safe state and the current one.
+     *   true  — confirmed exempt. The statement says so, and the adaptations
+     *           below it read as voluntary. This is the strongest honest
+     *           position available: no compliance claim to defend.
+     *   false — confirmed not exempt. Then full adaptations are required and
+     *           only an audit by a certified surveyor can support a claim of
+     *           ת"י 5568 AA; the statement must not assert it before that.
+     *
+     * Kfir's estimate is "below", which is not the same as Ricky's figure, so
+     * it stays null. Flipping it is one word once she confirms.
+     */
+    accessibilityExemption: null as boolean | null,
+
     accessibilityCoordinator: {
-      name: "שם רכז/ת הנגישות", // 🔴
-      phone: "0XX-XXXXXXX", // 🔴
-      email: "accessibility@example.co.il", // 🔴
+      // Ricky is the coordinator. Only the name lives here: the phone and the
+      // e-mail come from the same resolver every other contact point on the
+      // site uses, so changing them in the Studio changes them here too.
+      // A second copy of a phone number is a legal notice that goes stale
+      // without anyone noticing — see docs/decisions.md 38.
+      name: "ריקי שוסטרמן",
     },
-    lastUpdated: "2026-05-22",
-    privacyOwnerName: "ריקי שוסטרמן", // 🔴 confirm legal name
+    lastUpdated: "2026-10-01",
+    // Who answers for the details the site collects. Not "בעל מאגר מידע" —
+    // that is a term out of the Privacy Protection Law and implies a
+    // registered database; the pages now say plainly who to write to.
+    dataContactName: "ריקי שוסטרמן",
   },
 };

@@ -14,11 +14,11 @@ import { PackageGrid } from "./PackageGrid";
 // keep asking Sanity for the old shape.
 // Row 1: farm shot + Riki & Ron wider shot; Row 2: three equal images.
 const SHIPPED_COLLAGE = [
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/5_pzixdg.jpg" },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg", objectPosition: "center 30%" },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1780002086/4_jnhksq.jpg" },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108986/Photo_from_Kfir_1_iwc64y.jpg" },
-  { src: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783109230/14_cbwmfj.jpg" },
+  { src: "https://cdn.sanity.io/images/amums2vy/production/3d1ce558221baa29ee8916dc13a8386fe211450d-1600x1486.jpg" },
+  { src: "https://cdn.sanity.io/images/amums2vy/production/ae3e374e943beae363aab21f95e1627dbd8764bd-1024x1536.jpg", objectPosition: "center 30%" },
+  { src: "https://cdn.sanity.io/images/amums2vy/production/0e1099ea3a35266aef91a3696416f48ba0818075-1402x1122.jpg" },
+  { src: "https://cdn.sanity.io/images/amums2vy/production/bc5e3df3f301621abc0964c3d035784a02585295-4000x4000.jpg" },
+  { src: "https://cdn.sanity.io/images/amums2vy/production/be9a03497d7728e9d3b6213c8ea470822dc3a2fe-1200x1600.jpg" },
 ];
 
 interface Props {

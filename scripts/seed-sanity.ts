@@ -77,10 +77,14 @@ const BOX_PRODUCTS_LOCAL: BoxProduct[] = [
 ];
 
 // Alt text taken from where each image is actually rendered.
-// hero and catalogFeature are declared in CONFIG.images but rendered nowhere,
-// so they have no alt to copy.
+// catalogFeature is declared in CONFIG.images but rendered only in the
+// structured data, so it has no alt to copy.
+//
+// The "hero" row that used to head this list is gone with the config entry it
+// read: the image was rendered nowhere, had no alt text to copy, and is not
+// one of the slots in lib/mediaSlots.ts, so seeding it produced a row nothing
+// could ever display.
 const SITE_IMAGES = [
-  { key: "hero", url: CONFIG.images.hero, placement: "hero", alt: "" },
   {
     key: "aboutPrimary",
     url: CONFIG.images.aboutPrimary,

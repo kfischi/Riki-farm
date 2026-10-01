@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "placehold.co" },
       { protocol: "https", hostname: "cdn.sanity.io" },
-      { protocol: "https", hostname: "res.cloudinary.com" }, // Real farm photos
+      // Only the hero video is still served from Cloudinary; every image
+      // now comes from Sanity. Kept because the video poster could yet be
+      // routed through next/image.
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
 };

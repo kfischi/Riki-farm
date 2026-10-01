@@ -7,12 +7,12 @@ import { X } from "lucide-react";
 import type { TestimonialScreenshot } from "@/lib/types";
 
 const WA_SCREENSHOTS = [
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087728/Screenshot_20260703_170526_WhatsAppBusiness_tger62.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087726/Screenshot_20260703_170456_WhatsAppBusiness_czrw5v.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087725/Screenshot_20260703_170401_WhatsAppBusiness_ki8gbx.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087721/Screenshot_20260703_170330_WhatsAppBusiness_tsmmyi.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087720/Screenshot_20260703_170306_WhatsAppBusiness_nmvkhj.jpg",
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783087720/Screenshot_20260703_170239_WhatsAppBusiness_hrjyla.jpg",
+  "https://cdn.sanity.io/images/amums2vy/production/ebd81121ba21512df1ad8f1034b2911deec84da7-962x290.jpg",
+  "https://cdn.sanity.io/images/amums2vy/production/38753d64cff8f7212c9758d9bb58ba06b91458f6-967x366.jpg",
+  "https://cdn.sanity.io/images/amums2vy/production/3d825a38da8d945c948632eada94f584a0127951-953x471.jpg",
+  "https://cdn.sanity.io/images/amums2vy/production/d5f891e1b1979caaafbff4dc8bf2611039df945b-988x619.jpg",
+  "https://cdn.sanity.io/images/amums2vy/production/d29180b00d756c3061ac8f51f4f5f19d379da50e-991x500.jpg",
+  "https://cdn.sanity.io/images/amums2vy/production/5978fa02eb810468e86938943cb92c14cd9d37d4-1080x568.jpg",
 ];
 
 export interface TestimonialsSectionProps {

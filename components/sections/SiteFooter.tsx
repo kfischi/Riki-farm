@@ -114,13 +114,13 @@ export function SiteFooter({ contact }: { contact?: FooterContact }) {
 
           {/* Legal */}
           <nav aria-label="קישורים משפטיים">
-            <h2 className="font-bold text-sm mb-4 uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.4)" }}>מידע משפטי</h2>
+            <h2 className="font-bold text-sm mb-4 uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.4)" }}>טוב לדעת</h2>
             <ul className="space-y-2.5">
               {[
-                { href: "/accessibility", label: "הצהרת נגישות" },
-                { href: "/privacy", label: "מדיניות פרטיות" },
-                { href: "/cookies", label: "מדיניות עוגיות" },
-                { href: "/terms", label: "תקנון ותנאי שימוש" },
+                { href: "/accessibility", label: "נגישות האתר" },
+                { href: "/privacy", label: "מה קורה עם הפרטים שלך" },
+                { href: "/cookies", label: "מה נשמר אצלך בדפדפן" },
+                { href: "/terms", label: "על האתר הזה" },
               ].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="text-sm transition-colors" style={{ color: "rgba(255,255,255,0.6)" }}>
