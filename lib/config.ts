@@ -10,7 +10,7 @@ export const CONFIG = {
 
   seo: {
     siteUrl: "https://meshek-shusterman.co.il",
-    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg",
+    ogImage: "https://cdn.sanity.io/images/amums2vy/production/38b02339732380a61c98f4d7800d0bb7099314f0-1080x1920.jpg",
   },
 
   brand: {
@@ -20,20 +20,19 @@ export const CONFIG = {
     ownerTitle: "חקלאית, מושב לימן, גבול הצפון",
   },
 
-  rickyAvatar: "https://res.cloudinary.com/dptyfvwyo/image/upload/c_thumb,g_face,w_400,h_400,r_max,f_auto,q_auto/v1780033949/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C_c4mdpc.png",
+  rickyAvatar: "https://cdn.sanity.io/images/amums2vy/production/c9449fa0019c64eda4c4c284fe3e12d38522327e-400x400.png",
 
   // ===== REAL PHOTOS (Cloudinary CDN) =====
   // ⚠️ Verify the tractor photo (aboutNorth) is not AI-processed before go-live.
   images: {
     // Hero — golden-hour, dynamic (nuts falling). Use SPLIT layout on desktop.
-    hero: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651767/16_sipmwd.jpg",
     // About — greenhouse, authentic working-farmer feel
-    aboutPrimary: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/2_cypuwa.jpg",
+    aboutPrimary: "https://cdn.sanity.io/images/amums2vy/production/eb5f2c249c6ed84a8b677c194da6bfc7734fa69d-1600x2133.jpg",
     // About — tractor + northern hills (ties to the גבול הצפון story)
     // ⚠️ VERIFY: may be AI-processed — see README
-    aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
+    aboutNorth: "https://cdn.sanity.io/images/amums2vy/production/e8fa7d6316df06b56d37768a3730bee757334306-1600x1200.jpg",
     // Catalog — packages feature shot
-    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783108965/Photo_from_Kfir_grvbgv.jpg",
+    catalogFeature: "https://cdn.sanity.io/images/amums2vy/production/ae3e374e943beae363aab21f95e1627dbd8764bd-1024x1536.jpg",
     // Stand-in on a package card with no photo of its own.
     //
     // A drawing, not a photograph, and that is the whole point: every photo in

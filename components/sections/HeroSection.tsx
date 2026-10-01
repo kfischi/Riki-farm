@@ -5,6 +5,16 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { resolveWhatsapp } from "@/lib/contact";
 
+// The last two Cloudinary URLs in the project, and they stay on purpose.
+// Every image moved to Sanity — see docs/decisions.md — but video did not,
+// for two reasons Sanity cannot cover: f_mp4,q_auto transcodes per browser,
+// and BRAND_POSTER is a FRAME EXTRACTED FROM THE VIDEO ITSELF (f_jpg,so_0),
+// which is a video-to-image transform. Sanity stores files; it does not
+// transcode and cannot pull a frame out of one.
+//
+// Moving the video would mean a plain file download with no adaptive quality
+// plus a separately exported poster image. This account belongs to Kfir, not
+// to the farm, so nothing here is Ricky's to lose.
 const BRAND_VIDEO_SRC =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783185123/0704_1_bpnr2e.mp4";
 const BRAND_POSTER =
