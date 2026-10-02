@@ -1,6 +1,7 @@
 import {
   defineConfig,
   buildLegacyTheme,
+  defineLocaleResourceBundle,
   type TemplateItem,
   type DocumentActionComponent,
   type DocumentActionsContext,
@@ -51,6 +52,77 @@ const theme = buildLegacyTheme({
   // Sanity's default here is amber. Overridden to brown per brand constraint.
   "--state-warning-color": "#9a5b2d",
   "--state-danger-color": "#b3261e",
+});
+
+/**
+ * Hebrew for the Studio's own buttons.
+ *
+ * There is no Hebrew language plugin for Sanity Studio — `@sanity/locale-he-il`
+ * does not exist on npm — so the whole interface cannot simply be switched over.
+ * What does exist is `defineLocaleResourceBundle`, the documented way to replace
+ * individual strings, and that is what these two bundles do.
+ *
+ * The locale stays `en-US` on purpose. Overrides attach to an installed locale,
+ * and en-US is the only one here; giving these a `he-IL` code would leave them
+ * pointing at a locale nothing can select, and every string would stay English.
+ *
+ * Only the words an editor actually meets are translated. Anything not listed
+ * keeps its English text — the failure mode is "still in English", never a
+ * broken or blank label, so an incorrect key costs nothing but the translation.
+ *
+ * Namespaces are not guesswork: each key below was located inside the
+ * `defineLocalesResources("studio" | "structure", {...})` block that declares it.
+ */
+const heStudio = defineLocaleResourceBundle({
+  locale: "en-US",
+  namespace: "studio",
+  resources: {
+    // The image and file field menu — the one an editor opens on every photo.
+    "inputs.files.common.actions-menu.upload.label": "העלאת תמונה",
+    "inputs.files.common.actions-menu.download.label": "הורדה",
+    "inputs.files.common.actions-menu.copy-url.label": "העתקת הכתובת",
+    "inputs.files.common.actions-menu.clear-field.label": "ניקוי השדה",
+    "input.files.common.upload-placeholder.file-input-button.text": "העלאת תמונה",
+    "input.files.common.cancel-upload": "ביטול ההעלאה",
+
+    // Choosing an existing asset instead of uploading a new one.
+    "asset-source.browse-button.text": "בחירה מהספרייה",
+    "asset-source.dialog.button.select": "בחירה",
+    "asset-source.dialog.button.cancel": "ביטול",
+
+    // Document status, shown at the top of every open document.
+    "release.chip.draft": "טיוטה",
+    "release.chip.published": "מפורסם",
+    "document-status.not-published": "לא פורסם",
+    "changes.title": "שינויים",
+
+    // The slug field's button, which fills the identifier from the name.
+    "inputs.slug.action.generate": "יצירה אוטומטית",
+
+    "new-document.button": "יצירת מסמך חדש",
+    "common.dialog.cancel-button.text": "ביטול",
+    "inputs.array.action.add-item": "הוספת פריט",
+    "inputs.array.action.remove": "הסרה",
+  },
+});
+
+const heStructure = defineLocaleResourceBundle({
+  locale: "en-US",
+  namespace: "structure",
+  resources: {
+    // The publish button and the menu behind the three dots beside it.
+    "action.publish.label": "פרסום",
+    "action.publish.draft.label": "פרסום",
+    "action.discard-changes.label": "ביטול השינויים",
+    "action.duplicate.label": "שכפול",
+    "action.unpublish.label": "הסרה מהאתר",
+
+    "changes.tab.history": "היסטוריה",
+    "changes.tab.review-changes": "מה השתנה",
+
+    "panes.document-list-pane.search-input.placeholder": "חיפוש ברשימה",
+    "pane-header.create-menu.label": "יצירת פריט חדש",
+  },
 });
 
 export default defineConfig({
@@ -119,6 +191,8 @@ export default defineConfig({
       return prev.filter((action) => !blocked.includes(action.action ?? ""));
     },
   },
+
+  i18n: { bundles: [heStudio, heStructure] },
 
   theme,
 });

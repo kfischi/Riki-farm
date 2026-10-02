@@ -29,7 +29,7 @@ const CAPTIONS = [
 ];
 
 /** The copy the site shipped with — used whenever the Studio field is empty. */
-const DEFAULT_HEADLINE = "מארזים עונתיים — ישירות מהמשק";
+const DEFAULT_HEADLINE = "מארזים עונתיים ישירות מהמשק";
 const DEFAULT_CTA_LABEL = "להזמנות — לחצו כאן";
 
 function WhatsAppIcon({ className }: { className?: string }) {
