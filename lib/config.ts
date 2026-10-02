@@ -227,7 +227,7 @@ export const CONFIG = {
     // statement — which is what used to sit here, in dead config nothing read.
     businessId: "",
     address: "מושב לימן, גבול הצפון",
-    contactEmail: "meshek.shusterman@gmail.com",
+    contactEmail: "rikicoca@gmail.com",
     contactPhone: "052-524-2155",
     /**
      * Whether the small-business accessibility exemption applies — the one
