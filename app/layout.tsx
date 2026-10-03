@@ -19,7 +19,27 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const OG_IMAGE = "https://cdn.sanity.io/images/amums2vy/production/38b02339732380a61c98f4d7800d0bb7099314f0-1080x1920.jpg";
+/**
+ * The share card WhatsApp, Facebook and X render for a link to the site.
+ *
+ * The source asset is 1080x1920 — a portrait phone photo. Link previews want a
+ * landscape 1.91:1 card, and the tags here used to declare 1200x630 over that
+ * portrait file. WhatsApp sized a landscape frame from the declared numbers,
+ * received a tall image, and drew its broken-image glyph instead of a preview.
+ *
+ * Sanity's image CDN crops on the way out, so the asset stays untouched and the
+ * URL asks for the shape the card needs. `crop=entropy` keeps the busiest part
+ * of the frame rather than a blind centre cut, and q=72 brings the transfer
+ * under the ~300KB that WhatsApp will fetch for a preview.
+ *
+ * OG_W/OG_H below must keep matching these parameters: a second mismatch breaks
+ * the card the same way.
+ */
+const OG_W = 1200;
+const OG_H = 630;
+const OG_IMAGE =
+  "https://cdn.sanity.io/images/amums2vy/production/38b02339732380a61c98f4d7800d0bb7099314f0-1080x1920.jpg" +
+  `?w=${OG_W}&h=${OG_H}&fit=crop&crop=entropy&q=72&fm=jpg`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://meshek-shusterman.co.il"),
@@ -64,8 +84,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE,
-        width: 1200,
-        height: 630,
+        width: OG_W,
+        height: OG_H,
+        type: "image/jpeg",
         alt: "תוצרת חקלאית ממשק שוסטרמן, מושב לימן, גבול הצפון",
       },
     ],
