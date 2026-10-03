@@ -115,10 +115,18 @@ export function getBotResponse(
         ];
         nextStep = "info";
       } else if (trimmed === "videos" || trimmed.includes("סרטון")) {
-        messages = [
-          { id: newId(), sender: "bot", type: "video-link", videos: CONFIG.videos },
-          { id: newId(), sender: "bot", type: "quick-replies", text: "אהבת?", replies: MAIN_MENU_REPLIES },
-        ];
+        // CONFIG.videos is the fallback for an empty `video` type in Sanity,
+        // and it is empty itself until real videos are uploaded there. Showing
+        // an empty card would read as a broken player, so say it plainly.
+        messages = CONFIG.videos.length
+          ? [
+              { id: newId(), sender: "bot", type: "video-link", videos: CONFIG.videos },
+              { id: newId(), sender: "bot", type: "quick-replies", text: "אהבת?", replies: MAIN_MENU_REPLIES },
+            ]
+          : [
+              { id: newId(), sender: "bot", type: "text", text: "אין כרגע סרטונים להצגה 🙂" },
+              { id: newId(), sender: "bot", type: "quick-replies", text: "הנה מה שכן אפשר:", replies: MAIN_MENU_REPLIES },
+            ];
         nextStep = "videos";
       } else if (trimmed === "catalog" || trimmed.includes("קטלוג")) {
         messages = [
