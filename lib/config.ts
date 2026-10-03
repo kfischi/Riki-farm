@@ -47,20 +47,13 @@ export const CONFIG = {
     packageFallback: "/package-no-photo.svg",
   },
 
-  videos: [
-    {
-      id: "v1",
-      title: "ריקי מספרת על המשק",
-      thumbnail: "https://placehold.co/320x180/1B4332/E9C46A?text=המשק+של+ריקי",
-      url: "https://youtube.com/", // 🔴 REPLACE
-    },
-    {
-      id: "v2",
-      title: "עונת הקציר במשק",
-      thumbnail: "https://placehold.co/320x180/2D6A4F/E9C46A?text=עונת+הקציר",
-      url: "https://youtube.com/", // 🔴 REPLACE
-    },
-  ] as Video[],
+  // Emptied: the two entries that shipped here were stand-ins — invented
+  // titles, placehold.co thumbnails and a `https://youtube.com/` link that
+  // goes nowhere. fetchVideos falls back to this list whenever Sanity has no
+  // `video` documents, so a visitor who typed "סרטון" was served them. An
+  // empty list is the honest answer; the chat now says there is nothing to
+  // show instead. Real videos go in through the Studio, not through here.
+  videos: [] as Video[],
 
   packages: [
     {
