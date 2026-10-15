@@ -1,25 +1,46 @@
-// TODO: legal review — draft cookie policy (מדיניות עוגיות)
+// Plain-language description. This page was already almost entirely factual —
+// it names the three storage keys the site actually writes — so little had to
+// change: one promise about future consent was phrased as a legal undertaking
+// ("בהתאם לדרישות הדין") and is now stated as what we will do.
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/legal/LegalLayout";
 import { CONFIG } from "@/lib/config";
+import { resolveContact } from "@/lib/contact";
+import { fetchSiteSettings } from "@/lib/sanity";
 
 export const metadata: Metadata = {
-  title: "מדיניות עוגיות — משק שוסטרמן",
-  description: "מדיניות השימוש בעוגיות ואחסון מקומי באתר משק שוסטרמן",
+  // The brand is appended by the title template in app/layout.tsx.
+  title: "מה נשמר אצלך בדפדפן",
+  description: "שלושת הדברים שהאתר של משק שוסטרמן שומר במכשיר שלך, ולמה",
 };
 
-export default function CookiesPage() {
+// Same reason as /accessibility: these pages publish a contact address,
+// and a legal notice nobody can answer is worse than none. Without this
+// they keep whatever the Studio held at build time.
+export const revalidate = 3600;
+
+export default async function CookiesPage() {
+  // The address here is the one the Studio holds: a legal page that
+  // keeps an old mailbox is a notice nobody can answer.
+  const { email } = resolveContact((await fetchSiteSettings()).contact);
+
   return (
-    <LegalLayout title="מדיניות עוגיות ואחסון מקומי" lastUpdated={CONFIG.legal.lastUpdated}>
+    <LegalLayout title="מה נשמר אצלך בדפדפן" lastUpdated={CONFIG.legal.lastUpdated}>
       <p className="mb-4">
-        מסמך זה מסביר כיצד האתר {CONFIG.brand.name} משתמש בעוגיות (Cookies) ובטכנולוגיות אחסון מקומי
-        (localStorage, sessionStorage).
+        האתר של {CONFIG.brand.name} שומר שלושה דברים במכשיר שלך, וזה הכול. הדף הזה מפרט
+        בדיוק מה הם.
       </p>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>מה הם Cookies ואחסון מקומי?</h2>
       <p className="mb-4">
         עוגיות הן קבצי טקסט קטנים הנשמרים במכשיר שלך על-ידי הדפדפן. localStorage ו-sessionStorage
         הם מנגנוני אחסון מקומי דומים — המידע נשמר אצלך בדפדפן בלבד ואינו נשלח לשרת שלנו.
+      </p>
+      <p className="mb-4">
+        <strong>זה נכון לגבי שלושת הפריטים המפורטים כאן בלבד.</strong> פרטים שאת/ה מוסר/ת ביוזמתך
+        בשיחה עם הצ&apos;אט — שם, טלפון, אימייל וכתובת — אינם אחסון מקומי, והם כן נשלחים החוצה.
+        המסלול שלהם מתואר ב
+        <a href="/privacy" className="underline" style={{ color: "#1B4332" }}>דף הפרטיות</a>.
       </p>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>אחסון מקומי שאנו משתמשים בו</h2>
@@ -50,8 +71,8 @@ export default function CookiesPage() {
         או עוגיות של צדדים שלישיים.
       </p>
       <p className="mb-4">
-        <strong>הערה חשובה לעתיד:</strong> אם יוספו כלי ניתוח או שיווק, הם יגדרו
-        רק לאחר קבלת הסכמתך המפורשת, בהתאם לדרישות הדין.
+        <strong>אם זה ישתנה:</strong> אם יתווספו בעתיד כלי ניתוח או פרסום, הם לא יופעלו
+        לפני שתאשר/י, והדף הזה יתעדכן.
       </p>
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>ניהול ומחיקת עוגיות</h2>
@@ -62,11 +83,10 @@ export default function CookiesPage() {
 
       <h2 className="text-xl font-bold mt-10 mb-3" style={{ color: "#1B4332" }}>יצירת קשר</h2>
       <p className="mb-4">
-        לשאלות בנוגע למדיניות זו:{" "}
-        <a href={`mailto:${CONFIG.legal.contactEmail}`} className="underline" style={{ color: "#1B4332" }}>{CONFIG.legal.contactEmail}</a>
+        שאלה על משהו כאן:{" "}
+        <a href={`mailto:${email}`} className="underline" style={{ color: "#1B4332" }}>{email}</a>
       </p>
 
-      <p className="mb-4">עדכון אחרון: {CONFIG.legal.lastUpdated}</p>
     </LegalLayout>
   );
 }

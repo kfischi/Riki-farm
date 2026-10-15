@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Leaf, MessageCircle } from "lucide-react";
 import { CONFIG } from "@/lib/config";
+import { resolveWhatsapp } from "@/lib/contact";
 
 const NAV_LINKS = [
   { href: "#main-content",  label: "בית" },
@@ -12,7 +13,8 @@ const NAV_LINKS = [
   { href: "#faq",           label: "שאלות נפוצות" },
 ];
 
-export function SiteNav() {
+export function SiteNav({ whatsapp }: { whatsapp?: string }) {
+  const waNumber = resolveWhatsapp(whatsapp);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen]         = useState(false);
 
@@ -54,7 +56,7 @@ export function SiteNav() {
 
         {/* WhatsApp CTA — desktop */}
         <a
-          href={`https://wa.me/${CONFIG.whatsappNumber}`}
+          href={`https://wa.me/${waNumber}`}
           target="_blank"
           rel="noopener noreferrer"
           className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] text-white font-bold text-sm hover:bg-[#20b858] transition-colors"
@@ -89,7 +91,7 @@ export function SiteNav() {
             </a>
           ))}
           <a
-            href={`https://wa.me/${CONFIG.whatsappNumber}`}
+            href={`https://wa.me/${waNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={close}

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CONFIG } from "@/lib/config";
+import { resolveWhatsapp } from "@/lib/contact";
 
-export function StickyOrderBar() {
+export function StickyOrderBar({ whatsapp }: { whatsapp?: string }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export function StickyOrderBar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent("שלום ריקי! אני רוצה להזמין ליצ'י טרי מהמשק 🌿")}`;
+  const waUrl = `https://wa.me/${resolveWhatsapp(whatsapp)}?text=${encodeURIComponent("שלום ריקי! אני רוצה להזמין מארז מהמשק 🌿")}`;
 
   return (
     <div
@@ -28,10 +28,10 @@ export function StickyOrderBar() {
         rel="noopener noreferrer"
         className="flex items-center justify-center gap-2 w-full py-4 bg-[#25D366] text-white font-bold text-base"
         style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
-        aria-label="הזמינו ליצ'י עכשיו בוואטסאפ"
+        aria-label="הזמינו עכשיו בוואטסאפ"
         tabIndex={visible ? 0 : -1}
       >
-        🛒 הזמינו ליצ'י עכשיו
+        🛒 הזמינו עכשיו בוואטסאפ
       </a>
     </div>
   );

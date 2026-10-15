@@ -4,6 +4,7 @@ import "./globals.css";
 import { AccessibilityWidget } from "@/components/AccessibilityWidget";
 import { CookieBanner } from "@/components/CookieBanner";
 import { JsonLd } from "@/components/JsonLd";
+import { fetchSiteSettings } from "@/lib/sanity";
 
 const heebo = Heebo({
   subsets: ["hebrew", "latin"],
@@ -18,19 +19,17 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const OG_IMAGE = "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg";
+const OG_IMAGE = "https://cdn.sanity.io/images/amums2vy/production/38b02339732380a61c98f4d7800d0bb7099314f0-1080x1920.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://meshek-shusterman.co.il"),
   title: {
-    default: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים מגבול הצפון",
+    default: "משק שוסטרמן — מארזים ותוצרת חקלאית מגבול הצפון",
     template: "%s | משק שוסטרמן",
   },
   description:
-    "ריקי שוסטרמן — ליצ'י טרי שנקטף ישירות מהשדה במושב לימן, גבול הצפון. מארזים חקלאיים בהתאמה אישית לוועדי עובדים, חברות, ארגונים ונקודות מכירה. חקלאות ישראלית אמיתית מ-2004.",
+    "ריקי שוסטרמן — תוצרת חקלאית טרייה שנקטפת ישירות מהשדה במושב לימן, גבול הצפון. מארזים חקלאיים בהתאמה אישית לוועדי עובדים, חברות, ארגונים ונקודות מכירה. חקלאות ישראלית אמיתית מ-2004.",
   keywords: [
-    "ליצ'י טרי", "ליצ'י מהמשק", "ליצ'י ישראלי", "ליצ'י גליל", "ליצ'י 2026", "עונת ליצ'י",
-    "ליצ'י יוני", "ליצ'י יולי", "ליצ'י לרכישה", "ליצ'י לקנייה",
     "מארזים חקלאיים", "מתנות לחברות", "מתנות עסקיות", "מארזי חג", "מארז שי לחברות",
     "ועד עובדים", "מתנות לעובדים", "תוצרת חקלאית", "תוצרת טרייה", "תוצרת מהשדה",
     "נקודות מכירה", "חקלאות ישראלית", "חקלאי קו עימות", "תמיכה בצפון",
@@ -55,9 +54,9 @@ export const metadata: Metadata = {
     languages: { "he-IL": "https://meshek-shusterman.co.il" },
   },
   openGraph: {
-    title: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים מגבול הצפון",
+    title: "משק שוסטרמן — מארזים ותוצרת חקלאית מגבול הצפון",
     description:
-      "ליצ'י טרי שנקטף ישירות מהעצים במושב לימן, גבול הצפון. מארזים חקלאיים בהתאמה אישית לוועדי עובדים, חברות, ארגונים ונקודות מכירה — ריקי שוסטרמן, חקלאית ישראלית שורשית.",
+      "תוצרת חקלאית טרייה שנקטפת ישירות מהשדה במושב לימן, גבול הצפון. מארזים חקלאיים בהתאמה אישית לוועדי עובדים, חברות, ארגונים ונקודות מכירה — ריקי שוסטרמן, חקלאית ישראלית שורשית.",
     locale: "he_IL",
     type: "website",
     siteName: "משק שוסטרמן",
@@ -67,14 +66,14 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "ליצ'י טרי ממשק שוסטרמן, מושב לימן, גבול הצפון",
+        alt: "תוצרת חקלאית ממשק שוסטרמן, מושב לימן, גבול הצפון",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "משק שוסטרמן — ליצ'י טרי ומארזים חקלאיים",
-    description: "ליצ'י טרי מהשדה במושב לימן, גבול הצפון. מארזים חקלאיים לחברות, ועדי עובדים ונקודות מכירה — ריקי שוסטרמן.",
+    title: "משק שוסטרמן — מארזים ותוצרת חקלאית",
+    description: "תוצרת חקלאית טרייה מהשדה במושב לימן, גבול הצפון. מארזים חקלאיים לחברות, ועדי עובדים ונקודות מכירה — ריקי שוסטרמן.",
     images: [OG_IMAGE],
   },
   other: {
@@ -85,15 +84,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Shares the page's query: fetchSiteSettings is cached per request.
+  const settings = await fetchSiteSettings();
+
   return (
     <html lang="he" dir="rtl" className={heebo.variable}>
       <body className="antialiased">
-        <JsonLd />
+        <JsonLd contact={settings.contact} />
         {children}
         <AccessibilityWidget />
         <CookieBanner />

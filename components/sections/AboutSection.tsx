@@ -4,14 +4,48 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { CONFIG } from "@/lib/config";
-import { withFaceCrop } from "@/lib/cloudinary";
+import type { SiteMedia } from "@/lib/mediaSlots";
 import { ShareButton } from "@/components/ShareButton";
 
-interface Props {
-  about?: { headline: string; body: string };
+/** Brand accent. Burgundy — no amber, per the brand constraint. */
+const ACCENT = "#80182c";
+
+/**
+ * One key per slot in the layout below. A field left blank in the Studio falls
+ * back to the copy the site shipped with, so the page is never half-empty.
+ */
+export interface AboutContent {
+  headline?: string;
+  intro?: string;
+  quote?: string;
+  subheading?: string;
+  story?: string;
+  closingQuote?: string;
+  /** Answered by the chatbot, not rendered here. */
+  body?: string;
 }
 
-export function AboutSection({ about: aboutProp }: Props) {
+interface Props {
+  about?: AboutContent;
+  /** Photos placed from the Studio. Each slot falls back on its own. */
+  media?: SiteMedia;
+}
+
+export function AboutSection({ about: aboutProp, media }: Props) {
+  const headline     = aboutProp?.headline?.trim()     || CONFIG.about.headline;
+  const intro        = aboutProp?.intro?.trim()        || CONFIG.about.story[0];
+  // The shipped copy carries its own quotation marks; the layout adds styling
+  // instead, so they are stripped either way.
+  const quote        = (aboutProp?.quote?.trim() || CONFIG.about.story[1] || "").replace(/^"|"$/g, "");
+  const subheading   = aboutProp?.subheading?.trim()   || CONFIG.about.story[2];
+  const story        = aboutProp?.story?.trim()        || CONFIG.about.story[3];
+  const closingQuote = aboutProp?.closingQuote?.trim() || CONFIG.about.pullQuotes[1];
+
+  // A photo uploaded in the Studio replaces exactly the one slot it was placed
+  // in; every other photo on the page is untouched.
+  const primaryPhoto = media?.["about-primary"];
+  const northPhoto   = media?.["about-north"];
+
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const prefersReduced = useReducedMotion();
@@ -47,71 +81,22 @@ export function AboutSection({ about: aboutProp }: Props) {
           </span>
         </motion.div>
 
-        {/* ===== Intro block + lychee banner ===== */}
-        <motion.div {...anim(0.05)} className="mb-16 flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12" dir="rtl">
-          {/* Text */}
-          <div className="flex-1 min-w-0">
-            <h2 className="text-2xl lg:text-3xl font-black text-forest mb-5">
-              משק שוסטרמן – חקלאות ישראלית מהלב
-            </h2>
-            <div className="space-y-4">
-              <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
-                ברוכים הבאים למשק שוסטרמן במושב לימן. המשק שלנו מביא אליכם חקלאות ישראלית שורשית, טרייה ואיכותית כבר למעלה מ-22 שנה.
-              </p>
-              <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
-                אנו מתמחים בגידול מגוון רחב של פירות וירקות מובחרים, ומציעים שירות ייחודי של מארזים בהתאמה אישית הישר מהשדה. המארזים שלנו משלבים בגאווה את התוצרת המשקית שלנו לצד גידולים מעולים של חקלאי קו העימות, מתוך רוח של ערבות הדדית ותמיכה בצפון.
-              </p>
-              <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
-                אנו מספקים תוצרת חקלאית ומארזים לוועדי עובדים, חברות, ארגונים ונקודות מכירה, לצד שירות ללקוחות פרטיים.
-              </p>
-            </div>
+        {/* ===== Intro block ===== */}
+        <motion.div {...anim(0.05)} className="mb-16" dir="rtl">
+          <h2 className="text-2xl lg:text-3xl font-black text-forest mb-5">
+            משק שוסטרמן – חקלאות ישראלית מהלב
+          </h2>
+          <div className="space-y-4">
+            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+              ברוכים הבאים למשק שוסטרמן במושב לימן. המשק שלנו מביא אליכם חקלאות ישראלית שורשית, טרייה ואיכותית כבר למעלה מ-22 שנה.
+            </p>
+            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+              אנו מתמחים בגידול מגוון רחב של פירות וירקות מובחרים, ומציעים שירות ייחודי של מארזים בהתאמה אישית הישר מהשדה. המארזים שלנו משלבים בגאווה את התוצרת המשקית שלנו לצד גידולים מעולים של חקלאי קו העימות, מתוך רוח של ערבות הדדית ותמיכה בצפון.
+            </p>
+            <p className="text-base lg:text-lg text-forest/70 leading-[1.85]">
+              אנו מספקים תוצרת חקלאית ומארזים לוועדי עובדים, חברות, ארגונים ונקודות מכירה, לצד שירות ללקוחות פרטיים.
+            </p>
           </div>
-
-          {/* Lychee season banner — pulsing lychee-color glow */}
-          <motion.div
-            animate={{ boxShadow: ["0 0 0 0px rgba(180,32,64,0.6)", "0 0 0 10px rgba(180,32,64,0)", "0 0 0 0px rgba(180,32,64,0.6)"] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-            className="flex-shrink-0 self-start rounded-2xl w-full lg:w-[240px]"
-          >
-            <button
-              onClick={() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" })}
-              className="w-full rounded-2xl overflow-hidden hover:-translate-y-1 active:scale-[0.97] transition-transform duration-300 block"
-              aria-label="עונת הליצ'י בעיצומה – עברו לסרטון"
-            >
-              <div className="relative">
-                <Image
-                  src="https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg"
-                  alt="ליצ'י מהמשק"
-                  width={240}
-                  height={180}
-                  className="w-full h-[166px] object-cover"
-                  unoptimized
-                />
-                {/* Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#b42040]/90 via-[#b42040]/30 to-transparent" />
-                {/* Badge */}
-                <div className="absolute top-2 right-2">
-                  <motion.span
-                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#b42040] text-white text-[10px] font-bold tracking-wide"
-                    animate={{ opacity: [1, 0.3, 1] }}
-                    transition={{ duration: 0.85, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-white" aria-hidden="true" />
-                    עכשיו בעונה
-                  </motion.span>
-                </div>
-                {/* Text overlay */}
-                <div className="absolute bottom-0 inset-x-0 p-3 text-center">
-                  <p className="text-white text-sm font-black leading-tight">
-                    עונת הליצ&apos;י בעיצומה
-                  </p>
-                  <p className="text-white/85 text-xs font-semibold mt-0.5 underline underline-offset-2">
-                    לחצו כאן לפרטים
-                  </p>
-                </div>
-              </div>
-            </button>
-          </motion.div>
         </motion.div>
 
         {/* ===== ROW 1: Greenhouse photo + Opening story ===== */}
@@ -120,8 +105,8 @@ export function AboutSection({ about: aboutProp }: Props) {
           <motion.div {...anim(0.1)} className="relative card-lift">
             <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.18)] hover:shadow-[0_16px_56px_rgba(27,67,50,0.26)] transition-shadow duration-400">
               <Image
-                src={withFaceCrop(CONFIG.images.aboutPrimary, "3:4")}
-                alt="ריקי שוסטרמן בחממה — חקלאית מגבול הצפון"
+                src={primaryPhoto?.url ?? CONFIG.images.aboutPrimary}
+                alt={primaryPhoto?.alt ?? "ריקי שוסטרמן בחממה — חקלאית מגבול הצפון"}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 90vw, 35vw"
@@ -143,36 +128,29 @@ export function AboutSection({ about: aboutProp }: Props) {
               id="about-heading"
               className="text-4xl lg:text-6xl font-black text-forest leading-[1.05] tracking-tight mb-8"
             >
-              {aboutProp?.headline ?? CONFIG.about.headline}
+              {headline}
             </motion.h2>
 
             <div className="space-y-5">
-              {CONFIG.about.story.slice(0, 2).map((para, i) => {
-                // Second paragraph is the pull-quote
-                if (para.startsWith('"')) {
-                  return (
-                    <motion.blockquote
-                      key={i}
-                      {...anim(0.25 + i * 0.08)}
-                      className="relative pr-5 py-1"
-                      style={{ borderRight: "3px solid #BC6C25" }}
-                    >
-                      <p className="text-lg lg:text-xl text-forest font-semibold leading-relaxed italic">
-                        {para.replace(/^"|"$/g, "")}
-                      </p>
-                    </motion.blockquote>
-                  );
-                }
-                return (
-                  <motion.p
-                    key={i}
-                    {...anim(0.25 + i * 0.08)}
-                    className="text-base lg:text-lg text-forest/70 leading-[1.85]"
-                  >
-                    {para}
-                  </motion.p>
-                );
-              })}
+              {intro && (
+                <motion.p
+                  {...anim(0.25)}
+                  className="text-base lg:text-lg text-forest/70 leading-[1.85]"
+                >
+                  {intro}
+                </motion.p>
+              )}
+              {quote && (
+                <motion.blockquote
+                  {...anim(0.33)}
+                  className="relative pr-5 py-1"
+                  style={{ borderRight: `3px solid ${ACCENT}` }}
+                >
+                  <p className="text-lg lg:text-xl text-forest font-semibold leading-relaxed italic">
+                    {quote}
+                  </p>
+                </motion.blockquote>
+              )}
             </div>
           </div>
         </div>
@@ -182,31 +160,33 @@ export function AboutSection({ about: aboutProp }: Props) {
         <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
           {/* Text side */}
           <div>
-            {CONFIG.about.story[2] && (
+            {subheading && (
               <motion.h3
                 {...anim(0.05)}
                 className="text-xl lg:text-2xl font-black text-forest mb-4"
               >
-                {CONFIG.about.story[2]}
+                {subheading}
               </motion.h3>
             )}
-            <motion.p
-              {...anim(0.1)}
-              className="text-base lg:text-lg text-forest/70 leading-[1.85] mb-10"
-            >
-              {CONFIG.about.story[3] ?? CONFIG.about.story[2]}
-            </motion.p>
+            {story && (
+              <motion.p
+                {...anim(0.1)}
+                className="text-base lg:text-lg text-forest/70 leading-[1.85] mb-10"
+              >
+                {story}
+              </motion.p>
+            )}
 
             {/* Pull quote — standalone */}
             <motion.div {...anim(0.2)} className="bg-forest rounded-2xl px-8 py-7">
               <p className="text-xl lg:text-2xl font-bold text-white leading-relaxed">
-                &ldquo;{CONFIG.about.pullQuotes[1]}&rdquo;
+                &ldquo;{closingQuote}&rdquo;
               </p>
               <p className="text-white/50 text-sm mt-4 font-medium">— {CONFIG.brand.ownerName}</p>
             </motion.div>
             <motion.div {...anim(0.3)} className="mt-6">
               <ShareButton
-                title={`${CONFIG.brand.name} — ${CONFIG.about.headline}`}
+                title={`${CONFIG.brand.name} — ${headline}`}
                 text={`"${CONFIG.about.pullQuotes[0]}" | ${CONFIG.brand.name}`}
               />
             </motion.div>
@@ -216,8 +196,8 @@ export function AboutSection({ about: aboutProp }: Props) {
           <motion.div {...anim(0.15)} className="relative card-lift">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(27,67,50,0.15)] hover:shadow-[0_16px_56px_rgba(27,67,50,0.22)] transition-shadow duration-400">
               <Image
-                src={withFaceCrop(CONFIG.images.aboutNorth, "4:3")}
-                alt="נוף גבול הצפון — מושב לימן, שדות המשק"
+                src={northPhoto?.url ?? CONFIG.images.aboutNorth}
+                alt={northPhoto?.alt ?? "נוף גבול הצפון — מושב לימן, שדות המשק"}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 90vw, 30vw"

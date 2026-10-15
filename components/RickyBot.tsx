@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { ChatPanel } from "./chat/ChatPanel";
 import { ChatLauncher } from "./chat/ChatLauncher";
 import type { BotAction, BotState, MessageType, Step } from "@/lib/types";
-import { getBotResponse, getWelcomeMessages } from "@/lib/botEngine";
+import { getBotResponse, getWelcomeMessages, type BotContent } from "@/lib/botEngine";
 import { saveLead } from "@/lib/saveLead";
 
 const initialState: BotState = {
@@ -35,7 +35,11 @@ function botReducer(state: BotState, action: BotAction): BotState {
   }
 }
 
-export function RickyBot() {
+/**
+ * `content` carries the CMS copy the bot answers with. Omitting it leaves the
+ * bot on the copy the site ships with, so it still works on its own.
+ */
+export function RickyBot({ content }: { content?: BotContent }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [unread, setUnread] = useState(true);
@@ -44,9 +48,18 @@ export function RickyBot() {
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingMessages = useRef<MessageType[]>([]);
   const isProcessing = useRef(false);
-  // Track latest state for use in callbacks without stale closure
+  /**
+   * Latest state for the callbacks, without a stale closure.
+   *
+   * Assigned in an effect rather than during render: mutating a ref while
+   * rendering breaks React's guarantees under concurrent rendering, and the
+   * compiler rules flag it. Safe here because the only reader is
+   * handleUserInput, which runs from a user event — long after effects flush.
+   */
   const stateRef = useRef(state);
-  stateRef.current = state;
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   useEffect(() => {
     dispatch({ type: "ADD_MESSAGES", payload: getWelcomeMessages() });
@@ -111,7 +124,7 @@ export function RickyBot() {
       };
       dispatch({ type: "ADD_MESSAGES", payload: [userMsg] });
 
-      const result = getBotResponse(currentState, input);
+      const result = getBotResponse(currentState, input, content);
       dispatch({ type: "SET_STEP", payload: result.nextStep as Step });
       if (Object.keys(result.orderPatch).length > 0) {
         dispatch({ type: "PATCH_ORDER", payload: result.orderPatch });
@@ -119,8 +132,9 @@ export function RickyBot() {
 
       const nextOrder = { ...currentState.order, ...result.orderPatch };
 
-      // Save complete lead when reaching confirm — B2B orders only (lychee leads go via WhatsApp)
-      if (result.nextStep === "order_confirm" && nextOrder.phone && nextOrder.interest !== "lychee") {
+      // Save complete lead when reaching confirm — the order flow is the only
+      // path that reaches it, so a phone number is all this needs to check.
+      if (result.nextStep === "order_confirm" && nextOrder.phone) {
         saveLead({
           name: nextOrder.name ?? "—",
           company: nextOrder.company ?? "—",
@@ -130,7 +144,21 @@ export function RickyBot() {
           phone: nextOrder.phone ?? "—",
           pkg: nextOrder.pkg ?? "—",
           quantity: String(nextOrder.quantity ?? "—"),
-          consent: true,
+          // false, because nobody was asked. This field used to be hardcoded
+          // true, so every completed chat was recorded — and forwarded — as
+          // though the person had agreed to marketing. Nothing in the flow
+          // ever put that question to them.
+          //
+          // Pre-ticked consent is exactly what the anti-spam rules forbid, and
+          // consent to marketing has to be given separately from sending an
+          // enquiry: completing this form is not agreement to be advertised
+          // to. Recording a "yes" nobody said is also simply false data, and
+          // if a webhook is configured it leaves the site carrying that claim.
+          //
+          // Wiring up real consent means adding a step to the conversation
+          // that asks, with the default unticked. Until that exists, false is
+          // the only honest value.
+          consent: false,
           source: "ricky-chatbot",
           status: "complete",
         });
@@ -139,7 +167,7 @@ export function RickyBot() {
       pendingMessages.current.push(...result.messages);
       processNextMessage();
     },
-    [processNextMessage]
+    [processNextMessage, content]
   );
 
   const handleReset = useCallback(() => {

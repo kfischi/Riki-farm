@@ -1,20 +1,24 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
-import { CONFIG } from "@/lib/config";
+import { resolveWhatsapp } from "@/lib/contact";
 
+// The last two Cloudinary URLs in the project, and they stay on purpose.
+// Every image moved to Sanity — see docs/decisions.md — but video did not,
+// for two reasons Sanity cannot cover: f_mp4,q_auto transcodes per browser,
+// and BRAND_POSTER is a FRAME EXTRACTED FROM THE VIDEO ITSELF (f_jpg,so_0),
+// which is a video-to-image transform. Sanity stores files; it does not
+// transcode and cannot pull a frame out of one.
+//
+// Moving the video would mean a plain file download with no adaptive quality
+// plus a separately exported poster image. This account belongs to Kfir, not
+// to the farm, so nothing here is Ricky's to lose.
 const BRAND_VIDEO_SRC =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783185123/0704_1_bpnr2e.mp4";
 const BRAND_POSTER =
   "https://res.cloudinary.com/dptyfvwyo/video/upload/f_jpg,q_auto,so_0/v1783185123/0704_1_bpnr2e.mp4";
-const LYCHEE_VIDEO_WEBM =
-  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_webm,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
-const LYCHEE_VIDEO_MP4 =
-  "https://res.cloudinary.com/dptyfvwyo/video/upload/f_mp4,q_auto/v1783080373/%D7%9C%D7%99%D7%A6%D7%99_cjabjq.mp4";
-const LYCHEE_POSTER =
-  "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg";
 
 const CAPTIONS = [
   "מארזי שי בהתאמה אישית עם כל טוב ממשק שוסטרמן",
@@ -23,6 +27,10 @@ const CAPTIONS = [
   "תוצרת חקלאית מובחרת ממושב לימן בצפון הארץ",
   "מספקים תוצרת חקלאית ומארזים לוועדי עובדים, חברות, ארגונים ונקודות מכירה",
 ];
+
+/** The copy the site shipped with — used whenever the Studio field is empty. */
+const DEFAULT_HEADLINE = "מארזים עונתיים ישירות מהמשק";
+const DEFAULT_CTA_LABEL = "להזמנות — לחצו כאן";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -33,45 +41,52 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-export function HeroSection() {
-  const prefersReduced = useReducedMotion();
-  const [isLychee, setIsLychee] = useState(false);
-  const [captionIndex, setCaptionIndex] = useState(0);
-  const brandRef = useRef<HTMLVideoElement>(null);
-  const lycheeRef = useRef<HTMLVideoElement>(null);
+/**
+ * Hero copy as the Studio stores it. Every field is optional; an empty one
+ * keeps the text the site already shipped with, so clearing a field in the
+ * Studio never leaves a blank hero.
+ */
+export interface HeroContent {
+  headline?: string;
+  tagline?: string;
+  ctaLabel?: string;
+  /** When set, the primary button becomes a link instead of opening the chat. */
+  ctaHref?: string;
+}
 
-  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
-    "שלום, אני רוצה להזמין ליצ'י 🌿"
+export function HeroSection({
+  hero,
+  whatsappNumber,
+}: {
+  hero?: HeroContent;
+  whatsappNumber?: string;
+}) {
+  const prefersReduced = useReducedMotion();
+
+  // A cleared field arrives as an empty string, not as undefined.
+  const headline = hero?.headline?.trim() || DEFAULT_HEADLINE;
+  const tagline  = hero?.tagline?.trim()  || "";
+  const ctaLabel = hero?.ctaLabel?.trim() || DEFAULT_CTA_LABEL;
+  const ctaHref  = hero?.ctaHref?.trim()  || "";
+  const waNumber = resolveWhatsapp(whatsappNumber);
+  const [captionIndex, setCaptionIndex] = useState(0);
+
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(
+    "שלום ריקי! אני רוצה להזמין מארז מהמשק 🌿"
   )}`;
 
   const openChat = () =>
     window.dispatchEvent(new CustomEvent("rickybot:open", {}));
 
-  const switchToLychee = useCallback(() => {
-    setIsLychee(true);
-    if (lycheeRef.current) {
-      lycheeRef.current.currentTime = 0;
-      lycheeRef.current.play();
-    }
-  }, []);
-
-  const switchToBrand = useCallback(() => {
-    setIsLychee(false);
-    if (brandRef.current) {
-      brandRef.current.currentTime = 0;
-      brandRef.current.play();
-    }
-  }, []);
-
-  /* Rotate captions every 4 s — only during brand video */
+  /* Rotate captions every 4 s */
   useEffect(() => {
-    if (isLychee || prefersReduced) return;
+    if (prefersReduced) return;
     const id = setInterval(
       () => setCaptionIndex((i) => (i + 1) % CAPTIONS.length),
       4000
     );
     return () => clearInterval(id);
-  }, [isLychee, prefersReduced]);
+  }, [prefersReduced]);
 
   return (
     <header
@@ -81,51 +96,29 @@ export function HeroSection() {
     >
       {/* Always-indexed H1 for SEO — visually hidden, always in DOM */}
       <h1 className="sr-only">
-        ליצ&#39;י טרי ומארזים חקלאיים — משק שוסטרמן, מושב לימן, גבול הצפון
+        מארזים ותוצרת חקלאית — משק שוסטרמן, מושב לימן, גבול הצפון
       </h1>
       {prefersReduced ? (
         <img
-          src={LYCHEE_POSTER}
+          src={BRAND_POSTER}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           aria-hidden="true"
         />
       ) : (
-        <>
-          {/* Brand video — plays first */}
-          <video
-            ref={brandRef}
-            autoPlay
-            muted
-            playsInline
-            preload="metadata"
-            poster={BRAND_POSTER}
-            onEnded={switchToLychee}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              isLychee ? "opacity-0" : "opacity-100"
-            }`}
-            aria-hidden="true"
-          >
-            <source src={BRAND_VIDEO_SRC} type="video/mp4" />
-          </video>
-
-          {/* Lychee video — plays second */}
-          <video
-            ref={lycheeRef}
-            muted
-            playsInline
-            preload="metadata"
-            poster={LYCHEE_POSTER}
-            onEnded={switchToBrand}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 scale-[0.9] origin-center ${
-              isLychee ? "opacity-100" : "opacity-0"
-            }`}
-            aria-hidden="true"
-          >
-            <source src={LYCHEE_VIDEO_WEBM} type="video/webm" />
-            <source src={LYCHEE_VIDEO_MP4} type="video/mp4" />
-          </video>
-        </>
+        /* Brand video — loops for as long as the hero is on screen */
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={BRAND_POSTER}
+          className="absolute inset-0 w-full h-full object-cover"
+          aria-hidden="true"
+        >
+          <source src={BRAND_VIDEO_SRC} type="video/mp4" />
+        </video>
       )}
 
       {/* Gradient — bottom only */}
@@ -134,90 +127,92 @@ export function HeroSection() {
         aria-hidden="true"
       />
 
-      {/* Brand segment — rotating captions + chatbot CTA */}
-      <AnimatePresence>
-        {!isLychee && !prefersReduced && (
-          <motion.div
-            key="brand-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center"
-          >
-            {/* Rotating caption */}
-            <div className="min-h-[3.5rem] flex items-end justify-center mb-6">
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={captionIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-white text-lg sm:text-xl md:text-2xl font-bold leading-snug text-balance"
-                >
-                  {CAPTIONS[captionIndex]}
-                </motion.p>
-              </AnimatePresence>
-            </div>
+      {/* Rotating eyebrow + headline + tagline + both CTAs.
+          Three weights, deliberately: the eyebrow rotates and is the lightest,
+          the headline is the anchor, the tagline sits between them. Stacking
+          the eyebrow under the headline instead would give two sub-lines of
+          near-identical weight and no hierarchy at all. */}
+      <div className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center">
+        {/* Rotating eyebrow — skipped entirely for reduced motion */}
+        {!prefersReduced && (
+          <div className="min-h-[2.5rem] flex items-end justify-center mb-3">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={captionIndex}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.5 }}
+                className="text-white/70 text-xs sm:text-sm font-semibold tracking-[0.08em] leading-snug text-balance"
+              >
+                {CAPTIONS[captionIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+        )}
 
-            {/* Chatbot CTA — pulsing */}
-            <div className="relative inline-flex w-full sm:w-auto justify-center">
-              <motion.span
-                className="absolute inset-0 rounded-2xl bg-white/40"
-                animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0, 0.5] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
-                aria-hidden="true"
-              />
+        {/* Headline — mirrors the sr-only H1, so it is aria-hidden */}
+        <p
+          className={`text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight text-balance ${
+            tagline ? "mb-3" : "mb-6"
+          }`}
+          aria-hidden="true"
+        >
+          {headline}
+        </p>
+
+        {/* Sub-headline — only rendered when the Studio field holds text */}
+        {tagline && (
+          <p className="text-base md:text-lg text-white/85 leading-snug text-balance mb-6">
+            {tagline}
+          </p>
+        )}
+
+        <div className="flex flex-col sm:flex-row sm:justify-center items-stretch sm:items-center gap-3">
+          {/* Chatbot CTA — pulsing */}
+          <div className="relative inline-flex w-full sm:w-auto justify-center">
+            <motion.span
+              className="absolute inset-0 rounded-2xl bg-white/40"
+              animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+              aria-hidden="true"
+            />
+            {ctaHref ? (
+              <a
+                href={ctaHref}
+                {...(ctaHref.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="relative btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white text-forest font-black text-sm md:text-base hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_24px_rgba(255,255,255,0.35)]"
+              >
+                <MessageCircle className="w-5 h-5" />
+                {ctaLabel}
+              </a>
+            ) : (
               <button
                 onClick={openChat}
                 className="relative btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white text-forest font-black text-sm md:text-base hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_24px_rgba(255,255,255,0.35)]"
                 aria-label="לשאלות והזמנות — פתח צ'אט"
               >
                 <MessageCircle className="w-5 h-5" />
-                להזמנות — לחצו כאן
+                {ctaLabel}
               </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            )}
+          </div>
 
-      {/* Lychee segment — badge + headline + WhatsApp */}
-      <AnimatePresence>
-        {(isLychee || prefersReduced) && (
-          <motion.div
-            key="lychee-overlay"
-            initial={prefersReduced ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-x-0 bottom-0 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] max-w-xl mx-auto text-center"
+          {/* WhatsApp CTA */}
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#25D366] text-white font-bold text-sm md:text-base hover:bg-[#20b858] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.4)]"
+            aria-label="הזמינו עכשיו בוואטסאפ"
           >
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-400/40 bg-green-400/10 text-green-300 text-sm font-bold tracking-[0.15em] mb-5">
-              <span className="w-2.5 h-2.5 rounded-full bg-green-400 flex-shrink-0 animate-pulse-dot" aria-hidden="true" />
-              עכשיו בעונה
-            </div>
-
-            {/* Headline */}
-            <p className="text-3xl md:text-5xl font-black text-white leading-[1.1] tracking-tight mb-6 text-balance" aria-hidden="true">
-              ליצ&#39;י מובחר, מתוק ועסיסי
-            </p>
-
-            {/* WhatsApp CTA */}
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-sheen inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#25D366] text-white font-bold text-sm md:text-base hover:bg-[#20b858] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 shadow-[0_4px_20px_rgba(37,211,102,0.4)]"
-              aria-label="הזמינו ליצ'י עכשיו בוואטסאפ"
-            >
-              <WhatsAppIcon className="w-5 h-5" />
-              הזמינו עכשיו בוואטסאפ
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <WhatsAppIcon className="w-5 h-5" />
+            הזמינו עכשיו בוואטסאפ
+          </a>
+        </div>
+      </div>
     </header>
   );
 }

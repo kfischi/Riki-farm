@@ -32,7 +32,7 @@ export function CookieBanner() {
           אתר זה משתמש ב-localStorage ו-sessionStorage לצורך שמירת העדפות נגישות וסטטוס שיחה.
           {" "}
           <Link href="/cookies" className="underline" style={{ color: "#E9C46A" }}>
-            מדיניות עוגיות
+            מה נשמר אצלך
           </Link>
         </p>
         <div className="flex items-center gap-3">

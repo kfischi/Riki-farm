@@ -10,7 +10,7 @@ export const CONFIG = {
 
   seo: {
     siteUrl: "https://meshek-shusterman.co.il",
-    ogImage: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783772618/3_qw4w3h.jpg",
+    ogImage: "https://cdn.sanity.io/images/amums2vy/production/38b02339732380a61c98f4d7800d0bb7099314f0-1080x1920.jpg",
   },
 
   brand: {
@@ -20,64 +20,50 @@ export const CONFIG = {
     ownerTitle: "חקלאית, מושב לימן, גבול הצפון",
   },
 
-  rickyAvatar: "https://res.cloudinary.com/dptyfvwyo/image/upload/c_thumb,g_face,w_400,h_400,r_max,f_auto,q_auto/v1780033949/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C_c4mdpc.png",
+  rickyAvatar: "https://cdn.sanity.io/images/amums2vy/production/c9449fa0019c64eda4c4c284fe3e12d38522327e-400x400.png",
 
   // ===== REAL PHOTOS (Cloudinary CDN) =====
   // ⚠️ Verify the tractor photo (aboutNorth) is not AI-processed before go-live.
   images: {
     // Hero — golden-hour, dynamic (nuts falling). Use SPLIT layout on desktop.
-    hero: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651767/16_sipmwd.jpg",
     // About — greenhouse, authentic working-farmer feel
-    aboutPrimary: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651765/2_cypuwa.jpg",
+    aboutPrimary: "https://cdn.sanity.io/images/amums2vy/production/eb5f2c249c6ed84a8b677c194da6bfc7734fa69d-1600x2133.jpg",
     // About — tractor + northern hills (ties to the גבול הצפון story)
     // ⚠️ VERIFY: may be AI-processed — see README
-    aboutNorth: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1779651766/10_pnpgo5.jpg",
-    // Catalog — lychee feature banner
-    catalogFeature: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0082_lmfy0z.jpg",
+    aboutNorth: "https://cdn.sanity.io/images/amums2vy/production/e8fa7d6316df06b56d37768a3730bee757334306-1600x1200.jpg",
+    // Catalog — packages feature shot
+    catalogFeature: "https://cdn.sanity.io/images/amums2vy/production/ae3e374e943beae363aab21f95e1627dbd8764bd-1024x1536.jpg",
+    // Stand-in on a package card with no photo of its own.
+    //
+    // A drawing, not a photograph, and that is the whole point: every photo in
+    // this project comes from the same shoots as the lychee pictures, and the
+    // build environment cannot open any of them to check. Picking one blind
+    // put lychee back on nine cards after it had been removed from the site.
+    // A drawn parcel cannot be wrong about what it shows.
+    //
+    // Replaceable without a developer: the "package-fallback" slot in
+    // lib/mediaSlots.ts takes a real photo from the Studio whenever there is
+    // one worth using.
+    packageFallback: "/package-no-photo.svg",
   },
 
-  videos: [
-    {
-      id: "v1",
-      title: "ריקי מספרת על המשק",
-      thumbnail: "https://placehold.co/320x180/1B4332/E9C46A?text=המשק+של+ריקי",
-      url: "https://youtube.com/", // 🔴 REPLACE
-    },
-    {
-      id: "v2",
-      title: "עונת הקציר במשק",
-      thumbnail: "https://placehold.co/320x180/2D6A4F/E9C46A?text=עונת+הקציר",
-      url: "https://youtube.com/", // 🔴 REPLACE
-    },
-  ] as Video[],
+  // Emptied: the two entries that shipped here were stand-ins — invented
+  // titles, placehold.co thumbnails and a `https://youtube.com/` link that
+  // goes nowhere. fetchVideos falls back to this list whenever Sanity has no
+  // `video` documents, so a visitor who typed "סרטון" was served them. An
+  // empty list is the honest answer; the chat now says there is nothing to
+  // show instead. Real videos go in through the Studio, not through here.
+  videos: [] as Video[],
 
   packages: [
     {
-      id: "lychee-fresh",
-      name: "ליצ'י טרי מהמשק",
-      description: "ליצ'י מובחר שנקטף ישירות מהעצים במושב לימן ומגיע אליכם עסיסי, מתוק, וטעים בטירוף.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0083_i9m3hk.jpg",
-      tags: ["ליצ'י", "טרי", "עונתי"],
-    },
-    {
-      id: "lychee-box-corp",
-      name: "מארז ליצ'י לחברות",
-      description: "מארז ליצ'י טרי בהתאמה אישית לחברות ומשרדים — כמות לפי בקשה, אריזה נקייה ומרשימה. מתנה שאנשים זוכרים.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0088_bpaxlk.jpg",
-      tags: ["ליצ'י", "לחברות"],
-    },
-    {
-      id: "lychee-seasonal",
-      name: "סל ליצ'י + תוצרת עונתית",
-      description: "ליצ'י טרי לצד מה שהשדה נותן השבוע — פירות וירקות עונתיים ממשק שוסטרמן. מתחדש כל שבוע לפי הגידולים.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0093_fxwxvw.jpg",
-      tags: ["ליצ'י", "עונתי", "מגוון"],
-    },
-    {
       id: "fresh-box-custom",
       name: "מארז תוצרת בהתאמה אישית",
-      description: "מארז תוצרת טרייה בהרכב מותאם — ליצ'י, ירקות, פירות ועוד, לפי מה שמתאים לכם ולעונה. ריקי בונה יחד איתכם.",
-      image: "https://res.cloudinary.com/dptyfvwyo/image/upload/v1783078672/IMG-20260701-WA0094_zotxd3.jpg",
+      description: "מארז תוצרת טרייה בהרכב מותאם — ירקות, פירות ועוד, לפי מה שמתאים לכם ולעונה. ריקי בונה יחד איתכם.",
+      // Emptied: the photo that shipped here is from the 1 July lychee shoot
+      // and shows lychee. The card falls to the drawn stand-in until a real
+      // photo of this box is uploaded in the Studio.
+      image: "",
       tags: ["מותאם אישית", "טרי"],
     },
   ] as Package[],
@@ -114,7 +100,7 @@ export const CONFIG = {
 
   about: {
     headline: "החזון של ריקי",
-    heroLine: "ליצ'י טרי ומארזים עונתיים — ישירות מהמשק.",
+    heroLine: "מארזים עונתיים — ישירות מהמשק.",
     // Short version for chatbot "info" bubble
     body: "ריקי שוסטרמן היא חקלאית במושב לימן, בגבול הצפון, כ-22 שנה. בוגרת בית הספר החקלאי נהלל במגמת גד\"ש, מחוברת לטבע ולאדמה מאז ומתמיד. הפרויקט של מארז בהתאמה אישית נולד במלחמה, כדי לתת בית לתוצרת שנשארה בלי יציאה ולחבר בין כל אדם לתוצרת המופלאה של חקלאי קו העימות.",
     // Pull quotes for editorial display
@@ -132,7 +118,6 @@ export const CONFIG = {
   },
 
   usps: [
-    { icon: "🍈", title: "ליצ'י טרי מהמשק", text: "נקטף ישירות מהעצים במושב לימן, מגיע אליכם תוך שעות" },
     { icon: "🌿", title: "תוצרת עונתית אמיתית", text: "מה שגדל השבוע — מגיע אליכם. בלי מחסן, בלי ביניים" },
     { icon: "🚚", title: "משלוח לכל הארץ", text: "מגבול הצפון ועד הדרום, ישירות אליכם" },
     { icon: "💬", title: "ליווי אישי מריקי", text: "לא בוט, לא מענה אוטומטי — ריקי בעצמה" },
@@ -191,21 +176,6 @@ export const CONFIG = {
       answer: "כן — אנחנו מאפשרים מארז דוגמה במחיר מסובסד עבור הזמנות bulk, כדי שתוכלו להתרשם לפני ההחלטה הסופית.",
     },
     {
-      id: "f6",
-      question: "מתי עונת הליצ'י בישראל?",
-      answer: "עונת הליצ'י בישראל נמשכת בדרך כלל בין יוני לאוגוסט, בהתאם לתנאי מזג האוויר. במשק שוסטרמן במושב לימן הקטיף מתחיל בחודש יוני — הליצ'י נקטף בשיא הבשלות ישירות מהעצים.",
-    },
-    {
-      id: "f7",
-      question: "מאיפה מגיע הליצ'י של משק שוסטרמן?",
-      answer: "הליצ'י גדל ונקטף ישירות מהעצים במשק שוסטרמן, מושב לימן, בגליל המערבי — גבול הצפון. מהשדה ישירות לאריזה ומשם אליכם, בלי ביניים.",
-    },
-    {
-      id: "f8",
-      question: "האם משק שוסטרמן שולח ליצ'י לכל הארץ?",
-      answer: "כן — אנחנו שולחים ליצ'י טרי ומארזים חקלאיים לכל רחבי ישראל, מגבול הצפון ועד הדרום.",
-    },
-    {
       id: "f9",
       question: "מה משמעות 'חקלאי קו העימות'?",
       answer: "חקלאי קו העימות הם חקלאים הגרים ועובדים ביישובי הצפון הצמודים לגבול — אזורים שספגו שנים של אי-ודאות ביטחונית. המשק שלנו נמצא במושב לימן, ואנחנו גאים לשלב במארזים שלנו תוצרת מובחרת של שכנינו ושותפינו לאורך קו הגבול, מתוך ערבות הדדית ורצון לתמוך בחקלאות הצפון.",
@@ -213,22 +183,12 @@ export const CONFIG = {
     {
       id: "f10",
       question: "האם משק שוסטרמן מספק לנקודות מכירה?",
-      answer: "כן — אנחנו מספקים ליצ'י טרי ותוצרת חקלאית גם לנקודות מכירה, שווקים ועסקים שרוצים להציע ללקוחותיהם תוצרת ישירות מהשדה. לפרטים ולהצעת מחיר מותאמת — דברו עם ריקי בוואטסאפ.",
+      answer: "כן — אנחנו מספקים תוצרת חקלאית גם לנקודות מכירה, שווקים ועסקים שרוצים להציע ללקוחותיהם תוצרת ישירות מהשדה. לפרטים ולהצעת מחיר מותאמת — דברו עם ריקי בוואטסאפ.",
     },
     {
       id: "f11",
       question: "האם אפשר לקבל מארז חקלאי כמתנה לחג לעובדים?",
-      answer: "בהחלט! מארזי השי של משק שוסטרמן מושלמים לוועדי עובדים ולמתנות חג. אנחנו בונים יחד איתכם מארז הכולל ליצ'י, פירות וירקות עונתיים ותוצרת של חקלאי קו הגבול — לפי הכמות, התקציב וטעם הלקוחות שלכם. שלחו לנו הודעה ונבנה יחד.",
-    },
-    {
-      id: "f12",
-      question: "כמה עולה ק\"ג ליצ'י ממשק שוסטרמן?",
-      answer: "1 ק\"ג ליצ'י טרי עולה ₪30. יש גם מבצע משתלם: 4 ק\"ג ב-₪100 בלבד — ישירות מהמשק במושב לימן. לכמויות גדולות יותר, לנקודות מכירה ולחברות — צרו קשר עם ריקי בוואטסאפ לקבלת הצעת מחיר מותאמת.",
-    },
-    {
-      id: "f13",
-      question: "איפה אפשר לקנות ליצ'י טרי ישירות מהמשק?",
-      answer: "אפשר להזמין ליצ'י טרי ישירות ממשק שוסטרמן במושב לימן — שלחו הודעה בוואטסאפ ונסגור יחד את הפרטים. אנחנו שולחים לכל הארץ ומספקים גם לנקודות מכירה ולחברות.",
+      answer: "בהחלט! מארזי השי של משק שוסטרמן מושלמים לוועדי עובדים ולמתנות חג. אנחנו בונים יחד איתכם מארז הכולל פירות וירקות עונתיים ותוצרת של חקלאי קו הגבול — לפי הכמות, התקציב וטעם הלקוחות שלכם. שלחו לנו הודעה ונבנה יחד.",
     },
   ] as FAQItem[],
 
@@ -241,17 +201,61 @@ export const CONFIG = {
   ],
 
   legal: {
-    companyLegalName: "משק שוסטרמן בע\"מ",
-    companyId: "ח.פ XXXXXXXXX", // 🔴
-    address: "מושב לימן, גבול הצפון", // 🔴 כתובת מלאה
+    // The trading name, not a registered-company name. It said
+    // "משק שוסטרמן בע\"מ" while the company number beside it was a
+    // placeholder — and it is printed in the footer of every page. Naming
+    // yourself a company you may not be registered as is a claim; the
+    // trading name is true either way. If the business IS a registered
+    // company, the registered name and number belong here, and then the
+    // legal pages should say so.
+    companyLegalName: "משק שוסטרמן",
+    // The number that identifies the business — ח.פ for a company, מספר עוסק
+    // for a sole trader. Both the privacy notice and the terms are supposed to
+    // identify who is behind the site, and this is the one fact nobody here
+    // knows yet; Ricky does.
+    //
+    // It is EMPTY rather than a placeholder on purpose: every page that shows
+    // it checks first and omits the line entirely when it is blank. A missing
+    // line is a gap. "ח.פ XXXXXXXXX" published on a live site is a false
+    // statement — which is what used to sit here, in dead config nothing read.
+    businessId: "",
+    address: "מושב לימן, גבול הצפון",
     contactEmail: "meshek.shusterman@gmail.com",
     contactPhone: "052-524-2155",
+    /**
+     * Whether the small-business accessibility exemption applies — the one
+     * for a business whose annual turnover is under roughly ₪300,000. It
+     * exempts a business from MAKING the adaptations, never from publishing
+     * a statement; an exempt business still has to publish one that sets out
+     * the exemption and how to reach it.
+     *
+     *   null  — nobody has confirmed either way. The statement claims neither
+     *           exemption nor compliance and lists what was built. This is
+     *           the safe state and the current one.
+     *   true  — confirmed exempt. The statement says so, and the adaptations
+     *           below it read as voluntary. This is the strongest honest
+     *           position available: no compliance claim to defend.
+     *   false — confirmed not exempt. Then full adaptations are required and
+     *           only an audit by a certified surveyor can support a claim of
+     *           ת"י 5568 AA; the statement must not assert it before that.
+     *
+     * Kfir's estimate is "below", which is not the same as Ricky's figure, so
+     * it stays null. Flipping it is one word once she confirms.
+     */
+    accessibilityExemption: null as boolean | null,
+
     accessibilityCoordinator: {
-      name: "שם רכז/ת הנגישות", // 🔴
-      phone: "0XX-XXXXXXX", // 🔴
-      email: "accessibility@example.co.il", // 🔴
+      // Ricky is the coordinator. Only the name lives here: the phone and the
+      // e-mail come from the same resolver every other contact point on the
+      // site uses, so changing them in the Studio changes them here too.
+      // A second copy of a phone number is a legal notice that goes stale
+      // without anyone noticing — see docs/decisions.md 38.
+      name: "ריקי שוסטרמן",
     },
-    lastUpdated: "2026-05-22",
-    privacyOwnerName: "ריקי שוסטרמן", // 🔴 confirm legal name
+    lastUpdated: "2026-10-01",
+    // Who answers for the details the site collects. Not "בעל מאגר מידע" —
+    // that is a term out of the Privacy Protection Law and implies a
+    // registered database; the pages now say plainly who to write to.
+    dataContactName: "ריקי שוסטרמן",
   },
 };
